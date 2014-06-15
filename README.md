@@ -4,7 +4,6 @@ FireRobot
 WHAT IS FIREROBOT?
 
 FireRobot is a Firefox extension that allows you to create Robot Framework/Selenium tests, in a more efficient way.
-
 Keyword driven testing is in the far end of the spectrum from record and play tools, as far as test automation concerns. 
 Although this tool has some features in common with record and play tools, it's interest lies in some specific features that will help you to create high level custom keywords, based on the Selenium2library:
 - Bulk selection of elements and creation of test steps in an adaptative way.
