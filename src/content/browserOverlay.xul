@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/css" href="chrome://global/skin/" ?>
+<?xml-stylesheet type="text/css" href="chrome://firerobot/skin/browserOverlay.css" ?>
+<!DOCTYPE overlay SYSTEM "chrome://firerobot/locale/fireRobot.dtd">
+<overlay 
+    id="firerobot-browser-overlay" 
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    <script 
+        type="application/x-javascript" 
+        src="chrome://firerobot/content/browserOverlay.js" />
+    <!--TODO: Only show usable keywords depending on selection (Too much overhead?)-->
+    <popup 
+        id="contentAreaContextMenu">
+        <menuitem 
+            id="fire-robot-page-should-contain" 
+            label="Page Should Contain" 
+            hidden="true" 
+            oncommand="FireRobot.BrowserOverlay.addKeyword(this.id);"/>
+        <menuitem 
+            id="fire-robot-page-should-contain-smart" 
+            label="Page Should Contain &lt;type&gt;" 
+            hidden="true" 
+            oncommand="FireRobot.BrowserOverlay.addKeyword(this.id);"/>
+        <menuseparator 
+            id="fire-robot-separator-1" 
+            hidden="true"/>
+        <menuitem 
+            id="fire-robot-click-smart" 
+            label="Click &lt;type&gt;" 
+            hidden="true" 
+            oncommand="FireRobot.BrowserOverlay.addKeyword(this.id);"/>
+        <menuseparator 
+            id="fire-robot-separator-2" 
+            hidden="true"/>
+        <menuitem 
+            id="fire-robot-page-should-not-contain" 
+            label="Page Should Not Contain" 
+            hidden="true" 
+            oncommand="FireRobot.BrowserOverlay.addKeyword(this.id);"/>
+        <menuitem 
+            id="fire-robot-page-should-not-contain-smart" 
+            label="Page Should Not Contain &lt;type&gt;" 
+            hidden="true" 
+            oncommand="FireRobot.BrowserOverlay.addKeyword(this.id);"/>
+        <menuseparator 
+            id="fire-robot-separator-3" 
+            hidden="true"/>
+        <menu 
+            id="fire-robot-browser" 
+            label="Browser..." 
+            hidden="true">
+            <menupopup 
+                id="fire-robot-browser-popup">
+                <menuitem 
+                    id="fire-robot-open-browser" 
+                    label="Open Browser" 
+                    oncommand="FireRobot.BrowserOverlay.addKeyword(this.id);"/>
+                <menuitem 
+                    id="fire-robot-go-to" 
+                    label="Go To" 
+                    hidden="true" 
+                    oncommand="FireRobot.BrowserOverlay.addKeyword(this.id);"/>
+                <menuitem 
+                    id="fire-robot-go-back" 
+                    label="Go Back" 
+                    oncommand="FireRobot.BrowserOverlay.addKeyword(this.id);"/>
+                <menuitem 
+                    id="fire-robot-close-browser" 
+                    label="Close Browser" 
+                    oncommand="FireRobot.BrowserOverlay.addKeyword(this.id);"/>
+                <menuitem 
+                    id="fire-robot-close-all-browsers" 
+                    label="Close All Browsers" 
+                    oncommand="FireRobot.BrowserOverlay.addKeyword(this.id);"/>
+            </menupopup>
+        </menu>
+        <menu id="fire-robot-frame" 
+            label="Frame..." 
+            hidden="true">
+            <menupopup 
+                id="fire-robot-frame-popup">
+                <menuitem 
+                    id="fire-robot-select-frame" 
+                    label="Select Frame"  
+                    oncommand="FireRobot.BrowserOverlay.addKeyword(this.id);"/>
+                <menuitem 
+                    id="fire-robot-current-frame-contains" 
+                    label="Current Frame Contains" 
+                    oncommand="FireRobot.BrowserOverlay.addKeyword(this.id);"/>
+                <menuitem 
+                    id="fire-robot-current-frame-should-not-contain" 
+                    label="Current Frame Should Not Contain" 
+                    oncommand="FireRobot.BrowserOverlay.addKeyword(this.id);"/>
+                <menuitem 
+                    id="fire-robot-frame-should-contain"
+                    label="Frame Should Contain" 
+                    oncommand="FireRobot.BrowserOverlay.addKeyword(this.id);"/>
+                <menuitem id="fire-robot-unselect-frame" 
+                    label="Unselect Frame" 
+                    oncommand="FireRobot.BrowserOverlay.addKeyword(this.id);"/>
+            </menupopup>
+        </menu>
+        <menuseparator 
+            id="fire-robot-separator-4" 
+            hidden="true"/>
+        <menuitem 
+            id="fire-robot-fill-form" 
+            label="Fill Form As Is" 
+            hidden="true" 
+            oncommand="FireRobot.BrowserOverlay.addKeyword(this.id);"/>
+        <menuitem 
+            id="fire-robot-check-form" 
+            label="Check Form As Is" 
+            hidden="true" 
+            oncommand="FireRobot.BrowserOverlay.addKeyword(this.id);"/>
+    </popup>
+    <menupopup 
+        id="menuWebDeveloperPopup">
+        <menuitem
+            id="fire-robot-dev-tool-item"
+            class="menuitem-iconic"
+            position="1"
+            label="&firerobot.toolbar.label;"
+            key="fire-robot-run-key" 
+            oncommand="FireRobot.BrowserOverlay.openFRWindow(event);"/>
+        <menuseparator 
+            id="fire-robot-dev-tool-separator"
+            insertafter="fire-robot-dev-tool-item"/>
+    </menupopup>
+    <keyset>
+        <key 
+            id="fire-robot-run-key" 
+            modifiers="accel alt" 
+            key="R" 
+            oncommand="FireRobot.BrowserOverlay.openFRWindow(event);"/>
+    </keyset>
+    <toolbarpalette 
+        id="BrowserToolbarPalette">
+        <toolbarbutton 
+            id="fire-robot-toolbar-button" 
+            label="Fire Robot" 
+            tooltiptext="&firerobot.toolbar.label;" 
+            oncommand="FireRobot.BrowserOverlay.openFRWindow(event);"/>
+    </toolbarpalette>
+</overlay>
