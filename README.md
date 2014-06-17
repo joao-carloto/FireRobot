@@ -13,7 +13,7 @@ Although this tool has some features in common with record and play tools, it's 
 - Automatic creation of variables based on the content of text fields.
 
 HOW TO INSTALL FIREROBOT?
-- Drag the .xpi file over Firefox.
+- Get the firerobot.xpi file on the bin folder and drag it to a Firefox browser window.
 - Confirm the installation and restart the browser.
 - You may start the extension at the Developer menu.
 - For more convenience drag the FireRobot icon from the "Customize" menu on the browser toolbar.
