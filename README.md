@@ -33,7 +33,7 @@ HOW TO USE FIREROBOT?
 - Use the ESC key to clear the selections, while keeping the selection mode on.
 - To fill and check forms you may select any element that includes the form elements of interest, not necessarily the form element.
 - For frame related keywords you may select an element that includes the frame of interest or any element inside the frame.
-- Use the settings window to change the locator preferences and the options for variable creation and usage."
+- Use the settings window to change the locator preferences and the options for variable creation and usage.
 - You may reference resource files, with high level keywords, in the *Settings* section. Make sure you use the full path.
 
 Disclaimer: This tool is being released publicly because it is believed to have reached a stage where it can be helpful. However, it is still a 'young' application, with some known (and possibly unknown) limitations. 
