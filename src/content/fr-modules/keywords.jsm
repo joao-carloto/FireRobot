@@ -197,8 +197,6 @@ function kwSelectFrame() {
 			if (selectedElements[i].tagName == "IFRAME" || selectedElements[i].tagName == "FRAME") {
 				if (selectedFrame && selectedElements[i] != selectedFrame) {
 					warning("firerobot.warn.more-than-one-frame");
-					//TODO Improve.
-					//_promptService.alert(null, "Warning!", "More than one frame is included on the selected elements or is an ancestor of a selected element.\n" + getLocator(selectedFrame) + "\n" + getLocator(frWindow.selectedElements[i]));
 					return;
 				} else {
 					selectedFrame = selectedElements[i];
@@ -233,8 +231,6 @@ function kwSelectFrame() {
 		if (elContainingWindow.frameElement) {
 			if (selectedFrame && elContainingWindow.frameElement != selectedFrame) {
 				warning("firerobot.warn.more-than-one-frame");
-				//TODO improve
-				//_promptService.alert(null, "Warning!", "More than one frame is included on the selected elements or is an ancestor of a selected element.\n" + getLocator(selectedFrame) + "\n" + getLocator(elContainingWindow.frameElement));
 				return;
 			} else {
 				selectedFrame = elContainingWindow.frameElement;
