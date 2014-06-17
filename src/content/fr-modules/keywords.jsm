@@ -459,7 +459,6 @@ function kwCheckForm() {
 	}
 }
 
-
 function _fillFormElement(element) {
 	var createVar = this._prefService.getBoolPref(
 		"extensions.firerobot.variables.create");
