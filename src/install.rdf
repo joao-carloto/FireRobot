@@ -12,7 +12,7 @@
     <em:version>1.0.0</em:version>
     <em:creator>Joao Miguel Gouveia Carloto</em:creator>
     <!--TODO put the github url here-->
-    <em:homepageURL>http://pt.linkedin.com/pub/jo%C3%A3o-carloto/64/3b1/799</em:homepageURL>
+    <em:homepageURL>https://github.com/joao-carloto/FireRobot</em:homepageURL>
     <em:type>2</em:type>
     <em:unpack>true</em:unpack>
     <em:iconURL>chrome://firerobot/skin/robot48.png</em:iconURL>
@@ -22,7 +22,7 @@
       <Description>
         <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
         <em:minVersion>4.0</em:minVersion>
-        <em:maxVersion>29.*</em:maxVersion>
+        <em:maxVersion>30.*</em:maxVersion>
       </Description>
     </em:targetApplication>
   </Description>

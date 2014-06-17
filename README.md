@@ -12,15 +12,19 @@ Although this tool has some features in common with record and play tools, it's 
 - Element localization thru automatically generated XPath, based on an element's own text or text of a nearby element.
 - Automatic creation of variables based on the content of text fields.
 
+
 HOW TO INSTALL FIREROBOT?
-- Drag the .xpi file over Firefox.
+
+- Go to the following shared dropbox folder: https://www.dropbox.com/sh/jwbincui3z4hbvm/PwMkha-epK
+- Get the firerobot.xpi file.
+- Drag it over a window of your Firefox browser.
 - Confirm the installation and restart the browser.
 - You may start the extension at the Developer menu.
 - For more convenience drag the FireRobot icon from the "Customize" menu on the browser toolbar.
 
 
-
 HOW TO USE FIREROBOT?
+
 - Toggle the select button.
 - The active web page will get a dashed border, along with any included frames or iframes.
 - Click to select page elements of interest.
@@ -33,7 +37,7 @@ HOW TO USE FIREROBOT?
 - You may reference resource files, with high level keywords, in the *Settings* section. Make sure you use the full path.
 
 Disclaimer: This tool is being released publicly because it is believed to have reached a stage where it can be helpful. However, it is still a 'young' application, with some known (and possibly unknown) limitations. 
-Please provide feedback at the FireRobot GitHub page. 
+Please provide feedback at https://github.com/joao-carloto/FireRobot/issues. 
 Bugs, new features, small improvements, all are welcome. They will be addressed when possible.
 A couple of relevant known issues are:
 - The 'Run Test Suite' button will only work in Windows (for now).

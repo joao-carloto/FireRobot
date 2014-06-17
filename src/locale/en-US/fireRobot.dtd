@@ -21,7 +21,7 @@
 <!ENTITY firerobot.help.how_to.li_10      "You may reference resource files, with high level keywords, in the *Settings* section. Make sure you use the full path.">
 
 <!ENTITY firerobot.help.issues.title      "Disclaimer: This tool is being released publicly because it is believed to have reached a stage where it can be helpful. However, it is still a 'young' application, with some known (and possibly unknown) limitations.">
-<!ENTITY firerobot.help.issues.feedback   "Please provide feedback at the FireRobot GitHub page. Bugs, new features, small improvements, all are welcome. They will be addressed when possible.<html:br/>A couple of relevant known issues are:">
+<!ENTITY firerobot.help.issues.feedback   "Please provide feedback at the <html:a href='https://github.com/joao-carloto/FireRobot/issues' target='_blank'><html:u>FireRobot GitHub page</html:u></html:a>. Bugs, new features, small improvements, all are welcome. They will be addressed when possible.<html:br/>A couple of relevant known issues are:">
 <!ENTITY firerobot.help.issues.li_1       "The 'Run Test Suite' button will only work in Windows (for now).">
 <!ENTITY firerobot.help.issues.li_2       "There might be situations where the extension will be unable to create a valid XPath expression or suggest a variable name.">
 
