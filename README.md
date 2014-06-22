@@ -15,7 +15,7 @@ Although this tool has some features in common with record and play tools, it's 
 
 HOW TO INSTALL FIREROBOT?
 
-- Go to the following shared dropbox folder: https://www.dropbox.com/sh/jwbincui3z4hbvm/PwMkha-epK
+- Go to the releases page (https://github.com/joao-carloto/FireRobot/releases).
 - Get the firerobot.xpi file.
 - Drag it over a window of your Firefox browser.
 - Confirm the installation and restart the browser.
