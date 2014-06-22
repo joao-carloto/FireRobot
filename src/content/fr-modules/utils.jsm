@@ -46,13 +46,13 @@ function escapeSpace(text) {
 
 function getNodeValue(element) {
 	var nodeValue = "";
-	if(element.childNodes[0]) {
+	if (element.childNodes[0]) {
 		nodeValue = element.childNodes[0].nodeValue;
 	}
 	if (nodeValue) {
 		nodeValue = nodeValue.trim();
 		nodeValue = escapeRobot(nodeValue);
-	} 
+	}
 	return nodeValue;
 }
 
@@ -77,6 +77,7 @@ function getTextFragments(element) {
 	innerHTML = innerHTML.replace(/<!--[\s\S]*?-->/g, "");
 
 	var textFragments = [];
+	var fragment;
 	var ltIndex;
 	var mtIndex;
 	var i = 0;
@@ -84,7 +85,9 @@ function getTextFragments(element) {
 	while (innerHTML.length > 0) {
 		ltIndex = innerHTML.indexOf("<");
 		if (ltIndex == -1) {
-			textFragments.push(innerHTML);
+			if (!_arrayContains(innerHTML, textFragments)) {
+				textFragments.push(innerHTML);
+			}
 			break;
 		} else if (ltIndex === 0) {
 			mtIndex = innerHTML.indexOf(">");
@@ -94,7 +97,10 @@ function getTextFragments(element) {
 				innerHTML = innerHTML.substring(mtIndex + 1);
 			}
 		} else {
-			textFragments.push(innerHTML.substring(0, ltIndex));
+			fragment = innerHTML.substring(0, ltIndex);
+			if (!_arrayContains(fragment, textFragments)) {
+				textFragments.push(fragment);
+			}
 			mtIndex = innerHTML.indexOf(">");
 			if (mtIndex == (innerHTML.length - 1)) {
 				break;
@@ -258,7 +264,7 @@ function getNearTextElement(element) {
 	} else {
 		precTextElement = _getPrecTextElement(element);
 		followingTextElement = _getFollowingTextElement(element);
-		if (!precTextElement && !followingTextElement) { 
+		if (!precTextElement && !followingTextElement) {
 			return null;
 		} else if (precTextElement && followingTextElement) {
 			var elRec = element.getBoundingClientRect();
@@ -294,10 +300,10 @@ function _getPrecTextElement(element) {
 	var tempXpath = "(.//" + element.tagName.toLowerCase() + ")";
 	tempXpath += _getElementXPathIndex(element, tempXpath);
 	for (var i = 0; true; i++) {
-		nearestTextElementXpath = "(" + 
-			tempXpath + 
-			"/preceding::*[normalize-space(.)!=''])[last() - " + 
-			i + 
+		nearestTextElementXpath = "(" +
+			tempXpath +
+			"/preceding::*[normalize-space(.)!=''])[last() - " +
+			i +
 			"]";
 		var xPathResult = elContainingDocument.
 		evaluate(nearestTextElementXpath, elContainingDocument.body, null, 0, null);
@@ -307,7 +313,7 @@ function _getPrecTextElement(element) {
 		} else if (_elTextContainsAlphanum(matchedNode) && isVisible(matchedNode)) {
 			matchedNode.relationship = "following";
 			return matchedNode;
-		} 
+		}
 	}
 	return null;
 }
@@ -321,7 +327,7 @@ function _getFollowingTextElement(element) {
 	var xPathResult = elContainingDocument.
 	evaluate(nearestTextElementXpath, elContainingDocument.body, null, 0, null);
 	var matchedNode = xPathResult.iterateNext();
-	while (matchedNode) { 
+	while (matchedNode) {
 		if (_elTextContainsAlphanum(matchedNode) && isVisible(matchedNode)) {
 			matchedNode.relationship = "preceding";
 			return matchedNode;
@@ -445,71 +451,70 @@ function _getXPathText(element) {
 
 function _elTextContainsAlphanum(element) {
 	var elementText = _getXPathText(element);
-    var unicodeWord = XRegExp('\\p{L}|\\p{N}');
-    return unicodeWord.test(_UTF8.decode(elementText));
+	var unicodeWord = XRegExp('\\p{L}|\\p{N}');
+	return unicodeWord.test(_UTF8.decode(elementText));
 }
 
 /**
-*
-*  UTF-8 data encode / decode
-*  http://www.webtoolkit.info/
-*
-**/
- 
+ *
+ *  UTF-8 data encode / decode
+ *  http://www.webtoolkit.info/
+ *
+ **/
+
 var _UTF8 = {
-   // public method for url encoding
-    encode : function (string) {
-        string = string.replace(/\r\n/g,"\n");
-        var utftext = "";
- 
-        for (var n = 0; n < string.length; n++) {
- 
-            var c = string.charCodeAt(n);
- 
-            if (c < 128) {
-                utftext += String.fromCharCode(c);
-            }
-            else if((c > 127) && (c < 2048)) {
-                utftext += String.fromCharCode((c >> 6) | 192);
-                utftext += String.fromCharCode((c & 63) | 128);
-            }
-            else {
-                utftext += String.fromCharCode((c >> 12) | 224);
-                utftext += String.fromCharCode(((c >> 6) & 63) | 128);
-                utftext += String.fromCharCode((c & 63) | 128);
-            }
-        }
-        return utftext;
-    },
- 
-    // public method for url decoding
-    decode : function (utftext) {
-        var string = "";
-        var i = 0;
-        var c = c1 = c2 = 0;
- 
-        while ( i < utftext.length ) {
- 
-            c = utftext.charCodeAt(i);
- 
-            if (c < 128) {
-                string += String.fromCharCode(c);
-                i++;
-            }
-            else if((c > 191) && (c < 224)) {
-                c2 = utftext.charCodeAt(i+1);
-                string += String.fromCharCode(((c & 31) << 6) | (c2 & 63));
-                i += 2;
-            }
-            else {
-                c2 = utftext.charCodeAt(i+1);
-                c3 = utftext.charCodeAt(i+2);
-                string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
-                i += 3;
-            }
-        }
-        return string;
-    }
+	// public method for url encoding
+	encode: function(string) {
+		string = string.replace(/\r\n/g, "\n");
+		var utftext = "";
+
+		for (var n = 0; n < string.length; n++) {
+
+			var c = string.charCodeAt(n);
+
+			if (c < 128) {
+				utftext += String.fromCharCode(c);
+			} else if ((c > 127) && (c < 2048)) {
+				utftext += String.fromCharCode((c >> 6) | 192);
+				utftext += String.fromCharCode((c & 63) | 128);
+			} else {
+				utftext += String.fromCharCode((c >> 12) | 224);
+				utftext += String.fromCharCode(((c >> 6) & 63) | 128);
+				utftext += String.fromCharCode((c & 63) | 128);
+			}
+		}
+		return utftext;
+	},
+
+	// public method for url decoding
+	decode: function(utftext) {
+		var string = "";
+		var i = 0;
+		var c = c1 = c2 = 0;
+
+		while (i < utftext.length) {
+
+			c = utftext.charCodeAt(i);
+
+			if (c < 128) {
+				string += String.fromCharCode(c);
+				i++;
+			} else if ((c > 191) && (c < 224)) {
+				c2 = utftext.charCodeAt(i + 1);
+				string += String.fromCharCode(((c & 31) << 6) | (c2 & 63));
+				i += 2;
+			} else {
+				c2 = utftext.charCodeAt(i + 1);
+				c3 = utftext.charCodeAt(i + 2);
+				string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
+				i += 3;
+			}
+		}
+		return string;
+	}
 }
 
 
+function _arrayContains(needle, arrhaystack) {
+	return (arrhaystack.indexOf(needle) > -1);
+}

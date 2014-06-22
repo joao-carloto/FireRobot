@@ -29,7 +29,7 @@
 			warning("firerobot.warn.no-java");
 			return;
 		}
-		
+
 		var appVersion = frWindow.navigator.appVersion;
 		var OSName = "Unknown OS";
 		if (appVersion.indexOf("Win") != -1) {
@@ -109,6 +109,12 @@
 
 		process.runAsync(args, args.length, function(subject, topic, data) {
 			_Application.storage.set("testRunning", false);
+
+			//The window might have been closed or switched mode.
+			frWindow = _Application.storage.get("frWindow", undefined);
+			if (!frWindow) return;
+
+			playButton = frWindow.document.getElementById("playButton");
 			playButton.setAttribute("class", "btn");
 
 			reportFile = FileUtils.getFile("ProfD", ["extensions",

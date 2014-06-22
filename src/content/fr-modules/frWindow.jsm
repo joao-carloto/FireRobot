@@ -36,7 +36,7 @@ function createFloatWindow() {
 
 function createSideBar() {
 	var ffWindow = _windowMediator.getMostRecentWindow("navigator:browser");
-	if(!ffWindow) {
+	if (!ffWindow) {
 		warning("firerobot.warn.no-window");
 		return;
 	}
@@ -108,6 +108,8 @@ function copyWindowContent(oldWindow, newWindow) {
 	document.getElementById("testCaseTextArea").value;
 	newWindow.document.getElementById("selectButton").setAttribute("class",
 		oldWindow.document.getElementById("selectButton").getAttribute("class"));
+	newWindow.document.getElementById("playButton").setAttribute("class",
+		oldWindow.document.getElementById("playButton").getAttribute("class"));
 
 	_Application.storage.set("frWindow", newWindow);
 
@@ -123,8 +125,8 @@ function _closeFRWindow() {
 
 	var browserWindow = _Application.storage.get("browserWindow", undefined);
 	if (browserWindow && !browserWindow.closed) {
-		browserWindow.document.getElementById("fire-robot-toolbar-button").style.listStyleImage = 
-		"url('chrome://firerobot/skin/fire_robot_toolbar_off.png')";
+		browserWindow.document.getElementById("fire-robot-toolbar-button").style.listStyleImage =
+			"url('chrome://firerobot/skin/fire_robot_toolbar_off.png')";
 	}
 	_Application.storage.set("frWindow", undefined);
 }

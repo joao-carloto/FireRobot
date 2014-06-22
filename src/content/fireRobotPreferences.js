@@ -49,7 +49,6 @@ FireRobot.Preferences = {
     }
   },
 
-
   increaseLocatorIndex: function() {
     var enabledLocList = document.getElementById("enabled-locators-list");
     var selectedItem = enabledLocList.selectedItem;
