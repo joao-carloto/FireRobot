@@ -102,6 +102,27 @@ FireRobot.BrowserOverlay = {
 			case "fire-robot-page-should-not-contain-smart":
 				kwPageShouldNotContainSmart();
 				break;
+			case "fire-robot-wait-until-page-contains":
+				kwWaitUntilPageContains();
+				break;
+			case "fire-robot-wait-until-page-contains-element":
+				kwWaitUntilPageContainsElement();
+				break;
+			case "fire-robot-wait-until-element-is-visible":
+				kwWaitUntilElementIsVisible();
+				break;
+			case "fire-robot-element-should-be-enabled":
+				kwElementShouldBeEnabled();
+				break;
+			case "fire-robot-element-should-be-disabled":
+				kwElementShouldBeDisabled();
+				break;
+			case "fire-robot-element-should-be-visible":
+				kwElementShouldBeVisible();
+				break;
+			case "fire-robot-element-should-not-be-visible":
+				kwElementShouldNotBeVisible();
+				break;
 			case "fire-robot-select-frame":
 				kwSelectFrame();
 				break;

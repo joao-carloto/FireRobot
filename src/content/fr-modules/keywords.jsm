@@ -3,6 +3,13 @@ var EXPORTED_SYMBOLS = [
 	"kwPageShouldNotContain",
 	"kwPageShouldContainSmart",
 	"kwPageShouldNotContainSmart",
+	"kwWaitUntilPageContains",
+	"kwWaitUntilPageContainsElement",
+	"kwWaitUntilElementIsVisible",
+	"kwElementShouldBeEnabled",
+	"kwElementShouldBeDisabled",
+	"kwElementShouldBeVisible",
+	"kwElementShouldNotBeVisible",
 	"kwClickSmart",
 	"kwSelectFrame",
 	"kwCurrentFrameContains",
@@ -34,69 +41,11 @@ var _windowMediator = Components.classes["@mozilla.org/appshell/window-mediator;
 	.getService(Components.interfaces.nsIWindowMediator);
 
 function kwPageShouldContain() {
-	var selectedElements = _Application.storage.get("selectedElements", undefined);
-	if (!selectedElements || selectedElements.length === 0) {
-		warning("firerobot.warn.no-el-select");
-		return;
-	}
-	var textFragments;
-	var numTextFragmentInSelection = 0;
-	var useVar = _prefService.getBoolPref("extensions.firerobot.variables.use");
-	for (var i = 0; i < selectedElements.length; i++) {
-
-		textFragments = getTextFragments(selectedElements[i]);
-
-		numTextFragmentInSelection += textFragments.length;
-
-		for (var j = 0; j < textFragments.length; j++) {
-			if (useVar) {
-				var varName = getVarNameFromValue(textFragments[j]);
-				if (varName) {
-					_addStepToTest("Page Should Contain  \t${" + varName + "}");
-				} else {
-					_addStepToTest("Page Should Contain  \t" + textFragments[j]);
-				}
-			} else {
-				_addStepToTest("Page Should Contain  \t" + textFragments[j]);
-			}
-		}
-	}
-	if (numTextFragmentInSelection === 0) {
-		warning("firerobot.warn.no-text-select");
-	}
+	_addTextVerifications("Page Should Contain");
 }
 
 function kwPageShouldNotContain() {
-	var selectedElements = _Application.storage.get("selectedElements", undefined);
-	if (!selectedElements || selectedElements.length === 0) {
-		warning("firerobot.warn.no-el-select");
-		return;
-	}
-	var numTextFragmentInSelection = 0;
-	var textFragments;
-	var useVar = _prefService.getBoolPref("extensions.firerobot.variables.use");
-	for (var i = 0; i < selectedElements.length; i++) {
-
-		textFragments = getTextFragments(selectedElements[i]);
-
-		numTextFragmentInSelection += textFragments.length;
-
-		for (var j = 0; j < textFragments.length; j++) {
-			if (useVar) {
-				var varName = getVarNameFromValue(textFragments[j]);
-				if (varName) {
-					_addStepToTest("Page Should Not Contain  \t${" + varName + "}");
-				} else {
-					_addStepToTest("Page Should Not Contain  \t" + textFragments[j]);
-				}
-			} else {
-				_addStepToTest("Page Should Not Contain  \t" + textFragments[j]);
-			}
-		}
-	}
-	if (numTextFragmentInSelection === 0) {
-		warning("firerobot.warn.no-text-select");
-	}
+	_addTextVerifications("Page Should Not Contain");
 }
 
 function kwPageShouldContainSmart() {
@@ -187,14 +136,104 @@ function kwClickSmart() {
 	}
 }
 
+function kwWaitUntilPageContains() {
+	_addTextVerifications("Wait Until Page Contains");
+}
+
+function kwWaitUntilPageContainsElement() {
+	var selectedElements = _Application.storage.get("selectedElements", undefined);
+	if (!selectedElements || selectedElements.length === 0) {
+		warning("firerobot.warn.no-el-select");
+		return;
+	}
+	for (var i = 0; i < selectedElements.length; i++) {
+		var el = selectedElements[i];
+		_addStepToTest("Wait Until Page Contains Element  \t" + getLocatorForGenericElement(el));
+	}
+}
+
+function kwWaitUntilElementIsVisible() {
+	var selectedElements = _Application.storage.get("selectedElements", undefined);
+	if (!selectedElements || selectedElements.length === 0) {
+		warning("firerobot.warn.no-el-select");
+		return;
+	}
+	for (var i = 0; i < selectedElements.length; i++) {
+		var el = selectedElements[i];
+		_addStepToTest("Wait Until Element Is Visible  \t" + getLocatorForGenericElement(el));
+	}
+}
+
+function kwElementShouldBeEnabled() {
+	var selectedElements = _Application.storage.get("selectedElements", undefined);
+	if (!selectedElements || selectedElements.length === 0) {
+		warning("firerobot.warn.no-el-select");
+		return;
+	}
+	var numInputElements = 0;
+	for (var i = 0; i < selectedElements.length; i++) {
+		var el = selectedElements[i];
+		if (el.tagName == "INPUT") {
+			_addStepToTest("Element Should Be Enabled  \t" + getLocatorForGenericElement(el));
+			numInputElements++;
+		}
+	}
+	if (numInputElements === 0) {
+		warning("firerobot.warn.no-input-select");
+	}
+}
+
+function kwElementShouldBeDisabled() {
+	var selectedElements = _Application.storage.get("selectedElements", undefined);
+	if (!selectedElements || selectedElements.length === 0) {
+		warning("firerobot.warn.no-el-select");
+		return;
+	}
+	var numInputElements = 0;
+	for (var i = 0; i < selectedElements.length; i++) {
+		var el = selectedElements[i];
+		if (el.tagName == "INPUT") {
+			_addStepToTest("Element Should Disabled  \t" + getLocatorForGenericElement(el));
+			numInputElements++;
+		}
+	}
+	if (numInputElements === 0) {
+		warning("firerobot.warn.no-input-select");
+	}
+}
+
+function kwElementShouldBeVisible() {
+	var selectedElements = _Application.storage.get("selectedElements", undefined);
+	if (!selectedElements || selectedElements.length === 0) {
+		warning("firerobot.warn.no-el-select");
+		return;
+	}
+	for (var i = 0; i < selectedElements.length; i++) {
+		var el = selectedElements[i];
+		_addStepToTest("Element Should Be Visible  \t" + getLocatorForGenericElement(el));
+	}
+}
+
+function kwElementShouldNotBeVisible() {
+	var selectedElements = _Application.storage.get("selectedElements", undefined);
+	if (!selectedElements || selectedElements.length === 0) {
+		warning("firerobot.warn.no-el-select");
+		return;
+	}
+	for (var i = 0; i < selectedElements.length; i++) {
+		var el = selectedElements[i];
+		_addStepToTest("Element Should Not Be Visible  \t" + getLocatorForGenericElement(el));
+	}
+}
+
 function kwSelectFrame() {
 	var selectedElements = _Application.storage.get("selectedElements", undefined);
 	var browserWindow = _windowMediator.getMostRecentWindow("navigator:browser");
 	var selectedFrame;
 	for (var i = 0; i < selectedElements.length; i++) {
 		try {
-
-			if (selectedElements[i].tagName == "IFRAME" || selectedElements[i].tagName == "FRAME") {
+			if (selectedElements[i].tagName == "IFRAME" ||
+				selectedElements[i].tagName == "FRAME") {
 				if (selectedFrame && selectedElements[i] != selectedFrame) {
 					warning("firerobot.warn.more-than-one-frame");
 					return;
@@ -212,8 +251,6 @@ function kwSelectFrame() {
 				while (matchedNode) {
 					if (selectedFrame && matchedNode != selectedFrame) {
 						warning("firerobot.warn.more-than-one-frame");
-						//TODO improve
-						//_promptService.alert(null, "Warning!", "More than one frame is included on the selected elements or is an ancestor of a selected element.\n" + getLocator(selectedFrame) + "\n" + getLocator(matchedNode));
 						return;
 					} else {
 						selectedFrame = matchedNode;
@@ -406,9 +443,11 @@ function kwFillForm() {
 			var matchedNode = xPathResult.iterateNext();
 
 			while (matchedNode) {
-				_fillFormElement(matchedNode);
+				if (isVisible(matchedNode)) {
+					_fillFormElement(matchedNode);
+					formElementsInSelection++;
+				}
 				matchedNode = xPathResult.iterateNext();
-				formElementsInSelection++;
 			}
 		}
 	}
@@ -448,9 +487,11 @@ function kwCheckForm() {
 
 			var matchedNode = xPathResult.iterateNext();
 			while (matchedNode) {
-				_checkFormElement(matchedNode);
+				if (isVisible(matchedNode)) {
+					_checkFormElement(matchedNode);
+					formElementsInSelection++;
+				}
 				matchedNode = xPathResult.iterateNext();
-				formElementsInSelection++;
 			}
 		}
 	}
@@ -759,6 +800,39 @@ function _checkFormElement(element) {
 			}
 			matchedNode = xPathResult.iterateNext();
 		}
+	}
+}
+
+function _addTextVerifications(keyword) {
+	var selectedElements = _Application.storage.get("selectedElements", undefined);
+	if (!selectedElements || selectedElements.length === 0) {
+		warning("firerobot.warn.no-el-select");
+		return;
+	}
+	var textFragments;
+	var numTextFragmentInSelection = 0;
+	var useVar = _prefService.getBoolPref("extensions.firerobot.variables.use");
+	for (var i = 0; i < selectedElements.length; i++) {
+
+		textFragments = getTextFragments(selectedElements[i]);
+
+		numTextFragmentInSelection += textFragments.length;
+
+		for (var j = 0; j < textFragments.length; j++) {
+			if (useVar) {
+				var varName = getVarNameFromValue(textFragments[j]);
+				if (varName) {
+					_addStepToTest(keyword + "  \t${" + varName + "}");
+				} else {
+					_addStepToTest(keyword + "  \t" + textFragments[j]);
+				}
+			} else {
+				_addStepToTest(keyword + "  \t" + textFragments[j]);
+			}
+		}
+	}
+	if (numTextFragmentInSelection === 0) {
+		warning("firerobot.warn.no-text-select");
 	}
 }
 

@@ -56,62 +56,22 @@ function getNodeValue(element) {
 	return nodeValue;
 }
 
-//This is weird but it's a way to make text verifications work when analysing elements with children
 function getTextFragments(element) {
-	var tmpElement = element.ownerDocument.createElement("div");
-	tmpElement.innerHTML = element.innerHTML;
-	//TODO remove other elements that mess visible text extraction?
-	var scriptElements = tmpElement.getElementsByTagName('SCRIPT');
-	while (scriptElements[0]) {
-		scriptElements[0].parentNode.removeChild(scriptElements[0]);
-	}
-	var noScriptElements = tmpElement.getElementsByTagName('NOSCRIPT');
-	while (noScriptElements[0]) {
-		noScriptElements[0].parentNode.removeChild(noScriptElements[0]);
-	}
-	var styleElements = tmpElement.getElementsByTagName('STYLE');
-	while (styleElements[0]) {
-		styleElements[0].parentNode.removeChild(styleElements[0]);
-	}
-	var innerHTML = tmpElement.innerHTML;
-	innerHTML = innerHTML.replace(/<!--[\s\S]*?-->/g, "");
 
-	var textFragments = [];
-	var fragment;
-	var ltIndex;
-	var mtIndex;
-	var i = 0;
-
-	while (innerHTML.length > 0) {
-		ltIndex = innerHTML.indexOf("<");
-		if (ltIndex == -1) {
-			if (!_arrayContains(innerHTML, textFragments)) {
-				textFragments.push(innerHTML);
-			}
-			break;
-		} else if (ltIndex === 0) {
-			mtIndex = innerHTML.indexOf(">");
-			if (mtIndex == (innerHTML.length - 1)) {
-				break;
-			} else {
-				innerHTML = innerHTML.substring(mtIndex + 1);
-			}
-		} else {
-			fragment = innerHTML.substring(0, ltIndex);
-			if (!_arrayContains(fragment, textFragments)) {
-				textFragments.push(fragment);
-			}
-			mtIndex = innerHTML.indexOf(">");
-			if (mtIndex == (innerHTML.length - 1)) {
-				break;
-			} else {
-				innerHTML = innerHTML.substring(mtIndex + 1);
-			}
-		}
-		i++;
+	if(element.textFragments){
+		return element.textFragments;
 	}
+
+	var cleanClone = _getCleanClone(element);
+
+	var textFragments = cleanClone.innerHTML.split(/<[^>]*>/);
+
+	//Remove duplicates
+	textFragments = textFragments.filter(function(elem, pos) {
+		return textFragments.indexOf(elem) == pos;
+	});
 	//More sanitizing on the text fragments
-	for (i = 0; i < textFragments.length; i++) {
+	for (var i = 0; i < textFragments.length; i++) {
 		textFragments[i] = _replaceHTMLEntities(textFragments[i]);
 		textFragments[i] = escapeRobot(textFragments[i]);
 		textFragments[i] = textFragments[i].replace(/(\r\n|\n|\r)/gm, "\\n");
@@ -120,6 +80,8 @@ function getTextFragments(element) {
 		textFragments[i] = textFragments[i].replace(/^((\\n)|(\\t)|\s|\\\s)*/, "");
 		textFragments[i] = textFragments[i].replace(/((\\n)|(\\t)|\s|\\\s)*$/, "");
 
+		//Element.textContent will repalace &nbsp; with \u0020 instead of \u00A0. 
+		//Bugzilla issue https://bugzilla.mozilla.org/show_bug.cgi?id=359303
 		if (textFragments[i].match(/^(&nbsp;){1,}$/)) {
 			textFragments.splice(i, 1);
 			i--;
@@ -138,6 +100,7 @@ function getTextFragments(element) {
 			continue;
 		}
 	}
+	element.textFragments = textFragments;
 	return textFragments;
 }
 
@@ -294,6 +257,36 @@ function isVisible(element) {
 	return element.offsetWidth > 0 || element.offsetHeight > 0;
 }
 
+
+function _getCleanClone(element) {
+	var clone = element.cloneNode(true);
+
+	for (var i = 0; i < element.childNodes.length; i++) {
+		var child = element.childNodes[i];
+		var childClone = clone.childNodes[i];
+
+		//attributes
+		if (child.nodeType === 2) {
+			childClone.nodeValue = "";
+		} 
+		//comments
+		else if (child.nodeType === 8) {
+			childClone.data = "";
+		} 
+		//hidden elements
+		else if (child.nodeType !== 3 && !isVisible(child)) {
+			childClone.outerHTML = "<!---->";
+		} 
+		//go recursive
+		else if (child.childNodes.length > 0) {
+			childClone.outerHTML = _getCleanClone(child).outerHTML;
+		}
+	}
+	return clone;
+}
+
+
+
 function _getPrecTextElement(element) {
 	var nearestTextElementXpath;
 	var elContainingDocument = element.ownerDocument;
@@ -384,38 +377,39 @@ function _resolveApostrophes(str) {
 //TODO do others
 function _replaceHTMLEntities(text) {
 	text = text.
-	replace("&lt;", "<").
-	replace("&gt;", ">").
-	replace("&amp;", "&").
-	replace("&cent;", "¢").
-	replace("&pound;", "£").
-	replace("&yen;", "¥").
-	replace("&euro;", "€").
-	replace("&copy;", "©").
-	replace("&reg;", "®").
-	replace("&trade;", "™").
-	replace("&larr;", "?").
-	replace("&uarr;", "?").
-	replace("&rarr;", "?").
-	replace("&darr;", "?").
-	replace("&forall;", "?").
-	replace("&part;", "?").
-	replace("&exist;", "?").
-	replace("&nabla;", "?").
-	replace("&isin;", "?").
-	replace("&ni;", "?").
-	replace("&prod;", "?").
-	replace("&sum;", "?").
-	replace("&Alpha;", "?").
-	replace("&Beta;", "?").
-	replace("&Gamma;", "G").
-	replace("&Delta;", "?").
-	replace("&Epsilon;", "?").
-	replace("&Zeta;", "?");
+	replace(/&lt;/g, "<").
+	replace(/&gt;/g, ">").
+	replace(/&amp;/g, "&").
+	replace(/&cent;/g, "¢").
+	replace(/&pound;/g, "£").
+	replace(/&yen;/g, "¥").
+	replace(/&euro;/g, "€").
+	replace(/&copy;/g, "©").
+	replace(/&reg;/g, "®").
+	replace(/&trade;/g, "™").
+	replace(/&larr;/g, "?").
+	replace(/&uarr;/g, "?").
+	replace(/&rarr;/g, "?").
+	replace(/&darr;/g, "?").
+	replace(/&forall;/g, "?").
+	replace(/&part;/g, "?").
+	replace(/&exist;/g, "?").
+	replace(/&nabla;/g, "?").
+	replace(/&isin;/g, "?").
+	replace(/&ni;/g, "?").
+	replace(/&prod;/g, "?").
+	replace(/&sum;/g, "?").
+	replace(/&Alpha;/g, "?").
+	replace(/&Beta;/g, "?").
+	replace(/&Gamma;/g, "G").
+	replace(/&Delta;/g, "?").
+	replace(/&Epsilon;/g, "?").
+	replace(/&Zeta;/g, "?");
 	return text;
 }
 
 function _getXPathText(element) {
+
 	//TODO check other empty space representations
 	if (!element.innerHTML || element.innerHTML.match(/^(&nbsp;){1,}$/)) {
 		return "";
@@ -447,6 +441,8 @@ function _getXPathText(element) {
 	elementText = elementText.substring(0, 100);
 
 	return elementText;
+
+
 }
 
 function _elTextContainsAlphanum(element) {
@@ -461,7 +457,6 @@ function _elTextContainsAlphanum(element) {
  *  http://www.webtoolkit.info/
  *
  **/
-
 var _UTF8 = {
 	// public method for url encoding
 	encode: function(string) {
@@ -486,7 +481,6 @@ var _UTF8 = {
 		return utftext;
 	},
 
-	// public method for url decoding
 	decode: function(utftext) {
 		var string = "";
 		var i = 0;
@@ -512,7 +506,7 @@ var _UTF8 = {
 		}
 		return string;
 	}
-}
+};
 
 
 function _arrayContains(needle, arrhaystack) {

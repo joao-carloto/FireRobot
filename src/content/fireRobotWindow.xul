@@ -11,8 +11,8 @@
    id="firerobot-window" 
    title="FireRobot" 
    orient="vertical" 
-   width="550px" 
-   height="800px" 
+   width="520rem" 
+   height="760rem" 
    resizable="true" 
    fullscreenbutton="true"
    class="frBase">
@@ -104,7 +104,7 @@
             class="testBox" 
             rows="6" 
             multiline="true" 
-            value="Documentation   Test suite created with FireRobot.&#xA;Library  Selenium2Library   15.0   5.0"/>
+            value="Documentation   Test suite created with FireRobot.&#xA;Library   Selenium2Library   15.0   5.0"/>
         <spacer 
             style="height: 6px" />
         <description 

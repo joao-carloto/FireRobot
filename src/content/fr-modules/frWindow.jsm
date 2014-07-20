@@ -51,7 +51,7 @@ function createSideBar() {
 	_Application.storage.set("frSplitter", frSplitter);
 
 	var frBox = document.createElement('vbox');
-	frBox.setAttribute("width", "520px");
+	frBox.setAttribute("width", "530rem");
 	_Application.storage.set("frBox", frBox);
 
 	var frBrowser = document.createElement('browser');

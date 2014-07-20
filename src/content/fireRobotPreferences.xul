@@ -40,8 +40,8 @@
                      class="testBox" 
                      seltype="single" 
                      rows="8"  
-                     width="150" 
-                     height="205"/>
+                     width="150rem" 
+                     height="180rem"/>
                 </vbox>
                 <vbox 
                   align="center">
@@ -65,8 +65,8 @@
                      class="testBox" 
                      seltype="single" 
                      rows="8"  
-                     width="150" 
-                     height="205"></listbox>
+                     width="150rem" 
+                     height="180rem"></listbox>
                 </vbox>
                 <vbox 
                   align="center">

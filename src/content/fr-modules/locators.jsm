@@ -1,6 +1,7 @@
 var EXPORTED_SYMBOLS = [
 	"getLocator",
-	"getLocatorType"
+	"getLocatorType",
+	"getLocatorForGenericElement"
 ];
 
 Components.utils.import("chrome://firerobot/content/fr-modules/utils.jsm");
@@ -51,7 +52,7 @@ function getLocator(element) {
 	}
 
 	var selLocType;
-	var loc = undefined;
+	var loc;
 	for (i = 0; i < locatorPreferences.length; i++) {
 		if (validLocators.indexOf(locatorPreferences[i]) != -1) {
 			selLocType = locatorPreferences[i];
@@ -69,7 +70,7 @@ function getLocator(element) {
 				element.getAttribute("value") &&
 				element.getAttribute("value") !== "") {
 				loc = element.getAttribute("value");
-			} else if (selLocType == "index" && element.index) {
+			} else if (selLocType == "index") {
 				loc = element.index;
 			} else if (selLocType == "alt" && element.alt) {
 				loc = element.alt;
@@ -145,7 +146,7 @@ function getLocatorType(element) {
 				return "src";
 			} else if (selLocType == "value" && element.getAttribute("value")) {
 				return "value";
-			} else if (selLocType == "index" && element.index) {
+			} else if (selLocType == "index") {
 				return "index";
 			} else if (selLocType == "label" && element.label) {
 				return "label";
@@ -158,6 +159,34 @@ function getLocatorType(element) {
 	}
 	return "xpath";
 }
+
+//More specific. Only supports the _elementLocators list.
+function getLocatorForGenericElement(element) {
+	var locatorPreferences = _getLocPrefs();
+	var i;
+	var validLocators = _elementLocators;
+	var selLocType;
+	var loc;
+
+	for (i = 0; i < locatorPreferences.length; i++) {
+		if (validLocators.indexOf(locatorPreferences[i]) != -1) {
+			selLocType = locatorPreferences[i];
+			if (selLocType == "id" && element.id) {
+				loc = element.id;
+			} else if (selLocType == "name" && element.name) {
+				loc = element.name;
+			} else if (selLocType == "xpath") {
+				loc = "xpath=" + (element.xpath || getElementXPath(element));
+			}
+		}
+		if (loc) break;
+	}
+	if (!loc) {
+		loc = "xpath=" + (element.xpath || getElementXPath(element));
+	}
+	return escapeRobot(loc);
+}
+
 
 var _linkLocators = [
 	"id",

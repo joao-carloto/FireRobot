@@ -90,7 +90,6 @@ FireRobot.Preferences = {
     }
   },
 
-
   updateLocators: function() {
     var i;
     var enabledLocPreferences = "";

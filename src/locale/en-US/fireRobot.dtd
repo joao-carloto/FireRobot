@@ -19,6 +19,7 @@
 <!ENTITY firerobot.help.how_to.li_8       "For frame related keywords you may select an element that includes the frame of interest or any element inside the frame.">
 <!ENTITY firerobot.help.how_to.li_9       "Use the settings window to change the locator preferences and the options for variable creation and usage.">
 <!ENTITY firerobot.help.how_to.li_10      "You may reference resource files, with high level keywords, in the *Settings* section. Make sure you use the full path.">
+<!ENTITY firerobot.help.how_to.li_11      "You may use any <html:u><html:a target='_blank' href='https://code.google.com/p/robotframework/wiki/TestLibraries'>RF standard library</html:a></html:u> (OperatingSystem, String, etc). Just include it on the *Settings* section.">
 
 <!ENTITY firerobot.help.issues.title      "Disclaimer: This tool is being released publicly because it is believed to have reached a stage where it can be helpful. However, it is still a 'young' application, with some known (and possibly unknown) limitations.">
 <!ENTITY firerobot.help.issues.feedback   "Please provide feedback at the <html:a href='https://github.com/joao-carloto/FireRobot/issues' target='_blank'><html:u>FireRobot GitHub page</html:u></html:a>. Bugs, new features, small improvements, all are welcome. They will be addressed when possible.<html:br/>A couple of relevant known issues are:">

@@ -215,21 +215,11 @@
 }
 
 .frBase {
+    -moz-appearance: none;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 75%;
     color:#f2f2f2;
     background-color:#474747;
-}
-
-.locatorButton {
- 	min-width:0; 
-    width:32px;
-    height:32px;
-    border-style:inset;
-    font-size:large;
-}
-
-.testButton {
-    max-height:32px;
-    border-style:inset;
 }
 
 .varBox {

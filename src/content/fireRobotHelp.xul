@@ -10,8 +10,8 @@
    id="firerobot-help" 
    title="FireRobot Help" 
    orient="vertical" 
-   height="850"
-   width="700"
+   height="850rem"
+   width="700rem"
    resizable="true" 
    fullscreenbutton="true"
    class="frBase">
@@ -50,6 +50,7 @@
                 <html:li>&firerobot.help.how_to.li_8;</html:li>
                 <html:li>&firerobot.help.how_to.li_9;</html:li>
                 <html:li>&firerobot.help.how_to.li_10;</html:li>
+                <html:li>&firerobot.help.how_to.li_11;</html:li>
             </html:ul>
         </html:p>
         <html:p>
