@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet type="text/css" href="chrome://firerobot/skin/firerobot.css" ?>
+<!DOCTYPE overlay SYSTEM "chrome://firerobot/locale/fireRobot.dtd">
+<!--TODO onunload não funciona-->
+<window 
+   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" 
+   xmlns:html="http://www.w3.org/1999/xhtml"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink" 
+   id="firerobot-window" 
+   title="FireRobot" 
+   orient="vertical" 
+   width="520rem" 
+   height="760rem" 
+   resizable="true" 
+   fullscreenbutton="true"
+   class="frBase">
+    <stringbundleset id="string-bundle-set">
+        <stringbundle id="string-bundle" src="chrome://firerobot/locale/fireRobot.properties"/>
+    </stringbundleset>
+    <keyset>
+        <key 
+            id="clear_selections_cmd" 
+            keycode="VK_ESCAPE" 
+            oncommand="FireRobot.BrowserOverlay.escClearSelections();"/>
+        <key 
+            id="toggle_sel_mode_cmd" 
+            modifiers="control alt" 
+            key="S" 
+            oncommand="FireRobot.BrowserOverlay.selectBtn();"/>
+    </keyset>
+    <script 
+        type="application/x-javascript" 
+        src="chrome://firerobot/content/browserOverlay.js"/>
+    <vbox 
+        flex="1">
+        <spacer 
+            style="height: 5px" />
+        <hbox 
+            align="center">
+            <img 
+                id="selectButton"
+                class="btn" 
+                title="Select Elements"
+                tooltiptext="&firerobot.window.select-btn;"
+                onclick="FireRobot.BrowserOverlay.selectBtn();" 
+                onmouseover="FireRobot.BrowserOverlay.selectButtonOver();"
+                onmouseout="FireRobot.BrowserOverlay.selectButtonOut();"
+            />
+            <label 
+                value="Select page elements and then use the right mouse button for the keyword menu." 
+                control="selectButton"/>
+            <spacer 
+                flex="1" />
+            <img 
+                id="closeButton"
+                class="btn"  
+                tooltiptext="&firerobot.window.close-btn;" 
+                onclick="FireRobot.BrowserOverlay.closeSideBar();"/>
+        </hbox>
+        <hbox>
+            <spacer 
+                flex="1" />
+            <img 
+                id="prefButton"
+                class="btn"  
+                tooltiptext="&firerobot.window.pref-btn;"  
+                onclick="FireRobot.BrowserOverlay.openPreferences(event);" />
+            <img 
+                id="helpButton"
+                class="btn"  
+                tooltiptext="&firerobot.window.help-btn;"  
+                onclick="FireRobot.BrowserOverlay.openHelp(event)"/>
+            <img 
+                id="windowModeButton"
+                tooltiptext="&firerobot.window.mode-btn;"  
+                onclick="FireRobot.BrowserOverlay.switchWindowMode(event);"/>
+        </hbox>
+        <vbox>
+            <description 
+                control="htmlTextArea">HTML:</description>
+            <textbox 
+                id="htmlTextArea"
+                class="testBox" 
+                rows="6" 
+                flex="1" 
+                multiline="true"
+                readonly="true"/>
+        </vbox>
+        <!--TODO Moving splitter sometimes does not reestablish text box size. Report at bugzilla?-->
+        <splitter 
+            collapse="before" 
+            resizeafter="farthest" 
+            resizebefore="closest">
+            <grippy />
+        </splitter>
+        <spacer 
+            style="height: 6px" />
+        <description 
+            control="settingsTextArea">***Settings***</description>
+        <textbox 
+            id="settingsTextArea" 
+            class="testBox" 
+            rows="6" 
+            multiline="true" 
+            value="Documentation   Test suite created with FireRobot.&#xA;Library   Selenium2Library   15.0   5.0"/>
+        <spacer 
+            style="height: 6px" />
+        <description 
+            control="variablesTextArea">***Variables***</description>
+        <richlistbox 
+            class="varBox" 
+            id="varListBox" 
+            height="110" 
+            resizable="true"></richlistbox>
+        <hbox align="right">
+            <img 
+            id="moveVarDownButton"
+            class="btn" 
+            tooltiptext="&firerobot.window.var-dwn-btn;"  
+            onclick="FireRobot.BrowserOverlay.increaseVarIndexBtn();"/>
+            <img 
+            id="moveVarUpButton"
+            class="btn" 
+            tooltiptext="&firerobot.window.var-up-btn;"   
+            onclick="FireRobot.BrowserOverlay.decreaseVarIndexBtn();"/>
+            <img 
+            id="removeVarButton"
+            class="btn" 
+            tooltiptext="&firerobot.window.rem-var-btn;"   
+            onclick="FireRobot.BrowserOverlay.removeVariableBtn();"/>
+            <img 
+            id="addVarButton"
+            class="btn" 
+            tooltiptext="&firerobot.window.add-var-btn;"   
+            onclick="FireRobot.BrowserOverlay.addVariableBtn('&lt;new-var-name&gt;', '&lt;New Var Value&gt;');"/>
+        </hbox>
+        <vbox flex="1">
+            <description 
+            control="testCaseTextArea">***Test Cases***</description>
+            <textbox
+            id="testCaseTextArea"
+            class="testBox" 
+            rows="12" multiline="true" 
+            value="FireRobot Test Case" 
+            flex="1" 
+            type="unichar"/>
+            <hbox>
+                <img 
+                id="playButton"
+                class="btn" 
+                tooltiptext="&firerobot.window.run-test-btn;"   
+                onclick="FireRobot.BrowserOverlay.runTestBtn(event);"/>
+                <img 
+                id="reportButton"
+                class="btn" 
+                tooltiptext="&firerobot.window.view-rep-btn;"  
+                onclick="FireRobot.BrowserOverlay.showReportBtn(event);"/>
+                <spacer flex="1" />
+                <img 
+                id="openButton"
+                class="btn" 
+                tooltiptext="&firerobot.window.open-btn;"   
+                onclick="FireRobot.BrowserOverlay.openTestBtn(event);"/>
+                <img 
+                id="saveAsButton"
+                class="btn" 
+                tooltiptext="&firerobot.window.save-as-btn;"  
+                onclick="FireRobot.BrowserOverlay.saveAsBtn(event);"/>
+                <img 
+                id="saveButton"
+                class="btn" 
+                tooltiptext="&firerobot.window.save-btn;"   
+                onclick="FireRobot.BrowserOverlay.saveBtn(event);"/>
+            </hbox>
+        </vbox>
+    </vbox>
+</window>

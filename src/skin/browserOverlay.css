@@ -1,0 +1,9 @@
+@namespace url(http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul);
+
+#fire-robot-toolbar-button {
+  list-style-image:url("chrome://firerobot/skin/fire_robot_toolbar_off.png");
+}
+
+#fire-robot-dev-tool-item {
+  list-style-image:url("chrome://firerobot/skin/fire_robot_toolbar_on.png");
+}
