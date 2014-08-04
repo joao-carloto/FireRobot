@@ -18,6 +18,7 @@ var _promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1
 var _Application = Components.classes["@mozilla.org/fuel/application;1"]
 	.getService(Components.interfaces.fuelIApplication);
 
+
 //To produce located warnings from .js or .jsm files not directly associated with a window.
 function warning(propRef) {
 	var frWindow = _Application.storage.get("frWindow", undefined);

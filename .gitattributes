@@ -1,7 +1,6 @@
 # Auto detect text files and perform LF normalization
 * text=auto
 
-
 # Standard to msysgit
 *.doc	 diff=astextplain
 *.DOC	 diff=astextplain

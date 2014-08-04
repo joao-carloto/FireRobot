@@ -12,6 +12,7 @@ var EXPORTED_SYMBOLS = [
 ];
 
 Components.utils.import("chrome://firerobot/content/fr-modules/utils.jsm");
+
 Components.utils.import("chrome://firerobot/content/external-modules/xregexp.jsm");
 
 

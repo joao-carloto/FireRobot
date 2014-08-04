@@ -7,6 +7,7 @@ var EXPORTED_SYMBOLS = [
 Components.utils.import("chrome://firerobot/content/fr-modules/utils.jsm");
 
 
+
 var _prefService = Components.classes["@mozilla.org/preferences-service;1"].
 getService(Components.interfaces.nsIPrefBranch);
 

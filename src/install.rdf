@@ -2,7 +2,6 @@
 
 <RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
   xmlns:em="http://www.mozilla.org/2004/em-rdf#">
-
   <Description about="urn:mozilla:install-manifest">
     <em:id>{91d9d8dc-09f8-4890-b6d8-32cbbf0a2f0e}</em:id>
     <em:name>FireRobot</em:name>

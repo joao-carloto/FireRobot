@@ -21,7 +21,7 @@ HOW TO INSTALL FIREROBOT?
 - Drag it over a window of your Firefox browser.
 - Confirm the installation and restart the browser.
 - You may start the extension at the Developer menu.
-- For more convenience drag the FireRobot icon from the "Customize" menu on the browser toolbar.
+- For more convenience drag the FireRobot icon from the "Customize" menu onto the browser toolbar.
 
 
 HOW TO USE FIREROBOT?

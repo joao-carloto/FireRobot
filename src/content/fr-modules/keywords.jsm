@@ -26,6 +26,7 @@ var EXPORTED_SYMBOLS = [
 	"kwCheckForm"
 ];
 
+
 Components.utils.import("chrome://firerobot/content/fr-modules/utils.jsm");
 Components.utils.import("chrome://firerobot/content/fr-modules/locators.jsm");
 Components.utils.import("chrome://firerobot/content/fr-modules/variables.jsm");

@@ -9,6 +9,7 @@ Components.utils.import("chrome://firerobot/content/fr-modules/testSuite.jsm");
 if (!FireRobot) var FireRobot = {};
 if (!FireRobot.BrowserOverlay) FireRobot.BrowserOverlay = {};
 
+
 FireRobot.BrowserOverlay = {
 
 	windowMediator: Components.classes["@mozilla.org/appshell/window-mediator;1"]

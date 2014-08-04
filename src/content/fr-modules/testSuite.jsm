@@ -12,7 +12,6 @@
 
 	Components.utils.import("chrome://firerobot/content/fr-modules/utils.jsm");
 
-
 	var _Application = Components.classes["@mozilla.org/fuel/application;1"]
 		.getService(Components.interfaces.fuelIApplication);
 

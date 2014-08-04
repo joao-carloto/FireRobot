@@ -27,7 +27,6 @@
 <!ENTITY firerobot.help.issues.title      "Disclaimer: This tool is being released publicly because it is believed to have reached a stage where it can be helpful. However, it is still a 'young' application, with some known (and possibly unknown) limitations.">
 <!ENTITY firerobot.help.issues.feedback   "Please provide feedback at the <html:a href='https://github.com/joao-carloto/FireRobot/issues' target='_blank'><html:u>FireRobot GitHub page</html:u></html:a>. Bugs, new features, small improvements, all are welcome. They will be addressed when possible.">
 
-
 <!ENTITY firerobot.help.license.title     "LICENSE">
 <!ENTITY firerobot.help.license.fire_robot 		"FireRobot is an open source software released under the ">
 <!ENTITY firerobot.help.license.notice			"<html:br/>Copyright 2014 João Miguel Gouveia Carloto <html:br/>Licensed under the Apache License, Version 2.0 (the 'License').<html:br/>You may not use this file except in compliance with the License.<html:br/>You may obtain a copy of the License at <html:a href='http://www.apache.org/licenses/LICENSE-2.0' target='_blank'><html:u>http://www.apache.org/licenses/LICENSE-2.0</html:u></html:a><html:br/>Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.<html:br/>See the License for the specific language governing permissions and limitations under the License.">

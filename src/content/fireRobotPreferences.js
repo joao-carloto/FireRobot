@@ -5,7 +5,7 @@ Components.utils.import("chrome://firerobot/content/fr-modules/locators.jsm");
 if (!FireRobot) var FireRobot = {};
 if (!FireRobot.BrowserOverlay) FireRobot.Preferences = {};
 
-//TODO associate arrow buttons to keyboard keys
+
 FireRobot.Preferences = {
 
 	prefService: Components.classes["@mozilla.org/preferences-service;1"].
