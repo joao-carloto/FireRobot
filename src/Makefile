@@ -77,7 +77,6 @@ install: $(build_dir) $(xpi_built)
 	@echo "Installing in profile folder. Done!"
 	@echo
 
-
 $(xpi_file): $(xpi_built)
 	@echo "Creating XPI file."
 	@$(ZIP) $(xpi_file) $(xpi_built)

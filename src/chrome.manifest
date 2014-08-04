@@ -2,5 +2,6 @@ content   firerobot                content/
 skin      firerobot  classic/1.0   skin/
 locale    firerobot  en-US         locale/en-US/
 
+
 overlay chrome://browser/content/browser.xul  chrome://firerobot/content/browserOverlay.xul
 style chrome://global/content/customizeToolbar.xul chrome://firerobot/skin/browserOverlay.css
