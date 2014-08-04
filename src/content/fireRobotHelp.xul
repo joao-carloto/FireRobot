@@ -51,16 +51,13 @@
                 <html:li>&firerobot.help.how_to.li_9;</html:li>
                 <html:li>&firerobot.help.how_to.li_10;</html:li>
                 <html:li>&firerobot.help.how_to.li_11;</html:li>
+                <html:li>&firerobot.help.how_to.li_12;</html:li>
             </html:ul>
         </html:p>
         <html:p>
             <html:b>&firerobot.help.issues.title;</html:b>
             <html:br/>
             <html:br/>&firerobot.help.issues.feedback;
-            <html:ul>
-                <html:li>&firerobot.help.issues.li_1;</html:li>
-                <html:li>&firerobot.help.issues.li_2;</html:li>
-            </html:ul>
         </html:p>
         <html:p>
             <html:b>&firerobot.help.license.title;</html:b>

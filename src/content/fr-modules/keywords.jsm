@@ -60,12 +60,12 @@ function kwPageShouldContainSmart() {
 		if (el.tagName == "A") {
 			step += "Link";
 		} else if (el.tagName == "BUTTON" ||
-			(el.tagName == "INPUT" && el.type == "button")) {
+			(el.tagName == "INPUT" && (el.type == "button" || el.type == "submit"))) {
 			step += "Button";
 		} else if (el.tagName == "INPUT" && el.type == "text") {
 			step += "Textfield";
 		} else if (el.tagName == "INPUT" && el.type == "radio") {
-			step += "Button";
+			step += "Radio Button";
 		} else if (el.tagName == "INPUT" && el.type == "checkbox") {
 			step += "Checkbox";
 		} else if (el.tagName == "IMG") {
@@ -92,7 +92,7 @@ function kwPageShouldNotContainSmart() {
 		if (el.tagName == "A") {
 			step += "Link";
 		} else if (el.tagName == "BUTTON" ||
-			(el.tagName == "INPUT" && el.type == "button")) {
+			(el.tagName == "INPUT" && (el.type == "button" || el.type == "submit"))) {
 			step += "Button";
 		} else if (el.tagName == "INPUT" && el.type == "text") {
 			step += "Textfield";
@@ -124,7 +124,7 @@ function kwClickSmart() {
 		if (el.tagName == "A") {
 			step += "Link";
 		} else if (el.tagName == "BUTTON" ||
-			(el.tagName == "INPUT" && el.type == "button")) {
+			(el.tagName == "INPUT" && (el.type == "button" || el.type == "submit"))) {
 			step += "Button";
 		} else if (el.tagName == "IMG") {
 			step += "Image";

@@ -8,169 +8,209 @@ if (!FireRobot.BrowserOverlay) FireRobot.Preferences = {};
 //TODO associate arrow buttons to keyboard keys
 FireRobot.Preferences = {
 
-  prefService: Components.classes["@mozilla.org/preferences-service;1"].
-  getService(Components.interfaces.nsIPrefBranch),
+	prefService: Components.classes["@mozilla.org/preferences-service;1"].
+	getService(Components.interfaces.nsIPrefBranch),
 
-  enableLocator: function() {
-    var disabledLocList = document.getElementById("disabled-locators-list");
-    var selectedItem = disabledLocList.selectedItem;
+	Application: Components.classes["@mozilla.org/fuel/application;1"]
+		.getService(Components.interfaces.fuelIApplication),
 
-    if (selectedItem) {
-      var selectedIndex = disabledLocList.selectedIndex;
-      disabledLocList.removeItemAt(selectedIndex);
+	enableLocator: function() {
+		var disabledLocList = document.getElementById("disabled-locators-list");
+		var selectedItem = disabledLocList.selectedItem;
 
-      var enabledLocList = document.getElementById("enabled-locators-list");
-      enabledLocList.appendChild(selectedItem);
-      enabledLocList.selectItem(selectedItem);
-      this.updateLocators();
-    } else {
-      warning("firerobot.warn.select-locator");
-    }
-  },
+		if (selectedItem) {
+			var selectedIndex = disabledLocList.selectedIndex;
+			disabledLocList.removeItemAt(selectedIndex);
 
-  disableLocator: function() {
-    var enabledLocList = document.getElementById("enabled-locators-list");
-    var selectedItem = enabledLocList.selectedItem;
-    var selectedIndex = enabledLocList.selectedIndex;
+			var enabledLocList = document.getElementById("enabled-locators-list");
+			enabledLocList.appendChild(selectedItem);
+			enabledLocList.selectItem(selectedItem);
+			this.updateLocators();
+		} else {
+			warning("firerobot.warn.select-locator");
+		}
+	},
 
-    if (selectedItem) {
-      if (selectedItem.value == "xpath") {
-        warning("firerobot.warn.default-loc");
-        return;
-      }
-      enabledLocList.removeItemAt(selectedIndex);
+	disableLocator: function() {
+		var enabledLocList = document.getElementById("enabled-locators-list");
+		var selectedItem = enabledLocList.selectedItem;
+		var selectedIndex = enabledLocList.selectedIndex;
 
-      var disabledLocList = document.getElementById("disabled-locators-list");
-      disabledLocList.appendChild(selectedItem);
+		if (selectedItem) {
+			if (selectedItem.value == "xpath") {
+				warning("firerobot.warn.default-loc");
+				return;
+			}
+			enabledLocList.removeItemAt(selectedIndex);
 
-      this.updateLocators();
-    } else {
-      warning("firerobot.warn.select-locator");
-    }
-  },
+			var disabledLocList = document.getElementById("disabled-locators-list");
+			disabledLocList.appendChild(selectedItem);
 
-  increaseLocatorIndex: function() {
-    var enabledLocList = document.getElementById("enabled-locators-list");
-    var selectedItem = enabledLocList.selectedItem;
-    var selectedIndex = enabledLocList.selectedIndex;
-    var itemCount = enabledLocList.itemCount;
+			this.updateLocators();
+		} else {
+			warning("firerobot.warn.select-locator");
+		}
+	},
 
-    if (!selectedItem) {
-      warning("firerobot.warn.select-locator");
-    } else if (selectedIndex < itemCount - 1) {
-      enabledLocList.removeItemAt(selectedIndex);
-      if (selectedIndex < itemCount - 2) {
-        enabledLocList.insertBefore(selectedItem, enabledLocList.getItemAtIndex(selectedIndex + 1));
-      } else {
-        enabledLocList.appendChild(selectedItem);
-      }
-      enabledLocList.selectItem(selectedItem);
+	increaseLocatorIndex: function() {
+		var enabledLocList = document.getElementById("enabled-locators-list");
+		var selectedItem = enabledLocList.selectedItem;
+		var selectedIndex = enabledLocList.selectedIndex;
+		var itemCount = enabledLocList.itemCount;
 
-      this.updateLocators();
-    }
-  },
+		if (!selectedItem) {
+			warning("firerobot.warn.select-locator");
+		} else if (selectedIndex < itemCount - 1) {
+			enabledLocList.removeItemAt(selectedIndex);
+			if (selectedIndex < itemCount - 2) {
+				enabledLocList.insertBefore(selectedItem, enabledLocList.getItemAtIndex(selectedIndex + 1));
+			} else {
+				enabledLocList.appendChild(selectedItem);
+			}
+			enabledLocList.selectItem(selectedItem);
+
+			this.updateLocators();
+		}
+	},
 
 
-  decreaseLocatorIndex: function() {
-    var enabledLocList = document.getElementById("enabled-locators-list");
-    var selectedItem = enabledLocList.selectedItem;
-    var selectedIndex = enabledLocList.selectedIndex;
+	decreaseLocatorIndex: function() {
+		var enabledLocList = document.getElementById("enabled-locators-list");
+		var selectedItem = enabledLocList.selectedItem;
+		var selectedIndex = enabledLocList.selectedIndex;
 
-    if (!selectedItem) {
-      warning("firerobot.warn.select-locator");
-    } else if (selectedIndex > 0) {
+		if (!selectedItem) {
+			warning("firerobot.warn.select-locator");
+		} else if (selectedIndex > 0) {
 
-      enabledLocList.removeItemAt(selectedIndex);
+			enabledLocList.removeItemAt(selectedIndex);
 
-      enabledLocList.insertBefore(selectedItem, enabledLocList.getItemAtIndex(selectedIndex - 1));
+			enabledLocList.insertBefore(selectedItem, enabledLocList.getItemAtIndex(selectedIndex - 1));
 
-      enabledLocList.selectItem(selectedItem);
+			enabledLocList.selectItem(selectedItem);
 
-      this.updateLocators();
-    }
-  },
+			this.updateLocators();
+		}
+	},
 
-  updateLocators: function() {
-    var i;
-    var enabledLocPreferences = "";
-    var enabledLocList = document.getElementById("enabled-locators-list");
+	updateLocators: function() {
+		var i;
+		var enabledLocPreferences = "";
+		var enabledLocList = document.getElementById("enabled-locators-list");
 
-    if (enabledLocList.itemCount > 0) {
+		if (enabledLocList.itemCount > 0) {
 
-      enabledLocPreferences = enabledLocList.getItemAtIndex(0).value;
+			enabledLocPreferences = enabledLocList.getItemAtIndex(0).value;
 
-      for (i = 1; i < enabledLocList.itemCount; i++) {
-        enabledLocPreferences += "," + enabledLocList.getItemAtIndex(i).
-        value;
-      }
-    }
-    document.getElementById("pref-enabled-locators").value = enabledLocPreferences;
-  },
+			for (i = 1; i < enabledLocList.itemCount; i++) {
+				enabledLocPreferences += "," + enabledLocList.getItemAtIndex(i).
+				value;
+			}
+		}
+		document.getElementById("pref-enabled-locators").value = enabledLocPreferences;
+	},
 
-  loadLocatorListBoxes: function() {
-    var enabledLocPreferences;
-    var disabledLocPreferences;
+	loadLocatorListBoxes: function() {
+		var enabledLocPreferences;
+		var disabledLocPreferences;
 
-    enabledLocPreferences = this.prefService.getCharPref("extensions.firerobot.enabled-locators");
-    enabledLocPreferences = enabledLocPreferences.split(",");
-    disabledLocPreferences = this.getDisabledLocPrefsFromEnabled(
-      enabledLocPreferences);
+		enabledLocPreferences = this.prefService.getCharPref("extensions.firerobot.enabled-locators");
+		enabledLocPreferences = enabledLocPreferences.split(",");
+		disabledLocPreferences = this.getDisabledLocPrefsFromEnabled(
+			enabledLocPreferences);
 
-    var enabledLocList = document.getElementById("enabled-locators-list");
+		var enabledLocList = document.getElementById("enabled-locators-list");
 
-    var disabledLocList = document.getElementById("disabled-locators-list");
+		var disabledLocList = document.getElementById("disabled-locators-list");
 
-    var appendedItem;
+		var appendedItem;
 
-    var i;
+		var i;
 
-    if (enabledLocPreferences[0] !== "") {
-      for (i = 0; i < enabledLocPreferences.length; i++) {
-        if (enabledLocPreferences[i] == "xpath") {
-          appendedItem = enabledLocList.appendItem("text based xpath");
-        } else {
-          appendedItem = enabledLocList.appendItem(enabledLocPreferences[i]);
-        }
-        appendedItem.value = enabledLocPreferences[i];
-        appendedItem.setAttribute('class', 'testBox');
-      }
-    }
+		if (enabledLocPreferences[0] !== "") {
+			for (i = 0; i < enabledLocPreferences.length; i++) {
+				if (enabledLocPreferences[i] == "xpath") {
+					appendedItem = enabledLocList.appendItem("text based xpath");
+				} else {
+					appendedItem = enabledLocList.appendItem(enabledLocPreferences[i]);
+				}
+				appendedItem.value = enabledLocPreferences[i];
+				appendedItem.setAttribute('class', 'prefItem');
+			}
+		}
 
-    if (disabledLocPreferences[0] !== "") {
-      for (i = 0; i < disabledLocPreferences.length; i++) {
-        if (disabledLocPreferences[i] == "xpath") {
-          appendedItem = disabledLocList.appendItem("text based xpath");
-        } else {
-          appendedItem = disabledLocList.appendItem(disabledLocPreferences[i]);
-        }
-        appendedItem.value = disabledLocPreferences[i];
-        appendedItem.setAttribute('class', 'testBox');
-      }
-    }
-  },
+		if (disabledLocPreferences[0] !== "") {
+			for (i = 0; i < disabledLocPreferences.length; i++) {
+				if (disabledLocPreferences[i] == "xpath") {
+					appendedItem = disabledLocList.appendItem("text based xpath");
+				} else {
+					appendedItem = disabledLocList.appendItem(disabledLocPreferences[i]);
+				}
+				appendedItem.value = disabledLocPreferences[i];
+				appendedItem.setAttribute('class', 'prefItem');
+			}
+		}
 
-  getDisabledLocPrefsFromEnabled: function(enabledLocPreferences) {
-    //TODO put this on locators.jsm?
-    var allLocPrefs = [
-      "id",
-      "name",
-      "href",
-      "link",
-      "alt",
-      "src",
-      "value",
-      "label",
-      "index",
-      "xpath"
-    ];
 
-    var disabledLocPreferences = [];
+		//css pseudoclass :focus will not work, ence the following code
+		enabledLocList.addEventListener('select', function() {
+			var previousSelEnable = Application.storage.get("selectedEnabledLocator", undefined);
+			if (previousSelEnable) {
+				previousSelEnable.setAttribute('class', 'prefItem');
+			}
+			var previousSelDisable = Application.storage.get("selectedDisabledLocator", undefined);
+			if (previousSelDisable) {
+				previousSelDisable.setAttribute('class', 'prefItem');
+				Application.storage.set("selectedDisabledLocator", undefined);
+			};
+			var selectedItem = enabledLocList.selectedItem;
+			if (selectedItem) {
+				Application.storage.set("selectedEnabledLocator", selectedItem);
+				selectedItem.setAttribute('class', 'prefItemSelected');
+			}
+		}, true);
 
-    for (var i = 0; i < allLocPrefs.length; i++) {
-      if (enabledLocPreferences.indexOf(allLocPrefs[i]) == -1) {
-        disabledLocPreferences.push(allLocPrefs[i]);
-      }
-    }
-    return disabledLocPreferences;
-  }
+		disabledLocList.addEventListener('select', function() {
+			var previousSelDisable = Application.storage.get("selectedDisabledLocator", undefined);
+			if (previousSelDisable) {
+				previousSelDisable.setAttribute('class', 'prefItem');
+			};
+			var previousSelEnable = Application.storage.get("selectedEnabledLocator", undefined);
+			if (previousSelEnable) {
+				previousSelEnable.setAttribute('class', 'prefItem');
+				Application.storage.set("selectedEnabledLocator", undefined);
+			};
+			var selectedItem = disabledLocList.selectedItem;
+			if (selectedItem) {
+				Application.storage.set("selectedDisabledLocator", selectedItem);
+				selectedItem.setAttribute('class', 'prefItemSelected');
+			}
+		}, true);
+	},
+
+
+	getDisabledLocPrefsFromEnabled: function(enabledLocPreferences) {
+		//TODO put this on locators.jsm?
+		var allLocPrefs = [
+			"id",
+			"name",
+			"href",
+			"link",
+			"alt",
+			"src",
+			"value",
+			"label",
+			"index",
+			"xpath"
+		];
+
+		var disabledLocPreferences = [];
+
+		for (var i = 0; i < allLocPrefs.length; i++) {
+			if (enabledLocPreferences.indexOf(allLocPrefs[i]) == -1) {
+				disabledLocPreferences.push(allLocPrefs[i]);
+			}
+		}
+		return disabledLocPreferences;
+	}
 };

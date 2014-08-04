@@ -9,6 +9,7 @@
 	Components.utils.import("resource://gre/modules/FileUtils.jsm");
 
 	Components.utils.import("chrome://firerobot/content/fr-modules/variables.jsm");
+
 	Components.utils.import("chrome://firerobot/content/fr-modules/utils.jsm");
 
 
@@ -18,21 +19,13 @@
 	var _windowWatcher = Components.classes["@mozilla.org/embedcomp/window-watcher;1"]
 		.getService(Components.interfaces.nsIWindowWatcher);
 
-	//TODO remove this
-	var _promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
-		.getService(Components.interfaces.nsIPromptService);
-
 
 	function runTest() {
 
 		var testRunning = _Application.storage.get("testRunning", undefined);
 		if (testRunning) return;
 
-		var env = Components.classes["@mozilla.org/process/environment;1"]
-			.getService(Components.interfaces.nsIEnvironment);
-
 		var frWindow = _Application.storage.get("frWindow", undefined);
-
 		if (!frWindow.navigator.javaEnabled()) {
 			warning("firerobot.warn.no-java");
 			return;
@@ -53,10 +46,7 @@
 				"Fire"
 			],
 			true);
-
-		var testFile = new FileUtils.File(testDir.path + "Robot.txt");
-
-		_saveTest(testFile);
+		var testDirPath = testDir.path;
 
 		var robotFramework = FileUtils.getFile("ProfD", ["extensions",
 			"{91d9d8dc-09f8-4890-b6d8-32cbbf0a2f0e}",
@@ -64,6 +54,7 @@
 			"java",
 			"robotframework-2.8.4.jar"
 		]);
+		var robotFrameworkPath = robotFramework.path;
 
 		var selenium2Library = FileUtils.getFile("ProfD", ["extensions",
 			"{91d9d8dc-09f8-4890-b6d8-32cbbf0a2f0e}",
@@ -71,35 +62,69 @@
 			"java",
 			"robotframework-selenium2library-java-1.4.0.6-jar-with-dependencies.jar"
 		]);
+		var selenium2LibraryPath = selenium2Library.path;
 
-		var OSName = _getOSName();
 		var shell;
 		var args;
 
+
+		var testFile;
+
+		var OSName = _getOSName();
 		if (OSName == "Windows") {
+			testFile = new FileUtils.File(testDirPath + "robot-test.txt");
+
+			_saveTest(testFile);
+			var env = Components.classes["@mozilla.org/process/environment;1"]
+				.getService(Components.interfaces.nsIEnvironment);
 			shell = new FileUtils.File(env.get("COMSPEC"));
 			args = ["/C",
 				"java",
-				"-Xbootclasspath/a:" + selenium2Library.path,
+				"-Xbootclasspath/a:" + selenium2LibraryPath,
 				"-jar",
-				robotFramework.path,
+				robotFrameworkPath,
 				"-d",
-				testDir.path,
+				testDirPath,
 				testFile.path
 			];
+		} else if (OSName == "MacOS") {
+			testFile = new FileUtils.File(testDirPath + "/robot-test.txt");
+
+			_saveTest(testFile);
+			shell = new FileUtils.File("/bin/sh");
+			var testScript = new FileUtils.File(testDirPath + "/osx-script.txt");
+			var outStream = FileUtils.openFileOutputStream(testScript);
+			var converter = Components.classes["@mozilla.org/intl/converter-output-stream;1"].
+			createInstance(Components.interfaces.nsIConverterOutputStream);
+			converter.init(outStream, "UTF-8", 0, 0);
+
+			var script = "osascript -e 'tell app \"Terminal\" to do script \"java -Xbootclasspath/a:" +
+				selenium2LibraryPath.replace(/ /g, "\\\\ ") +
+				" -jar " +
+				robotFrameworkPath.replace(/ /g, "\\\\ ") +
+				" -d " +
+				testDirPath.replace(/ /g, "\\\\ ") +
+				" " +
+				testFile.path.replace(/ /g, "\\\\ ") +
+				"\"'";
+
+			converter.writeString(script);
+			converter.close();
+			args = [testScript.path];
 		} else {
+			testFile = new FileUtils.File(testDirPath + "robot-test.txt");
+
+			_saveTest(testFile);
 			shell = new FileUtils.File("/bin/sh");
 			args = ["-c",
 				"x-terminal-emulator -e java -Xbootclasspath/a:" +
-				selenium2Library.path +
+				selenium2LibraryPath.replace(/ /g, "\\ ") +
 				" -jar " +
-				robotFramework.path +
+				robotFrameworkPath.replace(/ /g, "\\ ") +
 				" -d " +
-				testDir.path +
+				testDirPath.replace(/ /g, "\\ ") +
 				" " +
-				testFile.path +
-				" > " +
-				"/home/ubuntu/Desktop/frlog.txt"
+				testFile.path.replace(/ /g, "\\ ")
 			];
 		}
 
@@ -109,6 +134,10 @@
 			.createInstance(Components.interfaces.nsIProcess);
 
 		process.init(shell);
+
+		_Application.storage.set("testRunning", true);
+
+		playButton.setAttribute("class", "playOn");
 
 		process.runAsync(args, args.length, function(subject, topic, data) {
 			_Application.storage.set("testRunning", false);
@@ -129,24 +158,24 @@
 
 			//You may stop the test by closing the CLI, before a test report is generated.
 			if (reportFile.exists()) {
+
+				var reportFilePath = reportFile.path;
+
 				var OSName = _getOSName();
-				var reportPath;
+				var reportURL;
 
 				if (OSName == "Windows") {
-					reportPath = "file:\\\\\\" + reportFile.path;
-
+					reportURL = "file:\\\\\\" + reportFilePath;
 				} else {
-					reportPath = "file:///" + reportFile.path
+					reportURL = "file:///" + reportFilePath;
 				}
 				_windowWatcher.openWindow(null,
-					reportPath,
+					reportURL,
 					"Fire Robot Report",
 					"menubar,location,toolbar,resizable,scrollbars,status, height=768, width =1024",
 					null);
 			}
 		});
-		_Application.storage.set("testRunning", true);
-		playButton.setAttribute("class", "playOn");
 	}
 
 
@@ -161,15 +190,17 @@
 
 		if (reportFile.exists()) {
 			var OSName = _getOSName();
-			var reportPath;
+			var reportFilePath = reportFile.path;
+			//.replace(/ /g, "\\ ");
+			var reportURL;
 
 			if (OSName == "Windows") {
-				reportPath = "file:\\\\\\" + reportFile.path;
+				reportURL = "file:\\\\\\" + reportFilePath;
 			} else {
-				reportPath = "file:///" + reportFile.path
+				reportURL = "file:///" + reportFilePath;
 			}
 			_windowWatcher.openWindow(null,
-				reportPath,
+				reportURL,
 				"Fire Robot Report",
 				"menubar,location,toolbar,resizable,scrollbars,status, height=768, width =1024",
 				null);
@@ -198,7 +229,9 @@
 		var res = fp.show();
 		if (res != nsIFilePicker.returnCancel) {
 			testFile = fp.file;
-			testFile.path = testFile.path + ".txt";
+			//testFile.path = testFile.path + ".txt";
+			//testFile.renameTo(null, testFile.nativeLeafName + ".txt")
+
 			_saveTest(testFile);
 		}
 	}
@@ -207,12 +240,17 @@
 		var nsIFilePicker = Components.interfaces.nsIFilePicker;
 		var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
 		fp.init(_windowWatcher.activeWindow, "Load your robot test suite", nsIFilePicker.modOpen);
+
+		var OSName = _getOSName();
+
+
 		fp.appendFilters(nsIFilePicker.filterText);
+
 
 		var res = fp.show();
 		if (res != nsIFilePicker.returnCancel) {
 			testFile = fp.file;
-			testFile.path = testFile.path + ".txt";
+			//testFile.path = testFile.path + ".txt";
 			Components.utils.import("resource://gre/modules/NetUtil.jsm");
 			NetUtil.asyncFetch(testFile, function(inputStream, status) {
 				if (!Components.isSuccessCode(status)) {

@@ -244,3 +244,17 @@
     color:#ffffff;
     background-color:#141414;
 }
+
+.prefItem {
+    -moz-appearance: none;
+    color:#f2f2f2;
+    border-style:none;
+}
+
+.prefItemSelected {
+    -moz-appearance: none;
+    border-style:none;
+    color:#474747;
+    opacity: 1;
+    background-color:#f2f2f2;  
+}

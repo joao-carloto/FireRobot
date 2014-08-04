@@ -37,7 +37,8 @@ HOW TO USE FIREROBOT?
 - Use the settings window to change the locator preferences and the options for variable creation and usage.
 - You may reference resource files, with high level keywords, in the *Settings* section. Make sure you use the full path.
 - You may use any RF standard library (OperatingSystem, String, etc). Just include it on the *Settings* section.
+- Linux and Mac OS X users: You must open the test report manually, after the test is run. Also, you must most record the test scripts with the .txt extension explicitly.
 
-Disclaimer: This tool is being released publicly because it is believed to have reached a stage where it can be helpful. However, it is still a 'young' application, with some known (and possibly unknown) limitations. Namely, it's not yet compatible with OSx. 
+Disclaimer: This tool is being released publicly because it is believed to have reached a stage where it can be helpful. However, it is still a 'young' application, with some known (and possibly unknown) limitations.
 Please provide feedback at https://github.com/joao-carloto/FireRobot/issues. 
 Bugs, new features, small improvements, all are welcome. They will be addressed when possible.
