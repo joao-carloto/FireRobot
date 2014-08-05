@@ -85,7 +85,7 @@
                 </html:li>
                 <html:li>
                     <html:a 
-                      href='https://github.com/rtomac/robotframework-selenium2library'
+                      href='https://github.com/MarkusBernhardt/robotframework-selenium2library-java'
                       target='_blank'>
                         <html:u>selenium2library-java</html:u>
                     </html:a>
