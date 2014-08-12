@@ -37,6 +37,8 @@ HOW TO USE FIREROBOT?
 - Use the settings window to change the locator preferences and the options for variable creation and usage.
 - You may reference resource files, with high level keywords, in the *Settings* section. Make sure you use the full path.
 - You may use any RF standard library (OperatingSystem, String, etc). Just include it on the *Settings* section.
+- To run the current test script just click on the play button.
+- The test script can be saved to a .txt file and reused later, on FireRobot or another IDE.
 - Linux and Mac OS X users: You must open the test report manually, after the test is run. Also, you must most record the test scripts with the .txt extension explicitly.
 
 Check the demonstration video at <a href='http://youtu.be/sPjS75jhDMw' target='_blank'>YouTube</a>.

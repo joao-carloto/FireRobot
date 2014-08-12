@@ -286,8 +286,6 @@ function _getCleanClone(element) {
 	return clone;
 }
 
-
-
 function _getPrecTextElement(element) {
 	var nearestTextElementXpath;
 	var elContainingDocument = element.ownerDocument;

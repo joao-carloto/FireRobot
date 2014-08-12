@@ -171,7 +171,7 @@
 				_windowWatcher.openWindow(null,
 					reportURL,
 					"Fire Robot Report",
-					"menubar,location,toolbar,resizable,scrollbars,status, height=768, width =1024",
+					"menubar,location,toolbar,resizable,scrollbars,status, centerscreen",
 					null);
 			}
 		});
@@ -201,7 +201,7 @@
 			_windowWatcher.openWindow(null,
 				reportURL,
 				"Fire Robot Report",
-				"menubar,location,toolbar,resizable,scrollbars,status, height=768, width =1024",
+				"menubar,location,toolbar,resizable,scrollbars,status, centerscreen",
 				null);
 		} else {
 			warning("firerobot.warn.no-report");
@@ -228,9 +228,6 @@
 		var res = fp.show();
 		if (res != nsIFilePicker.returnCancel) {
 			testFile = fp.file;
-			//testFile.path = testFile.path + ".txt";
-			//testFile.renameTo(null, testFile.nativeLeafName + ".txt")
-
 			_saveTest(testFile);
 		}
 	}
@@ -239,21 +236,16 @@
 		var nsIFilePicker = Components.interfaces.nsIFilePicker;
 		var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
 		fp.init(_windowWatcher.activeWindow, "Load your robot test suite", nsIFilePicker.modOpen);
-
-		var OSName = _getOSName();
-
-
 		fp.appendFilters(nsIFilePicker.filterText);
 
+		var OSName = _getOSName();
 
 		var res = fp.show();
 		if (res != nsIFilePicker.returnCancel) {
 			testFile = fp.file;
-			//testFile.path = testFile.path + ".txt";
 			Components.utils.import("resource://gre/modules/NetUtil.jsm");
 			NetUtil.asyncFetch(testFile, function(inputStream, status) {
 				if (!Components.isSuccessCode(status)) {
-					// Handle error!
 					return;
 				}
 				var data = NetUtil.readInputStreamToString(inputStream, inputStream.available());
@@ -277,11 +269,9 @@
 				}
 				if (data.match(varPattern)) {
 					var variables = data.split(varPattern)[1].split(testPattern)[0].trim();
-					//document.getElementById("variablesTextArea").value = variables;
 					loadVariables(variables);
 				} else {
 					warning("firerobot.warn.no-variables");
-					//document.getElementById("variablesTextArea").value = "";
 					varListBox = frWindow.document.getElementById("varListBox");
 					while (varListBox.firstChild) {
 						varListBox.removeChild(varListBox.firstChild);

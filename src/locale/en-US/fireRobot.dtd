@@ -9,22 +9,23 @@
 <!ENTITY firerobot.help.what_is.li_5      "Automatic creation of variables based on the content of text fields.">
 
 <!ENTITY firerobot.help.how_to.title      "HOW TO USE FIREROBOT?">
-<!ENTITY firerobot.help.how_to.li_1       "Toggle the select button.">
-<!ENTITY firerobot.help.how_to.li_2       "The active web page will get a dashed border, along with any included frames or iframes.">
-<!ENTITY firerobot.help.how_to.li_3       "Click to select page elements of interest.">
-<!ENTITY firerobot.help.how_to.li_4       "Right-click the page under testing to access the keyword context menu.">
-<!ENTITY firerobot.help.how_to.li_5       "Select the menu options and test steps will be added.">
-<!ENTITY firerobot.help.how_to.li_6       "Use the ESC key to clear the selections, while keeping the selection mode on.">
-<!ENTITY firerobot.help.how_to.li_7       "To fill and check forms you may select any element that includes the form elements of interest, not necessarily the form element.">
-<!ENTITY firerobot.help.how_to.li_8       "For frame related keywords you may select an element that includes the frame of interest or any element inside the frame.">
-<!ENTITY firerobot.help.how_to.li_9       "Use the settings window to change the locator preferences and the options for variable creation and usage.">
-<!ENTITY firerobot.help.how_to.li_10      "You may reference resource files, with high level keywords, in the *Settings* section. Make sure you use the full path.">
-<!ENTITY firerobot.help.how_to.li_11      "You may use any <html:u><html:a target='_blank' href='https://code.google.com/p/robotframework/wiki/TestLibraries'>RF standard library</html:a></html:u> (OperatingSystem, String, etc). Just include it on the *Settings* section.">
-<!ENTITY firerobot.help.how_to.li_12      "Linux and Mac OS X users: You must open the test report manually, after the test is run. Also, you must most record the test scripts with the .txt extension explicitly.">
+<!ENTITY firerobot.help.how_to.li_1       "Toggle the select button. The active web page will get a dashed border, along with any included frames or iframes.">
+<!ENTITY firerobot.help.how_to.li_2       "Click to select page elements of interest.">
+<!ENTITY firerobot.help.how_to.li_3       "Right-click the page under testing to access the keyword context menu.">
+<!ENTITY firerobot.help.how_to.li_4       "Select the menu options and test steps will be added.">
+<!ENTITY firerobot.help.how_to.li_5       "Use the ESC key to clear the selections, while keeping the selection mode on.">
+<!ENTITY firerobot.help.how_to.li_6       "To fill and check forms you may select any element that includes the form elements of interest, not necessarily the form element.">
+<!ENTITY firerobot.help.how_to.li_7       "For frame related keywords you may select an element that includes the frame of interest or any element inside the frame.">
+<!ENTITY firerobot.help.how_to.li_8       "Use the settings window to change the locator preferences and the options for variable creation and usage.">
+<!ENTITY firerobot.help.how_to.li_9       "You may reference resource files, with high level keywords, in the *Settings* section. Make sure you use the full path.">
+<!ENTITY firerobot.help.how_to.li_10      "You may use any <html:u><html:a target='_blank' href='https://code.google.com/p/robotframework/wiki/TestLibraries'>RF standard library</html:a></html:u> (OperatingSystem, String, etc). Just include it on the *Settings* section.">
+<!ENTITY firerobot.help.how_to.li_11      "To run the current test script just click on the play button.">
+<!ENTITY firerobot.help.how_to.li_12      "The test script can be saved to a .txt file and reused later, on FireRobot or another IDE.">
+<!ENTITY firerobot.help.how_to.li_13      "Linux and Mac OS X users: You must open the test report manually, after the test is run. Also, you must most record the test scripts with the .txt extension explicitly.">
 
-<!ENTITY firerobot.help.video      "Check the demonstration video at <html:a href='http://youtu.be/sPjS75jhDMw' target='_blank'><html:u>YouTube</html:u></html:a>.">
+<!ENTITY firerobot.help.official      "You  might want to check the offcial page on <html:a href='http://joao-carloto.github.io/FireRobot/' target='_blank'> <html:u>GitHub</html:u></html:a>.">
 
-<!ENTITY firerobot.help.issues.title      "Disclaimer: This tool is being released publicly because it is believed to have reached a stage where it can be helpful. However, it is still a 'young' application, with some known (and possibly unknown) limitations.">
+<!ENTITY firerobot.help.issues.title      "<html:b>Disclaimer:</html:b> This tool is being released publicly because it is believed to have reached a stage where it can be helpful. However, it is still a 'young' application, with some known (and possibly unknown) limitations.">
 <!ENTITY firerobot.help.issues.feedback   "Please provide feedback at the <html:a href='https://github.com/joao-carloto/FireRobot/issues' target='_blank'><html:u>FireRobot GitHub page</html:u></html:a>. Bugs, new features, small improvements, all are welcome. They will be addressed when possible.">
 
 <!ENTITY firerobot.help.license.title     "LICENSE">

@@ -147,6 +147,7 @@ function _removeEventListners(doc) {
 	doc.removeEventListener('click', _selectElement, true);
 	doc.removeEventListener('mouseover', _overElement, true);
 	doc.removeEventListener('mouseout', _outElement, true);
+	doc.removeEventListener('keydown', _keyDown, true);
 	doc.removeEventListener('mouseup', _blockMouseUpDown, true);
 	doc.removeEventListener('mousedown', _blockMouseUpDown, true);
 	doc.removeEventListener('contextmenu', _setContextMenu, true);

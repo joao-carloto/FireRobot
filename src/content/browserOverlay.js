@@ -212,14 +212,14 @@ FireRobot.BrowserOverlay = {
 	openPreferences: function() {
 		var prefWindow = window.openDialog(
 			"chrome://firerobot/content/fireRobotPreferences.xul",
-			"fire-robot-preferences", "chrome, dialog");
+			"fire-robot-preferences", "chrome, dialog, centerscreen");
 		Application.storage.set("prefWindow", prefWindow);
 	},
 
 	openHelp: function() {
 		var helpWindow = window.open(
 			"chrome://firerobot/content/fireRobotHelp.xul",
-			"FireRobot Help", "chrome, resizable");
+			"FireRobot Help", "chrome, resizable,centerscreen");
 		Application.storage.set("helpWindow", helpWindow);
 	},
 
