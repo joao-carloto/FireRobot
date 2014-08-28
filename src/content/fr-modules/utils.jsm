@@ -202,8 +202,6 @@ function _getElementXPathIndex(element, xpath) {
 		}
 	} catch (err) {
 		warning("firerobot.warn.no-xpath");
-				//TODO remove this
-			_promptService.alert(null, "", xpath);
 	}
 	if (i == 1) {
 		return "";
@@ -212,8 +210,6 @@ function _getElementXPathIndex(element, xpath) {
 	} else {
 		if (index === undefined) {
 			warning("firerobot.warn.no-xpath");
-			//TODO remove this
-			_promptService.alert(null, "", xpath);
 		}
 		return "[" + index + "]";
 	}
