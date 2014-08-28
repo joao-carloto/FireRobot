@@ -59,7 +59,7 @@ function getNodeValue(element) {
 
 function getTextFragments(element) {
 
-	if(element.textFragments){
+	if (element.textFragments) {
 		return element.textFragments;
 	}
 
@@ -106,10 +106,12 @@ function getTextFragments(element) {
 }
 
 function getElementXPath(element) {
-	var tag = element.tagName.toLowerCase();
+	var tag = _getTag(element);
+
 	if (tag == "body") {
 		return ".//body";
 	}
+
 	var xpath;
 	var txt;
 	//We cannot use element.type because of default types that are not explicitly defined 
@@ -139,7 +141,7 @@ function getElementXPath(element) {
 			var nearTextElement = getNearTextElement(element);
 			if (nearTextElement !== null) {
 				var nearestText = _getXPathText(nearTextElement);
-				xpath = ".//" + nearTextElement.tagName.toLowerCase() +
+				xpath = ".//" + _getTag(nearTextElement) +
 					"[contains(normalize-space(.)," +
 					_resolveApostrophes(nearestText) +
 					")]";
@@ -200,6 +202,8 @@ function _getElementXPathIndex(element, xpath) {
 		}
 	} catch (err) {
 		warning("firerobot.warn.no-xpath");
+				//TODO remove this
+			_promptService.alert(null, "", xpath);
 	}
 	if (i == 1) {
 		return "";
@@ -208,6 +212,8 @@ function _getElementXPathIndex(element, xpath) {
 	} else {
 		if (index === undefined) {
 			warning("firerobot.warn.no-xpath");
+			//TODO remove this
+			_promptService.alert(null, "", xpath);
 		}
 		return "[" + index + "]";
 	}
@@ -215,7 +221,7 @@ function _getElementXPathIndex(element, xpath) {
 
 //TODO improve this?
 function getNearTextElement(element) {
-	var tempXpath = "(.//" + element.tagName.toLowerCase() + ")";
+	var tempXpath = "(.//" + _getTag(element) + ")";
 	var parentTextElement;
 	var precTextElement;
 	var followingTextElement;
@@ -269,15 +275,15 @@ function _getCleanClone(element) {
 		//attributes
 		if (child.nodeType === 2) {
 			childClone.nodeValue = "";
-		} 
+		}
 		//comments
 		else if (child.nodeType === 8) {
 			childClone.data = "";
-		} 
+		}
 		//hidden elements
 		else if (child.nodeType !== 3 && !isVisible(child)) {
 			childClone.outerHTML = "<!---->";
-		} 
+		}
 		//go recursive
 		else if (child.childNodes.length > 0) {
 			childClone.outerHTML = _getCleanClone(child).outerHTML;
@@ -289,7 +295,7 @@ function _getCleanClone(element) {
 function _getPrecTextElement(element) {
 	var nearestTextElementXpath;
 	var elContainingDocument = element.ownerDocument;
-	var tempXpath = "(.//" + element.tagName.toLowerCase() + ")";
+	var tempXpath = "(.//" + _getTag(element) + ")";
 	tempXpath += _getElementXPathIndex(element, tempXpath);
 	for (var i = 0; true; i++) {
 		nearestTextElementXpath = "(" +
@@ -313,7 +319,7 @@ function _getPrecTextElement(element) {
 function _getFollowingTextElement(element) {
 	var nearestTextElementXpath;
 	var elContainingDocument = element.ownerDocument;
-	var tempXpath = "(.//" + element.tagName.toLowerCase() + ")";
+	var tempXpath = "(.//" + _getTag(element) + ")";
 	tempXpath += _getElementXPathIndex(element, tempXpath);
 	nearestTextElementXpath = tempXpath + "/following::*[normalize-space(.)!='']";
 	var xPathResult = elContainingDocument.
@@ -332,7 +338,7 @@ function _getFollowingTextElement(element) {
 function _getParentTextElement(element) {
 	var nearestTextElementXpath;
 	var elContainingDocument = element.ownerDocument;
-	var tempXpath = "(.//" + element.tagName.toLowerCase() + ")";
+	var tempXpath = "(.//" + _getTag(element) + ")";
 	tempXpath += _getElementXPathIndex(element, tempXpath);
 
 	for (var i = 1; true; i++) {
@@ -510,4 +516,22 @@ var _UTF8 = {
 
 function _arrayContains(needle, arrhaystack) {
 	return (arrhaystack.indexOf(needle) > -1);
+}
+
+function _getTag(element) {
+		var tag = element.tagName.toLowerCase();
+//TODO other situations?
+	if (tag == "svg" ||
+		tag == "rect" ||
+		tag == "circle" ||
+		tag == "ellipse" ||
+		tag == "line" ||
+		tag == "polyline" ||
+		tag == "polygon" ||
+		tag == "path" ||
+		tag == "text" ||
+		tag == "g") {
+			tag = "*[local-name() = '" + tag + "']";
+	}
+	return tag;
 }

@@ -41,7 +41,7 @@ HOW TO USE FIREROBOT?
 - The test script can be saved to a .txt file and reused later, on FireRobot or another IDE.
 - Linux and Mac OS X users: You must open the test report manually, after the test is run. Also, you must most record the test scripts with the .txt extension explicitly.
 
-Check the demonstration video at <a href='http://youtu.be/uzRwY6xkTC0' target='_blank'>YouTube</a>.
+<strong>Check the demonstration video at <a href='http://youtu.be/uzRwY6xkTC0' target='_blank'>YouTube</a></strong>
 
 Disclaimer: This tool is being released publicly because it is believed to have reached a stage where it can be helpful. However, it is still a 'young' application, with some known (and possibly unknown) limitations.
 Please provide feedback at https://github.com/joao-carloto/FireRobot/issues. 
