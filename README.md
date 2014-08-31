@@ -19,7 +19,8 @@ HOW TO INSTALL FIREROBOT?
 - Go to the releases page (https://github.com/joao-carloto/FireRobot/releases).
 - Get the firerobot.xpi file.
 - Drag it over a window of your Firefox browser.
-- Confirm the installation and restart the browser.
+- Confirm the installation (you will have trust me on this being safe, the reason why this is not in the official Mozilla repository is explained <a href="https://forums.mozilla.org/addons/viewtopic.php?f=21&t=19759">here</a>).
+- Restart the browser.
 - You may start the extension at the Developer menu.
 - For more convenience drag the FireRobot icon from the "Customize" menu onto the browser toolbar.
 
