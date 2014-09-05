@@ -3,7 +3,7 @@ FireRobot
 
 WHAT IS FIREROBOT?
 
-FireRobot is a Firefox extension that allows you to create Robot Framework/Selenium tests, in a more efficient way.
+FireRobot is a Firefox extension that allows you to create Robot Framework/Selenium tests, in a more efficient way. <strong>Check the demonstration video at <a href='http://youtu.be/uzRwY6xkTC0' target='_blank'>YouTube</a></strong> or keep reading.
 
 Keyword driven testing is in the far end of the spectrum from record and play tools, as far as test automation concerns. 
 Although this tool has some features in common with record and play tools, it's interest lies in some specific features that will help you to create high level custom keywords, based on the Selenium2library:
@@ -42,7 +42,6 @@ HOW TO USE FIREROBOT?
 - The test script can be saved to a .txt file and reused later, on FireRobot or another IDE.
 - Linux and Mac OS X users: You must open the test report manually, after the test is run. Also, you must most record the test scripts with the .txt extension explicitly.
 
-<strong>Check the demonstration video at <a href='http://youtu.be/uzRwY6xkTC0' target='_blank'>YouTube</a></strong>
 
 Disclaimer: This tool is being released publicly because it is believed to have reached a stage where it can be helpful. However, it is still a 'young' application, with some known (and possibly unknown) limitations.
 Please provide feedback at https://github.com/joao-carloto/FireRobot/issues. 
