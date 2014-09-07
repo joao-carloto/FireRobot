@@ -180,6 +180,7 @@ FireRobot.BrowserOverlay = {
 					"url('chrome://firerobot/skin/fire_robot_toolbar_off.png')";
 			}
 			Application.storage.set("frWindow", undefined);
+			Application.storage.set("testFile", undefined);
 		}
 	},
 

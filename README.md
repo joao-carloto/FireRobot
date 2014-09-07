@@ -39,8 +39,8 @@ HOW TO USE FIREROBOT?
 - You may reference resource files, with high level keywords, in the *Settings* section. Make sure you use the full path.
 - You may use any RF standard library (OperatingSystem, String, etc). Just include it on the *Settings* section.
 - To run the current test script just click on the play button.
-- The test script can be saved to a .txt file and reused later, on FireRobot or another IDE.
-- Linux and Mac OS X users: You must open the test report manually, after the test is run. Also, you must most record the test scripts with the .txt extension explicitly.
+- The test script can be saved to a .txt or .robot file and reused later, on FireRobot or another IDE. In Linux, or Mac OS X, you must explicitly use one of these extensions when naming the test file. In Windows, .txt will be used by default, if none is indicated explicitly.
+- Mac OS X users must open the test report manually, after the test is run.
 
 
 Disclaimer: This tool is being released publicly because it is believed to have reached a stage where it can be helpful. However, it is still a 'young' application, with some known (and possibly unknown) limitations.

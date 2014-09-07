@@ -129,4 +129,5 @@ function _closeFRWindow() {
 			"url('chrome://firerobot/skin/fire_robot_toolbar_off.png')";
 	}
 	_Application.storage.set("frWindow", undefined);
+	_Application.storage.set("testFile", undefined);
 }

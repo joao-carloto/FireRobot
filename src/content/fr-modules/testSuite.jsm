@@ -208,9 +208,8 @@
 		}
 	}
 
-	var testFile;
-
 	function save() {
+		var testFile =_Application.storage.get("testFile", undefined);
 		if (testFile) {
 			_saveTest(testFile);
 		} else {
@@ -223,12 +222,12 @@
 		var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
 		fp.defaultExtension = "txt";
 		fp.init(_windowWatcher.activeWindow, "Save your robot test suite", nsIFilePicker.modeSave);
-		fp.appendFilters(nsIFilePicker.filterText);
+		fp.appendFilter("RF Text Files (*.txt, *.robot)","*.txt; *.robot");
 
 		var res = fp.show();
 		if (res != nsIFilePicker.returnCancel) {
-			testFile = fp.file;
-			_saveTest(testFile);
+			_Application.storage.set("testFile", fp.file);
+			_saveTest(fp.file);
 		}
 	}
 
@@ -236,13 +235,14 @@
 		var nsIFilePicker = Components.interfaces.nsIFilePicker;
 		var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
 		fp.init(_windowWatcher.activeWindow, "Load your robot test suite", nsIFilePicker.modOpen);
-		fp.appendFilters(nsIFilePicker.filterText);
+		fp.appendFilter("RF Text Files (*.txt, *.robot)","*.txt; *.robot");
 
 		var OSName = _getOSName();
 
 		var res = fp.show();
 		if (res != nsIFilePicker.returnCancel) {
 			testFile = fp.file;
+			_Application.storage.set("testFile", fp.file);
 			Components.utils.import("resource://gre/modules/NetUtil.jsm");
 			NetUtil.asyncFetch(testFile, function(inputStream, status) {
 				if (!Components.isSuccessCode(status)) {

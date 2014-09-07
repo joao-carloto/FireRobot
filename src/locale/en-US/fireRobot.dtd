@@ -20,8 +20,9 @@
 <!ENTITY firerobot.help.how_to.li_9       "You may reference resource files, with high level keywords, in the *Settings* section. Make sure you use the full path.">
 <!ENTITY firerobot.help.how_to.li_10      "You may use any <html:u><html:a target='_blank' href='https://code.google.com/p/robotframework/wiki/TestLibraries'>RF standard library</html:a></html:u> (OperatingSystem, String, etc). Just include it on the *Settings* section.">
 <!ENTITY firerobot.help.how_to.li_11      "To run the current test script just click on the play button.">
-<!ENTITY firerobot.help.how_to.li_12      "The test script can be saved to a .txt file and reused later, on FireRobot or another IDE.">
-<!ENTITY firerobot.help.how_to.li_13      "Linux and Mac OS X users: You must open the test report manually, after the test is run. Also, you must most record the test scripts with the .txt extension explicitly.">
+<!ENTITY firerobot.help.how_to.li_12      "The test script can be saved to a .txt or .robot file and reused later, on FireRobot or another IDE. In Linux, or Mac OS X, you must explicitly use one of these extensions when naming the test file. In Windows, .txt will be used by default, if none is indicated explicitly.">
+<!ENTITY firerobot.help.how_to.li_13      "Mac OS X users must open the test report manually, after the test is run.">
+
 
 <!ENTITY firerobot.help.official      "You  might want to check the offcial page on <html:a href='http://joao-carloto.github.io/FireRobot/' target='_blank'> <html:u>GitHub</html:u></html:a>.">
 
