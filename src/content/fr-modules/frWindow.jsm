@@ -125,8 +125,10 @@ function _closeFRWindow() {
 
 	var browserWindow = _Application.storage.get("browserWindow", undefined);
 	if (browserWindow && !browserWindow.closed) {
-		browserWindow.document.getElementById("fire-robot-toolbar-button").style.listStyleImage =
-			"url('chrome://firerobot/skin/fire_robot_toolbar_off.png')";
+	var toolbarIcon = browserWindow.document.getElementById("fire-robot-toolbar-button");
+		if (toolbarIcon) {
+			toolbarIcon.style.listStyleImage = "url('chrome://firerobot/skin/fire_robot_toolbar_off.png')";
+		}		
 	}
 	_Application.storage.set("frWindow", undefined);
 	_Application.storage.set("testFile", undefined);

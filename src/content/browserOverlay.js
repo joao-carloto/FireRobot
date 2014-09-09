@@ -4,6 +4,7 @@ Components.utils.import("chrome://firerobot/content/fr-modules/keywords.jsm");
 Components.utils.import("chrome://firerobot/content/fr-modules/variables.jsm");
 Components.utils.import("chrome://firerobot/content/fr-modules/select.jsm");
 Components.utils.import("chrome://firerobot/content/fr-modules/testSuite.jsm");
+Components.utils.import("chrome://firerobot/content/fr-modules/resources.jsm");
 
 
 if (!FireRobot) var FireRobot = {};
@@ -22,7 +23,7 @@ FireRobot.BrowserOverlay = {
 		.getService(Components.interfaces.fuelIApplication),
 
 	promptService: Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
-	.getService(Components.interfaces.nsIPromptService),	
+		.getService(Components.interfaces.nsIPromptService),
 
 
 	openFRWindow: function() {
@@ -46,8 +47,11 @@ FireRobot.BrowserOverlay = {
 			addVariable('BROWSER', 'FireFox');
 		}, true);
 
-		document.getElementById("fire-robot-toolbar-button").style
-			.listStyleImage = "url('chrome://firerobot/skin/fire_robot_toolbar_on.png')";
+		var toolbarIcon = document.getElementById("fire-robot-toolbar-button");
+
+		if (toolbarIcon) {
+			toolbarIcon.style.listStyleImage = "url('chrome://firerobot/skin/fire_robot_toolbar_on.png')";
+		}
 
 		Application.storage.set("selectedElements", []);
 
@@ -161,7 +165,7 @@ FireRobot.BrowserOverlay = {
 				kwCheckForm();
 				break;
 			default:
-      			warning("firerobot.warn.not-implemented");
+				warning("firerobot.warn.not-implemented");
 		}
 	},
 
@@ -175,9 +179,10 @@ FireRobot.BrowserOverlay = {
 			var browserWindow = Application.storage.get("browserWindow", undefined);
 
 			if (browserWindow && !browserWindow.closed) {
-				browserWindow.document.getElementById("fire-robot-toolbar-button")
-					.style.listStyleImage =
-					"url('chrome://firerobot/skin/fire_robot_toolbar_off.png')";
+				var toolbarIcon = browserWindow.document.getElementById("fire-robot-toolbar-button");
+				if (toolbarIcon) {
+					toolbarIcon.style.listStyleImage = "url('chrome://firerobot/skin/fire_robot_toolbar_off.png')";
+				}
 			}
 			Application.storage.set("frWindow", undefined);
 			Application.storage.set("testFile", undefined);
@@ -222,6 +227,10 @@ FireRobot.BrowserOverlay = {
 			"chrome://firerobot/content/fireRobotHelp.xul",
 			"FireRobot Help", "chrome, resizable,centerscreen");
 		Application.storage.set("helpWindow", helpWindow);
+	},
+
+	addResourceBtn: function() {
+		addResource();
 	},
 
 	addVariableBtn: function(name, value) {

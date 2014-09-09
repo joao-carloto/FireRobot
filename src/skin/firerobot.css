@@ -76,6 +76,17 @@
     background-image:url(chrome://firerobot/skin/black-icons/appbar.new.window.png);
 }
 
+.btn#addResourceButton {
+    margin-top:3px;
+    margin-bottom:3px;
+    margin-right:5px;
+    background-image:url(chrome://firerobot/skin/white-icons/appbar.add.png);
+}
+
+.btn#addResourceButton:hover {
+    background-image:url(chrome://firerobot/skin/black-icons/appbar.add.png);
+}
+
 .btn#moveVarDownButton {
     margin-top:3px;
     margin-bottom:3px;

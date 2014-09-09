@@ -23,7 +23,6 @@
 <!ENTITY firerobot.help.how_to.li_12      "The test script can be saved to a .txt or .robot file and reused later, on FireRobot or another IDE. In Linux, or Mac OS X, you must explicitly use one of these extensions when naming the test file. In Windows, .txt will be used by default, if none is indicated explicitly.">
 <!ENTITY firerobot.help.how_to.li_13      "Mac OS X users must open the test report manually, after the test is run.">
 
-
 <!ENTITY firerobot.help.official      "You  might want to check the offcial page on <html:a href='http://joao-carloto.github.io/FireRobot/' target='_blank'> <html:u>GitHub</html:u></html:a>.">
 
 <!ENTITY firerobot.help.issues.title      "<html:b>Disclaimer:</html:b> This tool is being released publicly because it is believed to have reached a stage where it can be helpful. However, it is still a 'young' application, with some known (and possibly unknown) limitations.">
@@ -48,6 +47,8 @@
 <!ENTITY firerobot.window.pref-btn                 "Set Preferences">
 <!ENTITY firerobot.window.help-btn                 "Help &amp; About">
 <!ENTITY firerobot.window.mode-btn                 "Change Window Mode">
+<!ENTITY firerobot.window.resource-btn             "Add Resource File">
+
 <!ENTITY firerobot.window.var-dwn-btn              "Move Variable Down">
 <!ENTITY firerobot.window.var-up-btn               "Move Variable Up">
 <!ENTITY firerobot.window.add-var-btn              "Add Variable">
