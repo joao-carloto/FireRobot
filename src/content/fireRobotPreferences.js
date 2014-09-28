@@ -3,7 +3,7 @@ Components.utils.import("chrome://firerobot/content/fr-modules/locators.jsm");
 
 
 if (!FireRobot) var FireRobot = {};
-if (!FireRobot.BrowserOverlay) FireRobot.Preferences = {};
+if (!FireRobot.Preferences) FireRobot.Preferences = {};
 
 
 FireRobot.Preferences = {
@@ -72,7 +72,6 @@ FireRobot.Preferences = {
 			this.updateLocators();
 		}
 	},
-
 
 	decreaseLocatorIndex: function() {
 		var enabledLocList = document.getElementById("enabled-locators-list");

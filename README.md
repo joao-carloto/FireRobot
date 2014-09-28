@@ -3,7 +3,10 @@ FireRobot
 
 WHAT IS FIREROBOT?
 
-FireRobot is a Firefox extension that allows you to create Robot Framework/Selenium tests, in a more efficient way. Check the demonstration video at <strong><a href='http://youtu.be/uzRwY6xkTC0' target='_blank'>YouTube</a></strong> or keep reading.
+FireRobot is a Firefox extension that allows you to create Robot Framework/Selenium tests, in a more efficient way. 
+Check the demonstration videos on YouTube or keep reading:
+<strong><a href='http://youtu.be/uzRwY6xkTC0' target='_blank'>- Generic demonstration</a></strong>
+<strong><a href='https://www.youtube.com/watch?v=-yNYXSyOCKg' target='_blank'>- Keyword extraction</a></strong>
 
 Keyword driven testing is in the far end of the spectrum from record and play tools, as far as test automation concerns. 
 Although this tool has some features in common with record and play tools, it's interest lies in some specific features that will help you to create high level custom keywords, based on the Selenium2library:
@@ -35,8 +38,9 @@ HOW TO USE FIREROBOT?
 - Use the ESC key to clear the selections, while keeping the selection mode on.
 - To fill and check forms you may select any element that includes the form elements of interest, not necessarily the form element.
 - For frame related keywords you may select an element that includes the frame of interest or any element inside the frame.
-- Use the settings window to change the locator preferences and the options for variable creation and usage.
-- You may reference resource files, with high level keywords, in the *Settings* section. Make sure you use the full path.
+- Use the preferences window to change the locator preferences and the options for variable creation and usage.
+- You may select resource files and automatically add its path to the *Settings* section.
+- You may select a group of test steps and automatically convert them to a new keyword that will be added to a resource file.
 - You may use any RF standard library (OperatingSystem, String, etc). Just include it on the *Settings* section.
 - To run the current test script just click on the play button.
 - The test script can be saved to a .txt or .robot file and reused later, on FireRobot or another IDE. In Linux, or Mac OS X, you must explicitly use one of these extensions when naming the test file. In Windows, .txt will be used by default, if none is indicated explicitly.

@@ -6,7 +6,8 @@ var EXPORTED_SYMBOLS = [
 	"getTextFragments",
 	"getElementXPath",
 	"getNearTextElement",
-	"isVisible"
+	"isVisible",
+	"getOSName"
 ];
 
 Components.utils.import("chrome://firerobot/content/external-modules/xregexp.jsm");
@@ -119,11 +120,14 @@ function getElementXPath(element) {
 	var type = _getElementType(element);
 
 	if (element.placeholder && element.placeholder !== "") {
-		xpath = ".//" + tag + "[@placeholder='" + element.placeholder + "']";
+		var placeholder = _resolveApostrophes(element.placeholder);
+		xpath = ".//" + tag + "[@placeholder=" + placeholder + "]";
 	} else if (element.alt && element.alt !== "") {
-		xpath = ".//" + tag + "[@alt='" + element.alt + "']";
+		var alt = _resolveApostrophes(element.alt);
+		xpath = ".//" + tag + "[@alt=" + alt + "]";
 	} else if (element.title && element.title !== "") {
-		xpath = ".//" + tag + "[@title='" + element.title + "']";
+		var title = _resolveApostrophes(element.title);
+		xpath = ".//" + tag + "[@title=" + title + "]";
 	} else {
 		txt = _getXPathText(element);
 		if (txt !== "") {
@@ -201,7 +205,7 @@ function _getElementXPathIndex(element, xpath) {
 			matchedNode = xPathResult.iterateNext();
 		}
 	} catch (err) {
-		warning("firerobot.warn.no-xpath");
+		//warning("firerobot.warn.no-xpath");
 	}
 	if (i == 1) {
 		return "";
@@ -209,6 +213,8 @@ function _getElementXPathIndex(element, xpath) {
 		return "[last()]";
 	} else {
 		if (index === undefined) {
+			_promptService.alert(null, "", xpath);
+			_promptService.alert(null, "", element.outerHTML);
 			warning("firerobot.warn.no-xpath");
 		}
 		return "[" + index + "]";
@@ -258,6 +264,24 @@ function getNearTextElement(element) {
 
 function isVisible(element) {
 	return element.offsetWidth > 0 || element.offsetHeight > 0;
+}
+
+function getOSName() {
+	var frWindow = _Application.storage.get("frWindow", undefined);
+	var appVersion = frWindow.navigator.appVersion;
+	var OSName = "Unknown OS";
+
+	if (appVersion.indexOf("Win") != -1) {
+		OSName = "Windows";
+	} else if (appVersion.indexOf("Mac") != -1) {
+		OSName = "MacOS";
+	} else if (appVersion.indexOf("X11") != -1) {
+		OSName = "UNIX";
+	} else if (appVersion.indexOf("Linux") != -1) {
+		OSName = "Linux";
+	}
+
+	return OSName;
 }
 
 
@@ -442,8 +466,6 @@ function _getXPathText(element) {
 	elementText = elementText.substring(0, 100);
 
 	return elementText;
-
-
 }
 
 function _elTextContainsAlphanum(element) {
@@ -509,14 +531,13 @@ var _UTF8 = {
 	}
 };
 
-
 function _arrayContains(needle, arrhaystack) {
 	return (arrhaystack.indexOf(needle) > -1);
 }
 
 function _getTag(element) {
-		var tag = element.tagName.toLowerCase();
-//TODO other situations?
+	var tag = element.tagName.toLowerCase();
+	//TODO other situations?
 	if (tag == "svg" ||
 		tag == "rect" ||
 		tag == "circle" ||
@@ -527,7 +548,7 @@ function _getTag(element) {
 		tag == "path" ||
 		tag == "text" ||
 		tag == "g") {
-			tag = "*[local-name() = '" + tag + "']";
+		tag = "*[local-name() = '" + tag + "']";
 	}
 	return tag;
 }

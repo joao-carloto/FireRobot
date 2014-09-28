@@ -104,10 +104,7 @@
             class="testBox" 
             rows="5" 
             multiline="true" 
-            value="Documentation   Test suite created with FireRobot.&#xA;Library   Selenium2Library   15.0   5.0"/>
-
-
-
+            value="Documentation&#x9;  Test suite created with FireRobot.&#xA;Library&#x9;  Selenium2Library   15.0   5.0"/>
     <hbox>
         <spacer flex="1"/>
         <img 
@@ -115,10 +112,6 @@
             onclick="FireRobot.BrowserOverlay.addResourceBtn();" 
             tooltiptext="&firerobot.window.resource-btn;"/>
     </hbox>
-
-
-        <!--spacer 
-            style="height: 6px" /-->
         <description 
             control="variablesTextArea">***Variables***</description>
         <richlistbox 
@@ -154,7 +147,8 @@
             <textbox
             id="testCaseTextArea"
             class="testBox" 
-            rows="12" multiline="true" 
+            rows="12" 
+            multiline="true" 
             value="FireRobot Test Case" 
             flex="1" 
             type="unichar"/>
@@ -169,7 +163,13 @@
                 class="btn" 
                 tooltiptext="&firerobot.window.view-rep-btn;"  
                 onclick="FireRobot.BrowserOverlay.showReportBtn(event);"/>
-                <spacer flex="1" />
+                <spacer flex="3"/>
+                <img 
+                id="keyWordButton"
+                class="btn" 
+                tooltiptext="&firerobot.window.new-key-btn;"   
+                onclick="FireRobot.BrowserOverlay.extractKeywordBtn(event);"/>
+                <spacer flex="1"/>
                 <img 
                 id="openButton"
                 class="btn" 

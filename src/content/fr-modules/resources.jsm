@@ -2,11 +2,7 @@
 		"addResource"
 	];
 
-
-	//TODO remove not usefull
 	Components.utils.import("resource://gre/modules/FileUtils.jsm");
-
-	Components.utils.import("chrome://firerobot/content/fr-modules/variables.jsm");
 
 	Components.utils.import("chrome://firerobot/content/fr-modules/utils.jsm");
 
@@ -16,11 +12,10 @@
 	var _windowWatcher = Components.classes["@mozilla.org/embedcomp/window-watcher;1"]
 		.getService(Components.interfaces.nsIWindowWatcher);
 
-	var _promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
-		.getService(Components.interfaces.nsIPromptService);
+	var	_prefService = Components.classes["@mozilla.org/preferences-service;1"].
+	getService(Components.interfaces.nsIPrefBranch);
 
 
-	//TODO check if is not allready present
 	function addResource() {
 		var nsIFilePicker = Components.interfaces.nsIFilePicker;
 		var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
@@ -28,16 +23,35 @@
 		fp.appendFilter("RF Text Files (*.txt, *.robot)", "*.txt; *.robot");
 
 		var res = fp.show();
+
 		if (res != nsIFilePicker.returnCancel) {
 			var resFile = fp.file;
-			_Application.storage.set("resFile", resFile);
+
+			this._prefService.setCharPref("extensions.firerobot.key.res_file", resFile.path);
+
 			var frWindow = _Application.storage.get("frWindow", undefined);
 			var settingsTextArea = frWindow.document.getElementById("settingsTextArea");
 			var settings = settingsTextArea.value;
-			settings = settings + "\r\nResource  \t" + resFile.path.replace(/\\/g, "\\\\");
-			settingsTextArea.value = settings;
-			var ti = frWindow.document.getAnonymousNodes(settingsTextArea)[0].
-			childNodes[0];
-			ti.scrollTop = ti.scrollHeight;
-		};
+
+			var resLine = resFile.path;
+			var OSName = getOSName();
+			if (OSName == "Windows") {
+				resLine = resLine.replace(/\\/g, "\\\\");
+			}
+			resLine = resLine.replace(/ /g, "\\ ");
+			resLine = "Resource  \t" + resLine;
+
+			var patt = new RegExp(resLine.replace(/\\/g,"\\\\"));
+			var resExists = patt.test(settings);
+
+			if (!resExists) {
+				settings += "\r\n" + resLine;
+				settingsTextArea.value = settings;
+				var ti = frWindow.document.getAnonymousNodes(settingsTextArea)[0].
+				childNodes[0];
+				ti.scrollTop = ti.scrollHeight;
+			} else {
+				warning("firerobot.warn.res-exists");
+			}
+		}
 	}

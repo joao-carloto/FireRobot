@@ -284,7 +284,12 @@ function _displayHTML() {
 		}
 	}
 	var frWindow = _Application.storage.get("frWindow", undefined);
-	frWindow.document.getElementById("htmlTextArea").value = selectedElementsHTML;
+	var htmlArea = frWindow.document.getElementById("htmlTextArea");
+	htmlArea.value = selectedElementsHTML;
+
+	var ti = frWindow.document.getAnonymousNodes(htmlArea)[0].
+	childNodes[0];
+	ti.scrollTop = ti.scrollHeight;
 }
 
 function _overElement(e) {

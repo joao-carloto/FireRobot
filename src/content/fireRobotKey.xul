@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet type="text/css" href="chrome://firerobot/skin/firerobot.css" ?>
+<!DOCTYPE overlay
+  SYSTEM 'chrome://firerobot/locale/fireRobot.dtd'>
+<prefwindow 
+  class="frBase" 
+  id="keyword-window" 
+  ondialogaccept="return FireRobot.Key.addKey();" 
+  onload="FireRobot.Key.loadSelSteps();" 
+  title="Extract Keyword" 
+  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+  <script 
+    src="chrome://firerobot/content/fireRobotKey.js" 
+    type="application/x-javascript"/>
+  <stringbundleset id="string-bundle-set">
+    <stringbundle 
+      id="string-bundle" 
+      src="chrome://firerobot/locale/fireRobot.properties"/>
+  </stringbundleset>
+  <prefpane>
+    <preferences id="keyword-panel">
+      <preference 
+        id="pref-key-replace" 
+        name="extensions.firerobot.key.replace" 
+        type="bool"/>
+    </preferences>
+    <vbox flex="1">
+      <spacer style="height: 5px"/>
+      <hbox align="center">
+        <textbox
+          id="keyNameBox"
+          class="testBox" 
+          flex="1"
+          placeholder="&firerobot.key.placeholder1;"/>
+        <description>[Arguments]  </description>
+        <textbox class="testBox" 
+          disabled="true" flex="3" id="keyVarBox"/>
+      </hbox>
+      <textbox
+        id="keyStepsArea" 
+        class="testBox"
+        disabled="true" 
+        flex="1" 
+        multiline="true" 
+        rows="16" 
+        type="unichar"/>
+      <spacer style="height: 5px"/>
+      <hbox align="center">
+        <textbox
+          id="resFileBox"
+          class="testBox" 
+          disabled="true" 
+          flex="1"  
+          placeholder="&firerobot.key.placeholder2;"/>
+        <img
+          id="selResButton" 
+          class="btn" 
+          onclick="FireRobot.Key.selectResForKey()" 
+          tooltiptext="&firerobot.key.placeholder2;"/>
+      </hbox>
+      <description>&firerobot.key.warn_res_file;</description>
+      <spacer style="height: 5px"/>
+      <checkbox 
+        id="useVarCheckBox"
+        checked="true"
+        label="&firerobot.key.replace;" 
+        preference="pref-key-replace"/>
+    </vbox>
+  </prefpane>
+</prefwindow>

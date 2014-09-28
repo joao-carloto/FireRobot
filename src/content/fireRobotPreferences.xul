@@ -3,6 +3,7 @@
 <?xml-stylesheet type="text/css" href="chrome://firerobot/skin/firerobot.css" ?>
 <!DOCTYPE overlay SYSTEM "chrome://firerobot/locale/fireRobot.dtd">
 <prefwindow 
+   title="Preferences"  
    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
    onload="FireRobot.Preferences.loadLocatorListBoxes();" 
    class="frBase">

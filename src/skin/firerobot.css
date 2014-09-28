@@ -161,12 +161,21 @@
     background-image:url(chrome://firerobot/skin/black-icons/appbar.list.png);
 }
 
+.btn#keyWordButton{
+    margin-top:3px;
+    margin-bottom:3px;
+    background-image:url(chrome://firerobot/skin/white-icons/appbar.key.png);
+}
+
+.btn#keyWordButton:hover {
+    background-image:url(chrome://firerobot/skin/black-icons/appbar.key.png);
+}
+
 .btn#openButton {
     margin-top:3px;
     margin-bottom:3px;
     background-image:url(chrome://firerobot/skin/white-icons/appbar.folder.open.png);
 }
-
 
 .btn#openButton:hover {
     background-image:url(chrome://firerobot/skin/black-icons/appbar.folder.open.png);
@@ -223,6 +232,15 @@
 
 .btn#downLocatorButton:hover {
     background-image:url(chrome://firerobot/skin/black-icons/appbar.chevron.down.png);
+}
+
+.btn#selResButton {
+    background-image:url(chrome://firerobot/skin/white-icons/appbar.folder.open.png);
+    margin-right:5px;
+}
+
+.btn#selResButton:hover {
+    background-image:url(chrome://firerobot/skin/black-icons/appbar.folder.open.png);
 }
 
 .frBase {

@@ -229,6 +229,8 @@ FireRobot.BrowserOverlay = {
 		Application.storage.set("helpWindow", helpWindow);
 	},
 
+
+	//TODO review
 	addResourceBtn: function() {
 		addResource();
 	},
@@ -267,5 +269,23 @@ FireRobot.BrowserOverlay = {
 
 	showReportBtn: function() {
 		showReport();
+	},
+
+	extractKeywordBtn: function() {
+		var frWindow = Application.storage.get("frWindow", undefined);
+		var testArea = frWindow.document.getElementById("testCaseTextArea");
+		var start = testArea.selectionStart;
+		var end = testArea.selectionEnd;
+		var activeElement = frWindow.document.activeElement;
+		if (activeElement != testArea.inputField || start == end) {
+			warning("firerobot.warn.no-steps-selected");
+			return;
+		}
+		var keyWindow = window.open(
+			"chrome://firerobot/content/fireRobotKey.xul",
+			"Extract New Keyword", "chrome, resizable, centerscreen");
+		
+		Application.storage.set("keyWindow", keyWindow);
 	}
+
 };

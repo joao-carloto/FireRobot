@@ -3,7 +3,8 @@
 		"showReport",
 		"openTest",
 		"saveAs",
-		"save"
+		"save",
+		"getOSName"
 	];
 
 	Components.utils.import("resource://gre/modules/FileUtils.jsm");
@@ -65,11 +66,9 @@
 
 		var shell;
 		var args;
-
-
 		var testFile;
 
-		var OSName = _getOSName();
+		var OSName = getOSName();
 		if (OSName == "Windows") {
 			testFile = new FileUtils.File(testDirPath + "robot-test.txt");
 
@@ -160,7 +159,7 @@
 
 				var reportFilePath = reportFile.path;
 
-				var OSName = _getOSName();
+				var OSName = getOSName();
 				var reportURL;
 
 				if (OSName == "Windows") {
@@ -188,7 +187,7 @@
 		]);
 
 		if (reportFile.exists()) {
-			var OSName = _getOSName();
+			var OSName = getOSName();
 			var reportFilePath = reportFile.path;
 			//.replace(/ /g, "\\ ");
 			var reportURL;
@@ -209,7 +208,7 @@
 	}
 
 	function save() {
-		var testFile =_Application.storage.get("testFile", undefined);
+		var testFile = _Application.storage.get("testFile", undefined);
 		if (testFile) {
 			_saveTest(testFile);
 		} else {
@@ -222,7 +221,7 @@
 		var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
 		fp.defaultExtension = "txt";
 		fp.init(_windowWatcher.activeWindow, "Save your robot test suite", nsIFilePicker.modeSave);
-		fp.appendFilter("RF Text Files (*.txt, *.robot)","*.txt; *.robot");
+		fp.appendFilter("RF Text Files (*.txt, *.robot)", "*.txt; *.robot");
 
 		var res = fp.show();
 		if (res != nsIFilePicker.returnCancel) {
@@ -235,9 +234,9 @@
 		var nsIFilePicker = Components.interfaces.nsIFilePicker;
 		var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
 		fp.init(_windowWatcher.activeWindow, "Load your robot test suite", nsIFilePicker.modOpen);
-		fp.appendFilter("RF Text Files (*.txt, *.robot)","*.txt; *.robot");
+		fp.appendFilter("RF Text Files (*.txt, *.robot)", "*.txt; *.robot");
 
-		var OSName = _getOSName();
+		var OSName = getOSName();
 
 		var res = fp.show();
 		if (res != nsIFilePicker.returnCancel) {
@@ -288,6 +287,7 @@
 		}
 	}
 
+
 	function _saveTest(file) {
 		var outStream = FileUtils.openFileOutputStream(file);
 
@@ -323,22 +323,4 @@
 
 		converter.writeString(str);
 		converter.close();
-	}
-
-	function _getOSName() {
-		var frWindow = _Application.storage.get("frWindow", undefined);
-		var appVersion = frWindow.navigator.appVersion;
-		var OSName = "Unknown OS";
-
-		if (appVersion.indexOf("Win") != -1) {
-			OSName = "Windows";
-		} else if (appVersion.indexOf("Mac") != -1) {
-			OSName = "MacOS";
-		} else if (appVersion.indexOf("X11") != -1) {
-			OSName = "UNIX";
-		} else if (appVersion.indexOf("Linux") != -1) {
-			OSName = "Linux";
-		}
-
-		return OSName;
 	}
