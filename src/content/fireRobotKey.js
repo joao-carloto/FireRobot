@@ -19,6 +19,9 @@ FireRobot.Key = {
 	windowWatcher: Components.classes["@mozilla.org/embedcomp/window-watcher;1"]
 		.getService(Components.interfaces.nsIWindowWatcher),
 
+	promptService: Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
+	.getService(Components.interfaces.nsIPromptService),
+
 
 	loadSelSteps: function() {
 
@@ -43,31 +46,48 @@ FireRobot.Key = {
 		var end = testArea.selectionEnd;
 
 		var selectedSteps = steps.substring(start, end).
-		trim().
-		replace(/(\r\n|\n|\r)/gm, "\r\n");
+		trim();
+		//TODO test this in all OSs
 
-		selectedSteps = "\t" + selectedSteps;
+		selectedSteps = "    " + selectedSteps;
 		var stepsArea = keyWindow.document.getElementById("keyStepsArea");
 		stepsArea.value = selectedSteps;
 
-		var varString = "";
-		var matchVar = selectedSteps.match(/\${.*}/g);
+		Application.storage.set("selectedSteps", selectedSteps);
+
+		//Remove local variables
+		//First, select  variables defined or redefined in the selected steps
+		var matchLocalVar = selectedSteps.match(/(\r\n\s*|\n\s*|\r\s*|^[\s]*)\${[^${}]*}/g);
+		if (matchLocalVar) {
+			for (var i = 0; i < matchLocalVar.length; i++) {
+				//Is this the first reference to the variable? Was this defined in the selected steps?
+				sameVar = matchLocalVar[i].trim();
+				var firstOcurrencePos = selectedSteps.indexOf(sameVar);
+				var defPos = selectedSteps.indexOf(matchLocalVar[i]);
+				if(defPos <= firstOcurrencePos) {
+					//Yes this was defined inside the selected steps, so it will not be an argument of the new keyword
+					//Let's remove the variable
+					sameVar = sameVar.replace("$", "\\$");
+					var regex = new RegExp(sameVar, "g");
+					selectedSteps = selectedSteps.replace(regex, "");	
+				}
+			}
+		}
+		
+		var matchVar = selectedSteps.match(/\${[^${}]*}/g);
 		if (matchVar) {
 			//Remove duplicates
 			matchVar = matchVar.filter(function(elem, pos) {
 				return matchVar.indexOf(elem) == pos;
 			});
-			varString = "";
+			var varString = "";
 			for (var i = 0; i < matchVar.length; i++) {
 				varString += matchVar[i] + "   ";
 			}
 			var keyVarBox = keyWindow.document.getElementById("keyVarBox");
 			keyVarBox.value = varString;
 		}
-
 	},
-
-
 
 	selectResForKey: function() {
 
@@ -75,8 +95,8 @@ FireRobot.Key = {
 		var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
 
 		fp.init(FireRobot.Key.windowWatcher.activeWindow,
-		 "Add a resource file",
-		  nsIFilePicker.modOpen);
+			"Add a resource file",
+			nsIFilePicker.modOpen);
 
 		fp.appendFilter("RF Text Files (*.txt, *.robot)", "*.txt; *.robot");
 
@@ -88,7 +108,7 @@ FireRobot.Key = {
 			var resFilePath = resFile.path;
 
 			FireRobot.Key.prefService.setCharPref("extensions.firerobot.key.res_file",
-			 resFilePath);
+				resFilePath);
 
 			keyWindow = Application.storage.get("keyWindow", undefined);
 			if (keyWindow) {
@@ -166,11 +186,11 @@ FireRobot.Key = {
 		var OSName = getOSName();
 		if (OSName == "Windows") {
 			filePath = filePath.replace(/\\/g, "\\\\");
-		} 
+		}
 		filePath = filePath.replace(/ /g, "\\ ");
 
 		var resLine = "Resource  \t" + filePath;
-		var patt = new RegExp(resLine.replace(/\\/g,"\\\\"));
+		var patt = new RegExp(resLine.replace(/\\/g, "\\\\"));
 		var resExists = patt.test(settings);
 
 		if (!resExists) {
@@ -185,15 +205,15 @@ FireRobot.Key = {
 		if (FireRobot.Key.prefService.getBoolPref("extensions.firerobot.key.replace")) {
 			var testArea = frWindow.document.getElementById("testCaseTextArea");
 			var testCase = testArea.value;
-
 			var keyStep = name;
+
 			if (vars) {
 				keyStep += "  \t" + vars;
 			}
-			testCase = testCase.replace(steps.trim(), keyStep);
+			var selectedSteps = Application.storage.get("selectedSteps", undefined);
+			testCase = testCase.replace(selectedSteps.trim(), keyStep);
 			testArea.value = testCase;
 		}
 		return true;
 	}
-
 };

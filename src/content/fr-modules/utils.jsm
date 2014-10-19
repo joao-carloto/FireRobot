@@ -213,8 +213,8 @@ function _getElementXPathIndex(element, xpath) {
 		return "[last()]";
 	} else {
 		if (index === undefined) {
-			_promptService.alert(null, "", xpath);
-			_promptService.alert(null, "", element.outerHTML);
+			//_promptService.alert(null, "", xpath);
+			//_promptService.alert(null, "", element.outerHTML);
 			warning("firerobot.warn.no-xpath");
 		}
 		return "[" + index + "]";
@@ -229,7 +229,12 @@ function getNearTextElement(element) {
 	var followingTextElement;
 
 	tempXpath += _getElementXPathIndex(element, tempXpath);
-	parentTextElement = _getParentTextElement(element);
+
+	//We don't want to use the options as a variable name.
+	//TODO is this a good idea?
+	if(element.tagName != "SELECT") {
+		parentTextElement = _getParentTextElement(element);
+	}
 
 	if (parentTextElement) {
 		return parentTextElement;
@@ -280,7 +285,6 @@ function getOSName() {
 	} else if (appVersion.indexOf("Linux") != -1) {
 		OSName = "Linux";
 	}
-
 	return OSName;
 }
 

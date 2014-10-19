@@ -89,7 +89,6 @@ FireRobot.BrowserOverlay = {
 		clearSelections();
 	},
 
-	//TODO add more keywords, namely "Wait..."
 	addKeyword: function(menu_item_id) {
 		switch (menu_item_id) {
 			case "fire-robot-page-should-contain":
@@ -157,6 +156,9 @@ FireRobot.BrowserOverlay = {
 				break;
 			case "fire-robot-close-all-browsers":
 				kwCloseAllBrowsers();
+				break;
+			case "fire-robot-reload-page":
+				kwReloadPage();
 				break;
 			case "fire-robot-fill-form":
 				kwFillForm();
@@ -229,8 +231,6 @@ FireRobot.BrowserOverlay = {
 		Application.storage.set("helpWindow", helpWindow);
 	},
 
-
-	//TODO review
 	addResourceBtn: function() {
 		addResource();
 	},

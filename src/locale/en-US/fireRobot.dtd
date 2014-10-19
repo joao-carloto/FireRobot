@@ -40,7 +40,7 @@
 <!ENTITY firerobot.preferences.disable-loc-btn     "Disable Locator">
 <!ENTITY firerobot.preferences.inc-loc-pri-btn     "Increase Locator Priority">
 <!ENTITY firerobot.preferences.dec-loc-pri-btn     "Decrease Locator Priority">
-<!ENTITY firerobot.preferences.create-var          "Create variables from text filed inputs">
+<!ENTITY firerobot.preferences.create-var          "Create variables from input values">
 <!ENTITY firerobot.preferences.use-var             "Use defined variables to check text and check and fill forms">
 
 <!ENTITY firerobot.window.select-btn               "Select Elements">

@@ -1364,10 +1364,6 @@ XRegExp = XRegExp || (function (undef) {
             }
         }
 
-    //TODO remove    
-   var _promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
-    .getService(Components.interfaces.nsIPromptService);
-    };
 
 /* Adds data for the Unicode `Letter` category. Addon packages include other categories, scripts,
  * blocks, and properties.

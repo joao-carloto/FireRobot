@@ -18,7 +18,7 @@
 
 	var _windowWatcher = Components.classes["@mozilla.org/embedcomp/window-watcher;1"]
 		.getService(Components.interfaces.nsIWindowWatcher);
-
+		
 
 	function runTest() {
 
@@ -153,12 +153,9 @@
 				"report.html"
 			]);
 
-
 			//You may stop the test by closing the CLI, before a test report is generated.
 			if (reportFile.exists()) {
-
 				var reportFilePath = reportFile.path;
-
 				var OSName = getOSName();
 				var reportURL;
 

@@ -14,7 +14,7 @@ Although this tool has some features in common with record and play tools, it's 
 - Filling and verification of forms based on their current state.
 - Easy preference definition for the page element locators.
 - Element localization thru automatically generated XPath, based on an element's own text or text of a nearby element.
-- Automatic creation of variables based on the content of text fields.
+- Automatic creation of variables based on the value of inputs.
 
 
 HOW TO INSTALL FIREROBOT?
@@ -47,6 +47,6 @@ HOW TO USE FIREROBOT?
 - Mac OS X users must open the test report manually, after the test is run.
 
 
-Disclaimer: This tool is being released publicly because it is believed to have reached a stage where it can be helpful. However, it is still a 'young' application, with some known (and possibly unknown) limitations.
-Please provide feedback at https://github.com/joao-carloto/FireRobot/issues. 
+Disclaimer: This tool is being released publicly because it is believed to have reached a stage where it can be helpful. However, most of it was written when the author should be sleeping, and it was not submitted to exhaustive testing.
+If you feel this project might be helpful to you, please contribute by providing feedback at https://github.com/joao-carloto/FireRobot/issues. 
 Bugs, new features, small improvements, all are welcome. They will be addressed when possible.

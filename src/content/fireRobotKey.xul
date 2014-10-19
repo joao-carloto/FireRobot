@@ -34,13 +34,14 @@
           flex="1"
           placeholder="&firerobot.key.placeholder1;"/>
         <description>[Arguments]  </description>
-        <textbox class="testBox" 
-          disabled="true" flex="3" id="keyVarBox"/>
+        <textbox 
+         class="testBox" 
+		 flex="3" 
+		 id="keyVarBox"/>
       </hbox>
       <textbox
         id="keyStepsArea" 
         class="testBox"
-        disabled="true" 
         flex="1" 
         multiline="true" 
         rows="16" 
@@ -50,7 +51,6 @@
         <textbox
           id="resFileBox"
           class="testBox" 
-          disabled="true" 
           flex="1"  
           placeholder="&firerobot.key.placeholder2;"/>
         <img

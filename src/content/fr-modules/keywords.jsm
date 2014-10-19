@@ -22,6 +22,7 @@ var EXPORTED_SYMBOLS = [
 	"kwGoBack",
 	"kwCloseBrowser",
 	"kwCloseAllBrowsers",
+	"kwReloadPage",
 	"kwFillForm",
 	"kwCheckForm"
 ];
@@ -60,6 +61,19 @@ function kwPageShouldContainSmart() {
 		var step = "Page Should Contain ";
 		if (el.tagName == "A") {
 			step += "Link";
+			var locType = getLocatorType(el);
+			if (locType == "link") {
+				var useVar = _prefService.getBoolPref(
+					"extensions.firerobot.variables.use");
+				if (useVar) {
+					var varName = getVarNameFromValue(getLocator(el));
+					if (varName) {
+						step += "  \t${" + varName + "}";
+						_addStepToTest(step);
+						return;
+					}
+				}
+			}
 		} else if (el.tagName == "BUTTON" ||
 			(el.tagName == "INPUT" && (el.type == "button" || el.type == "submit"))) {
 			step += "Button";
@@ -81,6 +95,7 @@ function kwPageShouldContainSmart() {
 	}
 }
 
+
 function kwPageShouldNotContainSmart() {
 	var selectedElements = _Application.storage.get("selectedElements", undefined);
 	if (!selectedElements || selectedElements.length === 0) {
@@ -92,6 +107,19 @@ function kwPageShouldNotContainSmart() {
 		var step = "Page Should Not Contain ";
 		if (el.tagName == "A") {
 			step += "Link";
+			var locType = getLocatorType(el);
+			if (locType == "link") {
+				var useVar = _prefService.getBoolPref(
+					"extensions.firerobot.variables.use");
+				if (useVar) {
+					var varName = getVarNameFromValue(getLocator(el));
+					if (varName) {
+						step += "  \t${" + varName + "}";
+						_addStepToTest(step);
+						return;
+					}
+				}
+			}
 		} else if (el.tagName == "BUTTON" ||
 			(el.tagName == "INPUT" && (el.type == "button" || el.type == "submit"))) {
 			step += "Button";
@@ -124,6 +152,19 @@ function kwClickSmart() {
 		var step = "Click ";
 		if (el.tagName == "A") {
 			step += "Link";
+			var locType = getLocatorType(el);
+			if (locType == "link") {
+				var useVar = _prefService.getBoolPref(
+					"extensions.firerobot.variables.use");
+				if (useVar) {
+					var varName = getVarNameFromValue(getLocator(el));
+					if (varName) {
+						step += "  \t${" + varName + "}";
+						_addStepToTest(step);
+						return;
+					}
+				}
+			}
 		} else if (el.tagName == "BUTTON" ||
 			(el.tagName == "INPUT" && (el.type == "button" || el.type == "submit"))) {
 			step += "Button";
@@ -414,6 +455,10 @@ function kwCloseAllBrowsers() {
 	_addStepToTest("Close All Browsers");
 }
 
+function kwReloadPage() {
+	_addStepToTest("Reload Page");
+}
+
 function kwFillForm() {
 	var selectedElements = _Application.storage.get("selectedElements", undefined);
 	var formElementsInSelection = 0;
@@ -477,9 +522,7 @@ function kwCheckForm() {
 			}
 
 			var formElementsXPath = ".//input|.//select|.//textarea";
-
 			var elContainingDocument = selElement.ownerDocument;
-
 			var xPathResult = elContainingDocument.evaluate(formElementsXPath,
 				selElement,
 				null,
@@ -497,11 +540,203 @@ function kwCheckForm() {
 		}
 	}
 	if (formElementsInSelection === 0) {
-		warning("No form elements are selected.");
+		warning("firerobot.warn.no-form-el-select");
 	}
 }
 
 function _fillFormElement(element) {
+	var createVar = this._prefService.getBoolPref(
+		"extensions.firerobot.variables.create");
+	var useVar = this._prefService.getBoolPref(
+		"extensions.firerobot.variables.use");
+	var locator = getLocator(element);
+
+	if (element.tagName == "INPUT") {
+		if ((element.type == "text" ||
+				element.type == "email" ||
+				element.type == "tel" ||
+				element.type == "url" ||
+				element.type == "search" ||
+				element.type == "color" ||
+				element.type == "number" ||
+				element.type == "range" ||
+				element.type == "date" ||
+				element.type === undefined) &&
+			element.value) {
+			var boxText = element.value;
+			boxText = escapeRobot(boxText);
+			boxText = escapeSpace(boxText);
+			if (useVar || createVar) {
+				varName = getVarNameFromValue(boxText);
+				if (varName) {
+					_addStepToTest("Input Text  \t" + locator +
+						"  \t${" +
+						varName +
+						"}");
+				} else {
+					if (createVar) {
+						varName = createVarName(element);
+						addVariable(varName, boxText);
+						_addStepToTest("Input Text  \t" + locator +
+							"  \t${" +
+							varName +
+							"}");
+					} else {
+						_addStepToTest("Input Text  \t" + locator +
+							"  \t" +
+							boxText);
+					}
+				}
+			} else {
+				_addStepToTest("Input Text  \t" +
+					locator +
+					"  \t" + boxText);
+			}
+		} else if (element.type == "checkbox" && element.checked) {
+			_addStepToTest("Select Checkbox  \t" + locator);
+		}
+		//TODO would this be useful?
+		/*
+			else if (element.type == "checkbox" && !element.checked) {
+			_addStepToTest("Unselect Checkbox  \t" + getLocator(element));
+			}
+		*/
+		else if (element.type == "radio" && element.checked) {
+			_addStepToTest("Select Radio Button  \t" +
+				element.name +
+				"  \t" +
+				element.value);
+		} else if (element.type == "password" && element.value) {
+
+			var passText = element.value;
+			if (useVar || createVar) {
+				varName = getVarNameFromValue(passText);
+				if (varName) {
+					_addStepToTest("Input Password   \t" +
+						locator +
+						"  \t${" +
+						varName +
+						"}");
+				} else {
+					if (createVar) {
+						varName = createVarName(element);
+						addVariable(varName, passText);
+						_addStepToTest("Input Password   \t" +
+							locator +
+							"  \t${" +
+							varName +
+							"}");
+					} else {
+						_addStepToTest("Input Password   \t" +
+							locator +
+							"  \t" +
+							passText);
+					}
+				}
+			} else {
+				_addStepToTest("Input Password   \t" +
+					locator +
+					"  \t" +
+					passText);
+			}
+		}
+	} else if (element.tagName == "TEXTAREA" && element.value) {
+		var areaText = element.value;
+		areaText = escapeRobot(areaText);
+		areaText = areaText.replace(/(\r\n|\n|\r)/gm, "\\n");
+		areaText = escapeSpace(areaText);
+		if (useVar || createVar) {
+			varName = getVarNameFromValue(areaText);
+			if (varName) {
+				_addStepToTest("Input Text  \t" +
+					locator +
+					"  \t${" +
+					varName +
+					"}");
+			} else {
+				if (createVar) {
+					varName = createVarName(element);
+					addVariable(varName, areaText);
+					_addStepToTest("Input Text  \t" +
+						locator +
+						"  \t${" +
+						varName +
+						"}");
+				} else {
+					_addStepToTest("Input Text  \t" + locator +
+						"  \t" +
+						areaText);
+				}
+			}
+		} else {
+			_addStepToTest("Input Text  \t" + locator +
+				"  \t" +
+				areaText);
+		}
+	} else if (element.tagName == "SELECT") {
+		var elContainingDocument = element.ownerDocument;
+		var xPathResult = elContainingDocument.evaluate(".//option",
+			element,
+			null,
+			0,
+			null);
+		var matchedNode = xPathResult.iterateNext();
+		while (matchedNode) {
+			if (matchedNode.selected) {
+				var locType = getLocatorType(matchedNode);
+				var testStep;
+				var matcheNodeLoc;
+
+				if (locType == "value") {
+					testStep = "Select From List By Value  \t" +
+						locator +
+						"  \t";
+					matcheNodeLoc = matchedNode.getAttribute("value");
+				} else if (locType == "label") {
+					testStep = "Select From List By Label  \t" +
+						locator +
+						"  \t";
+					matcheNodeLoc = matchedNode.label;
+				} else if (locType == "index") {
+					testStep = "Select From List By Index  \t" +
+						locator +
+						"  \t";
+					matcheNodeLoc = matchedNode.index;
+				} else if (matchedNode.label && matchedNode.label !== "") {
+					testStep = "Select From List By Label  \t" +
+						locator +
+						"  \t";
+					matcheNodeLoc = matchedNode.label;
+				}
+				if (useVar || createVar) {
+					var varName = getVarNameFromValue(matcheNodeLoc);
+					if (varName) {
+						_addStepToTest(testStep + "${" + varName + "}");
+					} else {
+						if (createVar) {
+							varName = createVarName(element);
+							addVariable(varName, matcheNodeLoc);
+							_addStepToTest(testStep + "${" + varName + "}");
+						} else {
+							_addStepToTest(testStep + matcheNodeLoc);
+						}
+					}
+				}
+			}
+			//TODO would this be useful?
+			/*
+			else {
+					_addStepToTest("Unselect From List\t" + getLocator(element) + "  \t" + getLocator(matchedNode));
+			} 
+			*/
+			matchedNode = xPathResult.iterateNext();
+		}
+	}
+}
+
+function _checkFormElement(element) {
+	var locator = getLocator(element);
+	var varName;
 	var createVar = this._prefService.getBoolPref(
 		"extensions.firerobot.variables.create");
 	var useVar = this._prefService.getBoolPref(
@@ -525,7 +760,8 @@ function _fillFormElement(element) {
 			if (useVar || createVar) {
 				varName = getVarNameFromValue(boxText);
 				if (varName) {
-					_addStepToTest("Input Text  \t" + getLocator(element) +
+					_addStepToTest("Textfield Value Should Be  \t" +
+						locator +
 						"  \t${" +
 						varName +
 						"}");
@@ -533,216 +769,27 @@ function _fillFormElement(element) {
 					if (createVar) {
 						varName = createVarName(element);
 						addVariable(varName, boxText);
-						_addStepToTest("Input Text  \t" + getLocator(element) +
+						_addStepToTest("Textfield Value Should Be  \t" + locator +
 							"  \t${" +
 							varName +
 							"}");
 					} else {
-						_addStepToTest("Input Text  \t" + getLocator(element) +
+						_addStepToTest("Textfield Value Should Be  \t" + locator +
 							"  \t" +
 							boxText);
 					}
 				}
 			} else {
-				_addStepToTest("Input Text  \t" +
-					getLocator(element) +
+				_addStepToTest("Textfield Value Should Be  \t" +
+					locator +
 					"  \t" + boxText);
 			}
 		} else if (element.type == "checkbox" && element.checked) {
-			_addStepToTest("Select Checkbox  \t" + getLocator(element));
-		}
-		//TODO would this be useful?
-		/*
-			else if (element.type == "checkbox" && !element.checked) {
-			_addStepToTest("Unselect Checkbox  \t" + getLocator(element));
-			}
-		*/
-		else if (element.type == "radio" && element.checked) {
-			_addStepToTest("Select Radio Button  \t" +
-				element.name +
-				"  \t" +
-				element.value);
-		} else if (element.type == "password" && element.value) {
-
-			var passText = element.value;
-			if (useVar || createVar) {
-				varName = getVarNameFromValue(passText);
-				if (varName) {
-					_addStepToTest("Input Password   \t" +
-						getLocator(element) +
-						"  \t${" +
-						varName +
-						"}");
-				} else {
-					if (createVar) {
-						varName = createVarName(element);
-						addVariable(varName, passText);
-						_addStepToTest("Input Password   \t" +
-							getLocator(element) +
-							"  \t${" +
-							varName +
-							"}");
-					} else {
-						_addStepToTest("Input Password   \t" +
-							getLocator(element) +
-							"  \t" +
-							passText);
-					}
-				}
-			} else {
-				_addStepToTest("Input Password   \t" +
-					getLocator(element) +
-					"  \t" +
-					passText);
-			}
-		}
-	} else if (element.tagName == "TEXTAREA" && element.value) {
-		var areaText = element.value;
-		areaText = escapeRobot(areaText);
-		areaText = areaText.replace(/(\r\n|\n|\r)/gm, "\\n");
-		areaText = escapeSpace(areaText);
-		if (useVar || createVar) {
-			varName = getVarNameFromValue(areaText);
-			if (varName) {
-				_addStepToTest("Input Text  \t" +
-					getLocator(element) +
-					"  \t${" +
-					varName +
-					"}");
-			} else {
-				if (createVar) {
-					varName = createVarName(element);
-					addVariable(varName, areaText);
-					_addStepToTest("Input Text  \t" +
-						getLocator(element) +
-						"  \t${" +
-						varName +
-						"}");
-				} else {
-					_addStepToTest("Input Text  \t" + getLocator(element) +
-						"  \t" +
-						areaText);
-				}
-			}
-		} else {
-			_addStepToTest("Input Text  \t" + getLocator(element) +
-				"  \t" +
-				areaText);
-		}
-	}
-
-	//TODO create variables from values and labels?
-	else if (element.tagName == "SELECT") {
-		var elContainingDocument = element.ownerDocument;
-		var xPathResult = elContainingDocument.evaluate(".//option",
-			element,
-			null,
-			0,
-			null);
-		var matchedNode = xPathResult.iterateNext();
-		while (matchedNode) {
-			if (matchedNode.selected) {
-				var locType = getLocatorType(matchedNode);
-				var testStep;
-
-				if (locType == "value") {
-					testStep = "Select From List By Value  \t" +
-						getLocator(element) +
-						"  \t" +
-						matchedNode.getAttribute("value");
-				} else if (locType == "label") {
-					testStep = "Select From List By Label  \t" +
-						getLocator(element) +
-						"  \t" +
-						matchedNode.label;
-				} else if (locType == "index") {
-					testStep = "Select From List By Index  \t" +
-						getLocator(element) +
-						"  \t" +
-						matchedNode.index;
-				} else if (matchedNode.label && matchedNode.label !== "") {
-					testStep = "Select From List By Label  \t" +
-						getLocator(element) +
-						"  \t" +
-						matchedNode.label;
-				}
-				if (testStep) {
-					_addStepToTest(testStep);
-				}
-				//TODO would this be useful?
-				/*
-					if (useVar || createVar) {
-					var varName = getVarNameFromValue(locator);
-					if (varName) {
-					_addStepToTest(testStep + "${" + varName + "}");
-					} else {
-					if (createVar) {
-					varName = _createVarName(element);
-					addVariable(varName, locator);
-					_addStepToTest(testStep + "${" + varName + "}");
-					} else {
-					_addStepToTest(testStep + locator);
-					}
-					}
-					}
-				*/
-			}
-			//TODO would this be useful?
-			/*
-			else {
-					_addStepToTest("Unselect From List\t" + getLocator(element) + "  \t" + getLocator(matchedNode));
-			} 
-			*/
-			matchedNode = xPathResult.iterateNext();
-		}
-	}
-}
-
-function _checkFormElement(element) {
-	var varName;
-	var useVar = this._prefService.getBoolPref(
-		"extensions.firerobot.variables.use");
-
-	if (element.tagName == "INPUT") {
-		if ((element.type == "text" ||
-			element.type == "email" ||
-			element.type == "tel" ||
-			element.type == "url" ||
-			element.type == "search" ||
-			element.type == "color" ||
-			element.type == "number" ||
-			element.type == "range" ||
-			element.type == "date" ||
-			element.type === undefined) && element.value) {
-			var boxText = element.value;
-			boxText = escapeRobot(boxText);
-			boxText = escapeSpace(boxText);
-			if (useVar) {
-				varName = getVarNameFromValue(boxText);
-				if (varName) {
-					_addStepToTest("Textfield Value Should Be  \t" +
-						getLocator(element) +
-						"  \t${" +
-						varName +
-						"}");
-				} else {
-					_addStepToTest("Textfield Value Should Be  \t" +
-						getLocator(element) +
-						"  \t" +
-						boxText);
-				}
-			} else {
-				//TODO should this verify if the textfield is empty?
-				_addStepToTest("Textfield Value Should Be  \t" + getLocator(element) +
-					"  \t" +
-					boxText);
-			}
-		} else if (element.type == "checkbox" && element.checked) {
 			_addStepToTest("Checkbox Should Be Selected  \t" +
-				getLocator(element));
+				locator);
 		} else if (element.type == "checkbox" && !element.checked) {
 			_addStepToTest("Checkbox Should Not Be Selected  \t" +
-				getLocator(element));
+				locator);
 			//TODO Use the "radio button should no be selected" keyword?
 		} else if (element.type == "radio" && element.checked) {
 			_addStepToTest("Radio Button Should Be Set To  \t" +
@@ -755,25 +802,35 @@ function _checkFormElement(element) {
 		areaText = escapeRobot(areaText);
 		areaText = areaText.replace(/(\r\n|\n|\r)/gm, "\\n");
 		areaText = escapeSpace(areaText);
-		if (useVar) {
+		if (useVar || createVar) {
 			varName = getVarNameFromValue(areaText);
 			if (varName) {
 				_addStepToTest("Textarea Value Should Be  \t" +
-					getLocator(element) +
+					locator +
 					"  \t${" +
 					varName +
 					"}");
 			} else {
-				_addStepToTest("Textarea Value Should Be  \t" +
-					getLocator(element) +
-					"  \t" +
-					areaText);
+				if (createVar) {
+					varName = createVarName(element);
+					addVariable(varName, areaText);
+					_addStepToTest("Textarea Value Should Be  \t" +
+						locator +
+						"  \t${" +
+						varName +
+						"}");
+				} else {
+					_addStepToTest("Textarea Value Should Be  \t" +
+						locator +
+						"  \t" +
+						areaText);
+				}
 			}
 		} else {
-			//TODO should this verify if the textfield is empty?
 			_addStepToTest("Textarea Value Should Be  \t" +
-				getLocator(element) +
-				"  \t" + areaText);
+				locator +
+				"  \t" +
+				areaText);
 		}
 	} else if (element.tagName == "SELECT") {
 		var elContainingDocument = element.ownerDocument;
@@ -786,17 +843,31 @@ function _checkFormElement(element) {
 		while (matchedNode) {
 			if (matchedNode.selected) {
 				var locType = getLocatorType(matchedNode);
+				var testStep = "List Selection Should Be  \t" +
+					locator +
+					"  \t";
+				var matcheNodeLoc;
 				if (locType == "value" || locType == "label") {
-					_addStepToTest("List Selection Should Be  \t" +
-						getLocator(element) +
-						"  \t" +
-						getLocator(matchedNode));
-				} else if (matchedNode.getAttribute("value") &&
+					matcheNodeLoc = getLocator(matchedNode);
+				}
+				//Index is valid for filling but not for checking, use value as default
+				else if (matchedNode.getAttribute("value") &&
 					matchedNode.getAttribute("value") !== "") {
-					_addStepToTest("List Selection Should Be  \t" +
-						getLocator(element) +
-						"  \t" +
-						matchedNode.getAttribute(value));
+					matcheNodeLoc = matchedNode.getAttribute("value");
+				}
+				if (useVar || createVar) {
+					varName = getVarNameFromValue(matcheNodeLoc);
+					if (varName) {
+						_addStepToTest(testStep + "${" + varName + "}");
+					} else {
+						if (createVar) {
+							varName = createVarName(element);
+							addVariable(varName, matcheNodeLoc);
+							_addStepToTest(testStep + "${" + varName + "}");
+						} else {
+							_addStepToTest(testStep + matcheNodeLoc);
+						}
+					}
 				}
 			}
 			matchedNode = xPathResult.iterateNext();
@@ -841,7 +912,7 @@ function _addStepToTest(step) {
 	var frWindow = _Application.storage.get("frWindow", undefined);
 	var testCaseTextArea = frWindow.document.getElementById("testCaseTextArea");
 	var testCase = testCaseTextArea.value;
-	testCase = testCase + "\r\n\t" + step;
+	testCase = testCase + "\r\n    " + step;
 	testCaseTextArea.value = testCase;
 	var ti = frWindow.document.getAnonymousNodes(testCaseTextArea)[0].
 	childNodes[0];

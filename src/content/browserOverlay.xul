@@ -127,6 +127,10 @@
                     id="fire-robot-close-all-browsers" 
                     label="Close All Browsers" 
                     oncommand="FireRobot.BrowserOverlay.addKeyword(this.id);"/>
+                    <menuitem 
+                    id="fire-robot-reload-page" 
+                    label="Reload Page" 
+                    oncommand="FireRobot.BrowserOverlay.addKeyword(this.id);"/>
                 </menupopup>
             </menu>
             <menu id="fire-robot-frame" 

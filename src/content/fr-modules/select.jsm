@@ -245,8 +245,8 @@ function _setContextMenu(e) {
 	e.stopImmediatePropagation();
 	e.stopPropagation();
 	e.preventDefault();
-	var browserWindow = _Application.storage.get("browserWindow", null);
-	var contextMenu = browserWindow.document.getElementById("contentAreaContextMenu");
+	var selectContextWindow = _Application.storage.get("selectContextWindow", null);
+	var contextMenu = selectContextWindow.document.getElementById("contentAreaContextMenu");
 	contextMenu.openPopupAtScreen(e.screenX, e.screenY, true, e);
 }
 

@@ -25,7 +25,19 @@ function createVarName(element) {
 		element.placeholder &&
 		element.placeholder !== "") {
 		varName = element.placeholder;
-	} else {
+	} else if (element.tagName == "SELECT") {
+		var selText = "";
+		var nodes = element.parentNode.childNodes;
+		for (var i = 0; i < nodes.length; ++i) {
+			if (nodes[i].nodeType === 3  && nodes[i].wholeText.trim() !== "") { // 3 means "text"
+				selText += nodes[i].wholeText + " ";
+			}
+		}
+		if (selText !== "") {
+			varName = selText;
+		}
+	}
+	if (varName == undefined) {
 		var nearTextElement = getNearTextElement(element);
 		if (nearTextElement) {
 			varName = nearTextElement.textContent;
@@ -35,8 +47,8 @@ function createVarName(element) {
 		varName = varName.toLowerCase();
 		varName = varName.trim();
 		varName = varName.replace(/\s{1,}/g, "-");
-		var regex = new XRegExp("[^\\p{N}\\p{L}-_]","g");
-        varName = XRegExp.replace(varName, regex, "");
+		var regex = new XRegExp("[^\\p{N}\\p{L}-_]", "g");
+		varName = XRegExp.replace(varName, regex, "");
 		varName = varName.replace(/-{2,}/g, "-").replace(/^-|-$/g, "");
 		varName = varName.substring(0, 63);
 	} else {
@@ -120,7 +132,7 @@ function increaseVarIndex() {
 	var selectedIndex = varListBox.selectedIndex;
 	var itemCount = varListBox.itemCount;
 
-	if(!selectedItem) {
+	if (!selectedItem) {
 		warning("firerobot.warn.no-var-select");
 	} else if (selectedIndex < itemCount - 1) {
 		varListBox.removeItemAt(selectedIndex);
@@ -139,7 +151,7 @@ function decreaseVarIndex() {
 	var selectedItem = varListBox.selectedItem;
 	var selectedIndex = varListBox.selectedIndex;
 
-	if(!selectedItem) {
+	if (!selectedItem) {
 		warning("firerobot.warn.no-var-select");
 	} else if (selectedIndex > 0) {
 		varListBox.removeItemAt(selectedIndex);
