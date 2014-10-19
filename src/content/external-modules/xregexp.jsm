@@ -1363,7 +1363,7 @@ XRegExp = XRegExp || (function (undef) {
                 }
             }
         }
-
+    };
 
 /* Adds data for the Unicode `Letter` category. Addon packages include other categories, scripts,
  * blocks, and properties.
