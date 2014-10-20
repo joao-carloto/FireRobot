@@ -60,7 +60,7 @@
 			"{91d9d8dc-09f8-4890-b6d8-32cbbf0a2f0e}",
 			"content",
 			"java",
-			"robotframework-selenium2library-java-1.4.0.6-jar-with-dependencies.jar"
+			"robotframework-selenium2library-java-1.4.0.7-SNAPSHOT-jar-with-dependencies.jar"
 		]);
 		var selenium2LibraryPath = selenium2Library.path;
 
@@ -172,7 +172,6 @@
 			}
 		});
 	}
-
 
 	function showReport() {
 		Components.utils.import("resource://gre/modules/FileUtils.jsm");

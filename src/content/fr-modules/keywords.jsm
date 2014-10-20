@@ -550,6 +550,8 @@ function _fillFormElement(element) {
 	var useVar = this._prefService.getBoolPref(
 		"extensions.firerobot.variables.use");
 	var locator = getLocator(element);
+	var testStep;
+	var varName;
 
 	if (element.tagName == "INPUT") {
 		if ((element.type == "text" ||
@@ -563,34 +565,23 @@ function _fillFormElement(element) {
 				element.type == "date" ||
 				element.type === undefined) &&
 			element.value) {
+			testStep = "Input Text  \t" +
+				locator +
+				"  \t";
 			var boxText = element.value;
 			boxText = escapeRobot(boxText);
 			boxText = escapeSpace(boxText);
 			if (useVar || createVar) {
 				varName = getVarNameFromValue(boxText);
-				if (varName) {
-					_addStepToTest("Input Text  \t" + locator +
-						"  \t${" +
-						varName +
-						"}");
-				} else {
-					if (createVar) {
-						varName = createVarName(element);
-						addVariable(varName, boxText);
-						_addStepToTest("Input Text  \t" + locator +
-							"  \t${" +
-							varName +
-							"}");
-					} else {
-						_addStepToTest("Input Text  \t" + locator +
-							"  \t" +
-							boxText);
-					}
-				}
+			}
+			if (createVar && !varName) {
+				varName = createVarName(element);
+				addVariable(varName, boxText);
+			}
+			if (useVar && varName) {
+				_addStepToTest(testStep + "${" + varName + "}");
 			} else {
-				_addStepToTest("Input Text  \t" +
-					locator +
-					"  \t" + boxText);
+				_addStepToTest(testStep + boxText);
 			}
 		} else if (element.type == "checkbox" && element.checked) {
 			_addStepToTest("Select Checkbox  \t" + locator);
@@ -607,71 +598,45 @@ function _fillFormElement(element) {
 				"  \t" +
 				element.value);
 		} else if (element.type == "password" && element.value) {
-
+			testStep = "Input Password   \t" +
+					locator +
+					"  \t";
 			var passText = element.value;
+            passText= escapeRobot(passText);
+			passText = escapeSpace(passText);
 			if (useVar || createVar) {
 				varName = getVarNameFromValue(passText);
-				if (varName) {
-					_addStepToTest("Input Password   \t" +
-						locator +
-						"  \t${" +
-						varName +
-						"}");
-				} else {
-					if (createVar) {
-						varName = createVarName(element);
-						addVariable(varName, passText);
-						_addStepToTest("Input Password   \t" +
-							locator +
-							"  \t${" +
-							varName +
-							"}");
-					} else {
-						_addStepToTest("Input Password   \t" +
-							locator +
-							"  \t" +
-							passText);
-					}
-				}
+			}
+			if (createVar && !varName) {
+				varName = createVarName(element);
+				addVariable(varName, passText);
+			}
+			if (useVar && varName) {
+				_addStepToTest(testStep + "${" + varName + "}");
 			} else {
-				_addStepToTest("Input Password   \t" +
-					locator +
-					"  \t" +
-					passText);
+				_addStepToTest(testStep + passText);
 			}
 		}
 	} else if (element.tagName == "TEXTAREA" && element.value) {
+		testStep = "Input Text  \t" +
+			locator +
+			"  \t";
 		var areaText = element.value;
 		areaText = escapeRobot(areaText);
 		areaText = areaText.replace(/(\r\n|\n|\r)/gm, "\\n");
 		areaText = escapeSpace(areaText);
+
 		if (useVar || createVar) {
 			varName = getVarNameFromValue(areaText);
-			if (varName) {
-				_addStepToTest("Input Text  \t" +
-					locator +
-					"  \t${" +
-					varName +
-					"}");
-			} else {
-				if (createVar) {
-					varName = createVarName(element);
-					addVariable(varName, areaText);
-					_addStepToTest("Input Text  \t" +
-						locator +
-						"  \t${" +
-						varName +
-						"}");
-				} else {
-					_addStepToTest("Input Text  \t" + locator +
-						"  \t" +
-						areaText);
-				}
-			}
+		}
+		if (createVar && !varName) {
+			varName = createVarName(element);
+			addVariable(varName, areaText);
+		}
+		if (useVar && varName) {
+			_addStepToTest(testStep + "${" + varName + "}");
 		} else {
-			_addStepToTest("Input Text  \t" + locator +
-				"  \t" +
-				areaText);
+			_addStepToTest(testStep + areaText);
 		}
 	} else if (element.tagName == "SELECT") {
 		var elContainingDocument = element.ownerDocument;
@@ -684,7 +649,6 @@ function _fillFormElement(element) {
 		while (matchedNode) {
 			if (matchedNode.selected) {
 				var locType = getLocatorType(matchedNode);
-				var testStep;
 				var matcheNodeLoc;
 
 				if (locType == "value") {
@@ -708,19 +672,18 @@ function _fillFormElement(element) {
 						"  \t";
 					matcheNodeLoc = matchedNode.label;
 				}
+
 				if (useVar || createVar) {
-					var varName = getVarNameFromValue(matcheNodeLoc);
-					if (varName) {
-						_addStepToTest(testStep + "${" + varName + "}");
-					} else {
-						if (createVar) {
-							varName = createVarName(element);
-							addVariable(varName, matcheNodeLoc);
-							_addStepToTest(testStep + "${" + varName + "}");
-						} else {
-							_addStepToTest(testStep + matcheNodeLoc);
-						}
-					}
+					varName = getVarNameFromValue(matcheNodeLoc);
+				}
+				if (createVar && !varName) {
+					varName = createVarName(element);
+					addVariable(varName, matcheNodeLoc);
+				}
+				if (useVar && varName) {
+					_addStepToTest(testStep + "${" + varName + "}");
+				} else {
+					_addStepToTest(testStep + matcheNodeLoc);
 				}
 			}
 			//TODO would this be useful?
@@ -735,12 +698,13 @@ function _fillFormElement(element) {
 }
 
 function _checkFormElement(element) {
-	var locator = getLocator(element);
-	var varName;
 	var createVar = this._prefService.getBoolPref(
 		"extensions.firerobot.variables.create");
 	var useVar = this._prefService.getBoolPref(
 		"extensions.firerobot.variables.use");
+	var locator = getLocator(element);
+	var testStep;
+	var varName;
 
 	if (element.tagName == "INPUT") {
 		if ((element.type == "text" ||
@@ -754,35 +718,23 @@ function _checkFormElement(element) {
 				element.type == "date" ||
 				element.type === undefined) &&
 			element.value) {
+			testStep = "Textfield Value Should Be  \t" +
+				locator +
+				"  \t";
 			var boxText = element.value;
 			boxText = escapeRobot(boxText);
 			boxText = escapeSpace(boxText);
 			if (useVar || createVar) {
 				varName = getVarNameFromValue(boxText);
-				if (varName) {
-					_addStepToTest("Textfield Value Should Be  \t" +
-						locator +
-						"  \t${" +
-						varName +
-						"}");
-				} else {
-					if (createVar) {
-						varName = createVarName(element);
-						addVariable(varName, boxText);
-						_addStepToTest("Textfield Value Should Be  \t" + locator +
-							"  \t${" +
-							varName +
-							"}");
-					} else {
-						_addStepToTest("Textfield Value Should Be  \t" + locator +
-							"  \t" +
-							boxText);
-					}
-				}
+			}
+			if (createVar && !varName) {
+				varName = createVarName(element);
+				addVariable(varName, boxText);
+			}
+			if (useVar && varName) {
+				_addStepToTest(testStep + "${" + varName + "}");
 			} else {
-				_addStepToTest("Textfield Value Should Be  \t" +
-					locator +
-					"  \t" + boxText);
+				_addStepToTest(testStep + boxText);
 			}
 		} else if (element.type == "checkbox" && element.checked) {
 			_addStepToTest("Checkbox Should Be Selected  \t" +
@@ -798,39 +750,25 @@ function _checkFormElement(element) {
 				element.value);
 		}
 	} else if (element.tagName == "TEXTAREA" && element.value) {
+		testStep = "Textarea Value Should Be  \t" +
+			locator +
+			"  \t";
 		var areaText = element.value;
 		areaText = escapeRobot(areaText);
 		areaText = areaText.replace(/(\r\n|\n|\r)/gm, "\\n");
 		areaText = escapeSpace(areaText);
+
 		if (useVar || createVar) {
 			varName = getVarNameFromValue(areaText);
-			if (varName) {
-				_addStepToTest("Textarea Value Should Be  \t" +
-					locator +
-					"  \t${" +
-					varName +
-					"}");
-			} else {
-				if (createVar) {
-					varName = createVarName(element);
-					addVariable(varName, areaText);
-					_addStepToTest("Textarea Value Should Be  \t" +
-						locator +
-						"  \t${" +
-						varName +
-						"}");
-				} else {
-					_addStepToTest("Textarea Value Should Be  \t" +
-						locator +
-						"  \t" +
-						areaText);
-				}
-			}
+		}
+		if (createVar && !varName) {
+			varName = createVarName(element);
+			addVariable(varName, areaText);
+		}
+		if (useVar && varName) {
+			_addStepToTest(testStep + "${" + varName + "}");
 		} else {
-			_addStepToTest("Textarea Value Should Be  \t" +
-				locator +
-				"  \t" +
-				areaText);
+			_addStepToTest(testStep + areaText);
 		}
 	} else if (element.tagName == "SELECT") {
 		var elContainingDocument = element.ownerDocument;
@@ -843,7 +781,7 @@ function _checkFormElement(element) {
 		while (matchedNode) {
 			if (matchedNode.selected) {
 				var locType = getLocatorType(matchedNode);
-				var testStep = "List Selection Should Be  \t" +
+				testStep = "List Selection Should Be  \t" +
 					locator +
 					"  \t";
 				var matcheNodeLoc;
@@ -855,19 +793,18 @@ function _checkFormElement(element) {
 					matchedNode.getAttribute("value") !== "") {
 					matcheNodeLoc = matchedNode.getAttribute("value");
 				}
+
 				if (useVar || createVar) {
 					varName = getVarNameFromValue(matcheNodeLoc);
-					if (varName) {
-						_addStepToTest(testStep + "${" + varName + "}");
-					} else {
-						if (createVar) {
-							varName = createVarName(element);
-							addVariable(varName, matcheNodeLoc);
-							_addStepToTest(testStep + "${" + varName + "}");
-						} else {
-							_addStepToTest(testStep + matcheNodeLoc);
-						}
-					}
+				}
+				if (createVar && !varName) {
+					varName = createVarName(element);
+					addVariable(varName, matcheNodeLoc);
+				}
+				if (useVar && varName) {
+					_addStepToTest(testStep + "${" + varName + "}");
+				} else {
+					_addStepToTest(testStep + matcheNodeLoc);
 				}
 			}
 			matchedNode = xPathResult.iterateNext();

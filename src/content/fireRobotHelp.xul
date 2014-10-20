@@ -78,7 +78,7 @@
             <html:ul>
                 <html:li>
                     <html:a 
-                      href='https://code.google.com/p/robotframework/' 
+                      href='https://github.com/robotframework/robotframework' 
                       target='_blank'>
                         <html:u>robotframework</html:u>
                     </html:a>

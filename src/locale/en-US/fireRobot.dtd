@@ -6,7 +6,7 @@
 <!ENTITY firerobot.help.what_is.li_2      "Filling and verification of forms based on their current state.">
 <!ENTITY firerobot.help.what_is.li_3      "Easy preference definition for the page element locators.">
 <!ENTITY firerobot.help.what_is.li_4      "Element localization thru automatically generated XPath, based on an element's own text or text of a nearby element.">
-<!ENTITY firerobot.help.what_is.li_5      "Automatic creation of variables based on the content of text fields.">
+<!ENTITY firerobot.help.what_is.li_5      "Automatic creation of variables based on the value of inputs.">
 
 <!ENTITY firerobot.help.how_to.title      "HOW TO USE FIREROBOT?">
 <!ENTITY firerobot.help.how_to.li_1       "Toggle the select button. The active web page will get a dashed border, along with any included frames or iframes.">
@@ -22,12 +22,12 @@
 <!ENTITY firerobot.help.how_to.li_11      "You may use any <html:u><html:a target='_blank' href='https://code.google.com/p/robotframework/wiki/TestLibraries'>RF standard library</html:a></html:u> (OperatingSystem, String, etc). Just include it on the *Settings* section.">
 <!ENTITY firerobot.help.how_to.li_12      "To run the current test script just click on the play button.">
 <!ENTITY firerobot.help.how_to.li_13      "The test script can be saved to a .txt or .robot file and reused later, on FireRobot or another IDE. In Linux, or Mac OS X, you must explicitly use one of these extensions when naming the test file. In Windows, .txt will be used by default, if none is indicated explicitly.">
-<!ENTITY firerobot.help.how_to.li_14      "Mac OS X users must open the test report manually, after the test is run.">
+<!ENTITY firerobot.help.how_to.li_14      "Linux and Mac OS X users must open the test report manually, after the test is run.">
 
 <!ENTITY firerobot.help.official      "You  might want to check the offcial page at <html:a href='http://joao-carloto.github.io/FireRobot/' target='_blank'> <html:u>GitHub</html:u></html:a>.">
 
-<!ENTITY firerobot.help.issues.title      "<html:b>Disclaimer:</html:b> This tool is being released publicly because it is believed to have reached a stage where it can be helpful. However, it is still a 'young' application, with some known (and possibly unknown) limitations.">
-<!ENTITY firerobot.help.issues.feedback   "Please provide feedback at the <html:a href='https://github.com/joao-carloto/FireRobot/issues' target='_blank'><html:u>FireRobot GitHub page</html:u></html:a>. Bugs, new features, small improvements, all are welcome. They will be addressed when possible.">
+<!ENTITY firerobot.help.issues.title      "<html:b>Disclaimer:</html:b> This tool is being released publicly because it is believed to have reached a stage where it can be helpful. However, most of it was written when the author should be sleeping, and it was not submitted to exhaustive testing. ">
+<!ENTITY firerobot.help.issues.feedback   "If you feel this project might be helpful to you, please contribute by providing feedback at the <html:a href='https://github.com/joao-carloto/FireRobot/issues' target='_blank'><html:u>FireRobot GitHub page</html:u></html:a>. Bugs, new features, small improvements, all are welcome. They will be addressed when possible.">
 
 <!ENTITY firerobot.help.license.title     "LICENSE">
 <!ENTITY firerobot.help.license.fire_robot 		"FireRobot is an open source software released under the ">
