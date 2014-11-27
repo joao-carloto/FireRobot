@@ -8,12 +8,6 @@ if (!FireRobot.Preferences) FireRobot.Preferences = {};
 
 FireRobot.Preferences = {
 
-	prefService: Components.classes["@mozilla.org/preferences-service;1"].
-	getService(Components.interfaces.nsIPrefBranch),
-
-	Application: Components.classes["@mozilla.org/fuel/application;1"]
-		.getService(Components.interfaces.fuelIApplication),
-
 	enableLocator: function() {
 		var disabledLocList = document.getElementById("disabled-locators-list");
 		var selectedItem = disabledLocList.selectedItem;
@@ -23,7 +17,9 @@ FireRobot.Preferences = {
 			disabledLocList.removeItemAt(selectedIndex);
 
 			var enabledLocList = document.getElementById("enabled-locators-list");
-			enabledLocList.appendChild(selectedItem);
+
+			enabledLocList.insertBefore(selectedItem, enabledLocList.getItemAtIndex(0));
+
 			enabledLocList.selectItem(selectedItem);
 			this.updateLocators();
 		} else {
@@ -113,7 +109,7 @@ FireRobot.Preferences = {
 		var enabledLocPreferences;
 		var disabledLocPreferences;
 
-		enabledLocPreferences = this.prefService.getCharPref("extensions.firerobot.enabled-locators");
+		enabledLocPreferences = prefService.getCharPref("extensions.firerobot.enabled-locators");
 		enabledLocPreferences = enabledLocPreferences.split(",");
 		disabledLocPreferences = this.getDisabledLocPrefsFromEnabled(
 			enabledLocPreferences);
@@ -161,7 +157,7 @@ FireRobot.Preferences = {
 			if (previousSelDisable) {
 				previousSelDisable.setAttribute('class', 'prefItem');
 				Application.storage.set("selectedDisabledLocator", undefined);
-			};
+			}
 			var selectedItem = enabledLocList.selectedItem;
 			if (selectedItem) {
 				Application.storage.set("selectedEnabledLocator", selectedItem);
@@ -173,12 +169,12 @@ FireRobot.Preferences = {
 			var previousSelDisable = Application.storage.get("selectedDisabledLocator", undefined);
 			if (previousSelDisable) {
 				previousSelDisable.setAttribute('class', 'prefItem');
-			};
+			}
 			var previousSelEnable = Application.storage.get("selectedEnabledLocator", undefined);
 			if (previousSelEnable) {
 				previousSelEnable.setAttribute('class', 'prefItem');
 				Application.storage.set("selectedEnabledLocator", undefined);
-			};
+			}
 			var selectedItem = disabledLocList.selectedItem;
 			if (selectedItem) {
 				Application.storage.set("selectedDisabledLocator", selectedItem);

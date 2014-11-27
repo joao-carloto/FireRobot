@@ -8,38 +8,38 @@ Components.utils.import("chrome://firerobot/content/fr-modules/utils.jsm");
 Components.utils.import("chrome://firerobot/content/fr-modules/locators.jsm");
 
 
-var _Application = Components.classes["@mozilla.org/fuel/application;1"]
-	.getService(Components.interfaces.fuelIApplication);
-
-var _windowMediator = Components.classes["@mozilla.org/appshell/window-mediator;1"]
-	.getService(Components.interfaces.nsIWindowMediator);
-
 function toggleSelectMode() {
-	var selectModeOn = _Application.storage.get("selectModeOn", false);
-	var frWindow = _Application.storage.get("frWindow", undefined);
+	var selectModeOn = Application.storage.get("selectModeOn", false);
+	var frWindow = Application.storage.get("frWindow", undefined);
 	var btn = frWindow.document.getElementById("selectButton");
 
 	if (selectModeOn) {
-		_Application.storage.set("selectModeOn", false);
+		Application.storage.set("selectModeOn", false);
 		resetSelectContext();
 		btn.setAttribute("class", "btn");
 	} else {
-		var browserWindow = _windowMediator.getMostRecentWindow("navigator:browser");
+		var oldBrowserWindow = Application.storage.get("browserWindow", undefined);
+		var browserWindow = setBrowserWindow();
+
+		if(oldBrowserWindow !== browserWindow) {
+			setBrowserIconOff(oldBrowserWindow);
+		} 
+		setBrowserIconOn(browserWindow);
 		var doc = browserWindow.content.document;
 
 		if (!doc.body) {
 			warning("firerobot.warn.no-body");
 			return;
 		}
-		_Application.storage.set("selectModeOn", true);
+		Application.storage.set("selectModeOn", true);
 		_setSelectContext();
 		btn.setAttribute("class", "selectOn");
 	}
 }
 
 function clearSelections() {
-	var frWindow = _Application.storage.get("frWindow", undefined);
-	var selectedElements = _Application.storage.get("selectedElements", undefined);
+	var frWindow = Application.storage.get("frWindow", undefined);
+	var selectedElements = Application.storage.get("selectedElements", undefined);
 	for (var i = 0; i < selectedElements.length; i++) {
 		try {
 			selectedElements[i].isSelected = false;
@@ -50,18 +50,18 @@ function clearSelections() {
 	}
 	selectedElements = [];
 	frWindow.document.getElementById("htmlTextArea").value = "";
-	_Application.storage.set("selectedElements", selectedElements);
+	Application.storage.set("selectedElements", selectedElements);
 }
 
 function resetSelectContext() {
-	var frWindow = _Application.storage.get("frWindow", undefined);
+	var frWindow = Application.storage.get("frWindow", undefined);
 	frWindow.document.getElementById("selectButton").setAttribute("class", "btn");
 	clearSelections();
-	var doc = _Application.storage.get("selectContextDoc", undefined);
+	var doc = Application.storage.get("selectContextDoc", undefined);
 	if (doc) {
 		_removeEventListners(doc);
 	}
-	var browserWindow = _Application.storage.get("selectContextWindow", undefined);
+	var browserWindow = Application.storage.get("selectContextWindow", undefined);
 	if (browserWindow) {
 		var contextMenu = browserWindow.document.getElementById("contentAreaContextMenu");
 		var contextMenuItems = contextMenu.childNodes;
@@ -73,17 +73,18 @@ function resetSelectContext() {
 			}
 		}
 	}
-	_Application.storage.set("selectModeOn", false);
-	_Application.storage.set("selectContextWindow", undefined);
-	_Application.storage.set("selectContextDoc", undefined);
+	Application.storage.set("selectModeOn", false);
+	Application.storage.set("selectContextWindow", undefined);
+	Application.storage.set("selectContextDoc", undefined);
 }
 
 function _setSelectContext() {
-	var browserWindow = _windowMediator.getMostRecentWindow("navigator:browser");
+
+	var browserWindow = Application.storage.get("browserWindow", undefined);
 	var doc = browserWindow.content.document;
 
-	_Application.storage.set("selectContextWindow", browserWindow);
-	_Application.storage.set("selectContextDoc", doc);
+	Application.storage.set("selectContextWindow", browserWindow);
+	Application.storage.set("selectContextDoc", doc);
 
 	_addEventListners(doc);
 
@@ -114,13 +115,13 @@ function _addEventListners(doc) {
 
 	//This is the only way I could make the eventListeners to be removed 
 	//when the FireRobot window is in float mode.
-	_Application.storage.set("click", _selectElement);
-	_Application.storage.set("mouseover", _overElement);
-	_Application.storage.set("mouseout", _outElement);
-	_Application.storage.set("keydown", _keyDown);
-	_Application.storage.set("mouseupdown", _blockMouseUpDown);
-	_Application.storage.set("contextmenu", _setContextMenu);
-	_Application.storage.set("unload", resetSelectContext);
+	Application.storage.set("click", _selectElement);
+	Application.storage.set("mouseover", _overElement);
+	Application.storage.set("mouseout", _outElement);
+	Application.storage.set("keydown", _keyDown);
+	Application.storage.set("mouseupdown", _blockMouseUpDown);
+	Application.storage.set("contextmenu", _setContextMenu);
+	Application.storage.set("unload", resetSelectContext);
 
 	//Go recursive for frames
 	var frames = doc.querySelectorAll('iframe, frame');
@@ -134,13 +135,13 @@ function _addEventListners(doc) {
 }
 
 function _removeEventListners(doc) {
-	var _selectElement = _Application.storage.get("click", _selectElement);
-	var _overElement = _Application.storage.get("mouseover", _overElement);
-	var _outElement = _Application.storage.get("mouseout", _outElement);
-	var _keyDown = _Application.storage.get("keydown", _keyDown);
-	var _blockMouseUpDown = _Application.storage.get("mouseupdown", _blockMouseUpDown);
-	var _setContextMenu = _Application.storage.get("contextmenu", _setContextMenu);
-	var _resetSelectContext = _Application.storage.get("unload", resetSelectContext);
+	var _selectElement = Application.storage.get("click", _selectElement);
+	var _overElement = Application.storage.get("mouseover", _overElement);
+	var _outElement = Application.storage.get("mouseout", _outElement);
+	var _keyDown = Application.storage.get("keydown", _keyDown);
+	var _blockMouseUpDown = Application.storage.get("mouseupdown", _blockMouseUpDown);
+	var _setContextMenu = Application.storage.get("contextmenu", _setContextMenu);
+	var _resetSelectContext = Application.storage.get("unload", resetSelectContext);
 
 	doc.body.style.border = "";
 
@@ -187,7 +188,7 @@ function _selectElement(e) {
 		//Only allow the body 
 		if (el.tagName == "HTML") return;
 
-		var selectedElements = _Application.storage.get("selectedElements", undefined);
+		var selectedElements = Application.storage.get("selectedElements", undefined);
 
 		if (el.outerHTML.substring(1, el.outerHTML.indexOf(">")).indexOf("xmlns=\"http://www.w3.org/1999/xhtml\"") != -1) {
 			warning("firerobot.warn.no-xhtml");
@@ -195,7 +196,7 @@ function _selectElement(e) {
 		}
 		if (!el.isSelected) {
 			//TODO el.xpath not preserved when element inside frame. Make more efficient.
-			if(el.xpath == undefined) el.xpath =  getElementXPath(el);
+			if(el.xpath === undefined) el.xpath =  getElementXPath(el);
 			var containers = [];
 			var containerIndexes = [];
 			_getElementContainers(el, containers, containerIndexes);
@@ -211,7 +212,7 @@ function _selectElement(e) {
 		}
 		selectedElements.sort(_compareElements);
 		_displayHTML();
-		_Application.storage.set("selectedElements", selectedElements);
+		Application.storage.set("selectedElements", selectedElements);
 	}
 }
 
@@ -245,7 +246,7 @@ function _setContextMenu(e) {
 	e.stopImmediatePropagation();
 	e.stopPropagation();
 	e.preventDefault();
-	var selectContextWindow = _Application.storage.get("selectContextWindow", null);
+	var selectContextWindow = Application.storage.get("selectContextWindow", null);
 	var contextMenu = selectContextWindow.document.getElementById("contentAreaContextMenu");
 	contextMenu.openPopupAtScreen(e.screenX, e.screenY, true, e);
 }
@@ -255,7 +256,7 @@ function _displayHTML() {
 	var selectedElementsHTML = "";
 	var containerString = "";
 	var i;
-	var selectedElements = _Application.storage.get("selectedElements", undefined);
+	var selectedElements = Application.storage.get("selectedElements", undefined);
 
 	if (selectedElements.length !== 0) {
 		if (selectedElements[0].containers.length > 1) {
@@ -283,7 +284,7 @@ function _displayHTML() {
 			selectedElementsHTML += selectedElements[i].originalHTML;
 		}
 	}
-	var frWindow = _Application.storage.get("frWindow", undefined);
+	var frWindow = Application.storage.get("frWindow", undefined);
 	var htmlArea = frWindow.document.getElementById("htmlTextArea");
 	htmlArea.value = selectedElementsHTML;
 
@@ -302,14 +303,14 @@ function _overElement(e) {
 		el.originalHTML = e.target.outerHTML;
 	}
 
-	var selectedElements = _Application.storage.get("selectedElements", undefined);
+	var selectedElements = Application.storage.get("selectedElements", undefined);
 	if (selectedElements.indexOf(el) == -1) {
 		el.style.outline = "solid lightBlue 2px";
 	}
 }
 
 function _outElement(e) {
-	var selectedElements = _Application.storage.get("selectedElements", undefined);
+	var selectedElements = Application.storage.get("selectedElements", undefined);
 	e.stopImmediatePropagation();
 	e.stopPropagation();
 	e.preventDefault();

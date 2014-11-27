@@ -33,15 +33,6 @@ Components.utils.import("chrome://firerobot/content/fr-modules/locators.jsm");
 Components.utils.import("chrome://firerobot/content/fr-modules/variables.jsm");
 
 
-var _prefService = Components.classes["@mozilla.org/preferences-service;1"]
-	.getService(Components.interfaces.nsIPrefBranch);
-
-var _Application = Components.classes["@mozilla.org/fuel/application;1"]
-	.getService(Components.interfaces.fuelIApplication);
-
-var _windowMediator = Components.classes["@mozilla.org/appshell/window-mediator;1"]
-	.getService(Components.interfaces.nsIWindowMediator);
-
 function kwPageShouldContain() {
 	_addTextVerifications("Page Should Contain");
 }
@@ -51,7 +42,7 @@ function kwPageShouldNotContain() {
 }
 
 function kwPageShouldContainSmart() {
-	var selectedElements = _Application.storage.get("selectedElements", undefined);
+	var selectedElements = Application.storage.get("selectedElements", undefined);
 	if (!selectedElements || selectedElements.length === 0) {
 		warning("firerobot.warn.no-el-select");
 		return;
@@ -63,12 +54,12 @@ function kwPageShouldContainSmart() {
 			step += "Link";
 			var locType = getLocatorType(el);
 			if (locType == "link") {
-				var useVar = _prefService.getBoolPref(
+				var useVar = prefService.getBoolPref(
 					"extensions.firerobot.variables.use");
 				if (useVar) {
 					var varName = getVarNameFromValue(getLocator(el));
 					if (varName) {
-						step += "  \t${" + varName + "}";
+						step += "   \t${" + varName + "}";
 						_addStepToTest(step);
 						return;
 					}
@@ -90,14 +81,13 @@ function kwPageShouldContainSmart() {
 		} else {
 			step += "Element";
 		}
-		step += "  \t" + getLocator(el);
+		step += "   \t" + getLocator(el);
 		_addStepToTest(step);
 	}
 }
 
-
 function kwPageShouldNotContainSmart() {
-	var selectedElements = _Application.storage.get("selectedElements", undefined);
+	var selectedElements = Application.storage.get("selectedElements", undefined);
 	if (!selectedElements || selectedElements.length === 0) {
 		warning("firerobot.warn.no-el-select");
 		return;
@@ -109,12 +99,12 @@ function kwPageShouldNotContainSmart() {
 			step += "Link";
 			var locType = getLocatorType(el);
 			if (locType == "link") {
-				var useVar = _prefService.getBoolPref(
+				var useVar = prefService.getBoolPref(
 					"extensions.firerobot.variables.use");
 				if (useVar) {
 					var varName = getVarNameFromValue(getLocator(el));
 					if (varName) {
-						step += "  \t${" + varName + "}";
+						step += "   \t${" + varName + "}";
 						_addStepToTest(step);
 						return;
 					}
@@ -136,13 +126,13 @@ function kwPageShouldNotContainSmart() {
 		} else {
 			step += "Element";
 		}
-		step += "  \t" + getLocator(el);
+		step += "   \t" + getLocator(el);
 		_addStepToTest(step);
 	}
 }
 
 function kwClickSmart() {
-	var selectedElements = _Application.storage.get("selectedElements", undefined);
+	var selectedElements = Application.storage.get("selectedElements", undefined);
 	if (!selectedElements || selectedElements.length === 0) {
 		warning("firerobot.warn.no-el-select");
 		return;
@@ -154,12 +144,12 @@ function kwClickSmart() {
 			step += "Link";
 			var locType = getLocatorType(el);
 			if (locType == "link") {
-				var useVar = _prefService.getBoolPref(
+				var useVar = prefService.getBoolPref(
 					"extensions.firerobot.variables.use");
 				if (useVar) {
 					var varName = getVarNameFromValue(getLocator(el));
 					if (varName) {
-						step += "  \t${" + varName + "}";
+						step += "   \t${" + varName + "}";
 						_addStepToTest(step);
 						return;
 					}
@@ -173,7 +163,7 @@ function kwClickSmart() {
 		} else {
 			step += "Element";
 		}
-		step += "  \t" + getLocator(el);
+		step += "   \t" + getLocator(el);
 		_addStepToTest(step);
 	}
 }
@@ -183,31 +173,31 @@ function kwWaitUntilPageContains() {
 }
 
 function kwWaitUntilPageContainsElement() {
-	var selectedElements = _Application.storage.get("selectedElements", undefined);
+	var selectedElements = Application.storage.get("selectedElements", undefined);
 	if (!selectedElements || selectedElements.length === 0) {
 		warning("firerobot.warn.no-el-select");
 		return;
 	}
 	for (var i = 0; i < selectedElements.length; i++) {
 		var el = selectedElements[i];
-		_addStepToTest("Wait Until Page Contains Element  \t" + getLocatorForGenericElement(el));
+		_addStepToTest("Wait Until Page Contains Element   \t" + getLocatorForGenericElement(el));
 	}
 }
 
 function kwWaitUntilElementIsVisible() {
-	var selectedElements = _Application.storage.get("selectedElements", undefined);
+	var selectedElements = Application.storage.get("selectedElements", undefined);
 	if (!selectedElements || selectedElements.length === 0) {
 		warning("firerobot.warn.no-el-select");
 		return;
 	}
 	for (var i = 0; i < selectedElements.length; i++) {
 		var el = selectedElements[i];
-		_addStepToTest("Wait Until Element Is Visible  \t" + getLocatorForGenericElement(el));
+		_addStepToTest("Wait Until Element Is Visible   \t" + getLocatorForGenericElement(el));
 	}
 }
 
 function kwElementShouldBeEnabled() {
-	var selectedElements = _Application.storage.get("selectedElements", undefined);
+	var selectedElements = Application.storage.get("selectedElements", undefined);
 	if (!selectedElements || selectedElements.length === 0) {
 		warning("firerobot.warn.no-el-select");
 		return;
@@ -216,7 +206,7 @@ function kwElementShouldBeEnabled() {
 	for (var i = 0; i < selectedElements.length; i++) {
 		var el = selectedElements[i];
 		if (el.tagName == "INPUT") {
-			_addStepToTest("Element Should Be Enabled  \t" + getLocatorForGenericElement(el));
+			_addStepToTest("Element Should Be Enabled   \t" + getLocatorForGenericElement(el));
 			numInputElements++;
 		}
 	}
@@ -226,7 +216,7 @@ function kwElementShouldBeEnabled() {
 }
 
 function kwElementShouldBeDisabled() {
-	var selectedElements = _Application.storage.get("selectedElements", undefined);
+	var selectedElements = Application.storage.get("selectedElements", undefined);
 	if (!selectedElements || selectedElements.length === 0) {
 		warning("firerobot.warn.no-el-select");
 		return;
@@ -235,7 +225,7 @@ function kwElementShouldBeDisabled() {
 	for (var i = 0; i < selectedElements.length; i++) {
 		var el = selectedElements[i];
 		if (el.tagName == "INPUT") {
-			_addStepToTest("Element Should Disabled  \t" + getLocatorForGenericElement(el));
+			_addStepToTest("Element Should Disabled   \t" + getLocatorForGenericElement(el));
 			numInputElements++;
 		}
 	}
@@ -245,32 +235,32 @@ function kwElementShouldBeDisabled() {
 }
 
 function kwElementShouldBeVisible() {
-	var selectedElements = _Application.storage.get("selectedElements", undefined);
+	var selectedElements = Application.storage.get("selectedElements", undefined);
 	if (!selectedElements || selectedElements.length === 0) {
 		warning("firerobot.warn.no-el-select");
 		return;
 	}
 	for (var i = 0; i < selectedElements.length; i++) {
 		var el = selectedElements[i];
-		_addStepToTest("Element Should Be Visible  \t" + getLocatorForGenericElement(el));
+		_addStepToTest("Element Should Be Visible   \t" + getLocatorForGenericElement(el));
 	}
 }
 
 function kwElementShouldNotBeVisible() {
-	var selectedElements = _Application.storage.get("selectedElements", undefined);
+	var selectedElements = Application.storage.get("selectedElements", undefined);
 	if (!selectedElements || selectedElements.length === 0) {
 		warning("firerobot.warn.no-el-select");
 		return;
 	}
 	for (var i = 0; i < selectedElements.length; i++) {
 		var el = selectedElements[i];
-		_addStepToTest("Element Should Not Be Visible  \t" + getLocatorForGenericElement(el));
+		_addStepToTest("Element Should Not Be Visible   \t" + getLocatorForGenericElement(el));
 	}
 }
 
 function kwSelectFrame() {
-	var selectedElements = _Application.storage.get("selectedElements", undefined);
-	var browserWindow = _windowMediator.getMostRecentWindow("navigator:browser");
+	var selectedElements = Application.storage.get("selectedElements", undefined);
+	var browserWindow = windowMediator.getMostRecentWindow("navigator:browser");
 	var selectedFrame;
 	for (var i = 0; i < selectedElements.length; i++) {
 		try {
@@ -317,7 +307,7 @@ function kwSelectFrame() {
 		}
 	}
 	if (selectedFrame) {
-		var step = "Select Frame  \t" + getLocator(selectedFrame);
+		var step = "Select Frame   \t" + getLocator(selectedFrame);
 		_addStepToTest(step);
 	} else {
 		warning("firerobot.warn.no-frame");
@@ -325,7 +315,7 @@ function kwSelectFrame() {
 }
 
 function kwCurrentFrameContains() {
-	var selectedElements = _Application.storage.get("selectedElements", undefined);
+	var selectedElements = Application.storage.get("selectedElements", undefined);
 	var elInFrameWithText = 0;
 	var textFragments;
 	for (var i = 0; i < selectedElements.length; i++) {
@@ -333,17 +323,17 @@ function kwCurrentFrameContains() {
 		if (len > 1) {
 			textFragments = getTextFragments(selectedElements[i]);
 			for (var j = 0; j < textFragments.length; j++) {
-				var useVar = _prefService.getBoolPref(
+				var useVar = prefService.getBoolPref(
 					"extensions.firerobot.variables.use");
 				if (useVar) {
 					var varName = getVarNameFromValue(textFragments[j]);
 					if (varName) {
-						_addStepToTest("Current Frame Contains  \t${" + varName + "}");
+						_addStepToTest("Current Frame Contains   \t${" + varName + "}");
 					} else {
-						_addStepToTest("Current Frame Contains  \t" + textFragments[j]);
+						_addStepToTest("Current Frame Contains   \t" + textFragments[j]);
 					}
 				} else {
-					_addStepToTest("Current Frame Contains  \t" + textFragments[j]);
+					_addStepToTest("Current Frame Contains   \t" + textFragments[j]);
 				}
 				elInFrameWithText++;
 			}
@@ -355,7 +345,7 @@ function kwCurrentFrameContains() {
 }
 
 function kwCurrentFrameShouldNotContain() {
-	var selectedElements = _Application.storage.get("selectedElements", undefined);
+	var selectedElements = Application.storage.get("selectedElements", undefined);
 	var elInFrameWithText = 0;
 	var textFragments;
 	for (var i = 0; i < selectedElements.length; i++) {
@@ -363,19 +353,19 @@ function kwCurrentFrameShouldNotContain() {
 		if (len > 1) {
 			textFragments = getTextFragments(selectedElements[i]);
 			for (var j = 0; j < textFragments.length; j++) {
-				var useVar = _prefService.getBoolPref("extensions.firerobot.variables.use");
+				var useVar = prefService.getBoolPref("extensions.firerobot.variables.use");
 				if (useVar) {
 					var varName = getVarNameFromValue(textFragments[j]);
 					if (varName) {
-						_addStepToTest("Current Frame Should Not Contain  \t${" +
+						_addStepToTest("Current Frame Should Not Contain   \t${" +
 							varName +
 							"}");
 					} else {
-						_addStepToTest("Current Frame Should Not Contain  \t" +
+						_addStepToTest("Current Frame Should Not Contain   \t" +
 							textFragments[j]);
 					}
 				} else {
-					_addStepToTest("Current Frame Should Not Contain  \t" +
+					_addStepToTest("Current Frame Should Not Contain   \t" +
 						textFragments[j]);
 				}
 				elInFrameWithText++;
@@ -388,7 +378,7 @@ function kwCurrentFrameShouldNotContain() {
 }
 
 function kwFrameShouldContain() {
-	var selectedElements = _Application.storage.get("selectedElements", undefined);
+	var selectedElements = Application.storage.get("selectedElements", undefined);
 	var elInFrame = 0;
 	var textFragments;
 	for (var i = 0; i < selectedElements.length; i++) {
@@ -396,23 +386,23 @@ function kwFrameShouldContain() {
 		if (len > 1) {
 			textFragments = getTextFragments(selectedElements[i]);
 			for (var j = 0; j < textFragments.length; j++) {
-				var useVar = _prefService.getBoolPref(
+				var useVar = prefService.getBoolPref(
 					"extensions.firerobot.variables.use");
 				if (useVar) {
 					var varName = getVarNameFromValue(textFragments[j]);
 					if (varName) {
-						_addStepToTest("Frame Should Contain  \t" +
+						_addStepToTest("Frame Should Contain   \t" +
 							selectedElements[i].containers[len - 1] +
-							"  \t${" + varName + "}");
+							"   \t${" + varName + "}");
 					} else {
-						_addStepToTest("Frame Should Contain  \t" +
+						_addStepToTest("Frame Should Contain   \t" +
 							selectedElements[i].containers[len - 1] +
 							"  \t" + textFragments[j]);
 					}
 				} else {
-					_addStepToTest("Frame Should Contain  \t" +
+					_addStepToTest("Frame Should Contain   \t" +
 						electedElements[i].containers[len - 1] +
-						"  \t" + textFragments[j]);
+						"   \t" + textFragments[j]);
 				}
 				elInFrame++;
 			}
@@ -428,19 +418,25 @@ function kwUnselectFrame() {
 }
 
 function kwOpenBrowser() {
-	var browserWindow = _windowMediator.getMostRecentWindow("navigator:browser");
+	var browserWindow = windowMediator.getMostRecentWindow("navigator:browser");
 	var url = browserWindow.content.document.URL;
 	url = decodeURIComponent(url);
-	_addStepToTest("Open Browser  \t" +
-		url +
-		"  \t${BROWSER}");
+	var step = "Open Browser  \t" + url;
+	var useVar = prefService.getBoolPref(
+		"extensions.firerobot.variables.use");
+	if (useVar && varNameExists("BROWSER")) {
+		step += "   \t${BROWSER}"
+	} else {
+		step += "   \tFirefox"
+	}
+	_addStepToTest(step);
 }
 
 function kwGoTo() {
-	var browserWindow = _windowMediator.getMostRecentWindow("navigator:browser");
+	var browserWindow = windowMediator.getMostRecentWindow("navigator:browser");
 	var url = browserWindow.content.document.URL;
 	url = decodeURIComponent(url);
-	_addStepToTest("Go To  \t" + url);
+	_addStepToTest("Go To   \t" + url);
 }
 
 function kwGoBack() {
@@ -460,7 +456,7 @@ function kwReloadPage() {
 }
 
 function kwFillForm() {
-	var selectedElements = _Application.storage.get("selectedElements", undefined);
+	var selectedElements = Application.storage.get("selectedElements", undefined);
 	var formElementsInSelection = 0;
 
 	for (var i = 0; i < selectedElements.length; i++) {
@@ -469,7 +465,9 @@ function kwFillForm() {
 		//The selection itself is a form element
 		if (selElement.tagName == "INPUT" ||
 			selElement.tagName == "SELECT" ||
-			selElement.tagName == "TEXTAREA") {
+			selElement.tagName == "TEXTAREA" ||
+			selElement.getAttribute("contenteditable") == "true"
+		) {
 			_fillFormElement(selElement);
 			formElementsInSelection++;
 		}
@@ -479,7 +477,7 @@ function kwFillForm() {
 				selElement = selElement.contentWindow.document.body;
 			}
 
-			var formElementsXPath = ".//input|.//select|.//textarea";
+			var formElementsXPath = ".//input|.//select|.//textarea|.//*[@contenteditable='true']";
 			var elContainingDocument = selElement.ownerDocument;
 			var xPathResult = elContainingDocument.evaluate(formElementsXPath,
 				selElement,
@@ -503,7 +501,7 @@ function kwFillForm() {
 }
 
 function kwCheckForm() {
-	var selectedElements = _Application.storage.get("selectedElements", undefined);
+	var selectedElements = Application.storage.get("selectedElements", undefined);
 	var formElementsInSelection = 0;
 
 	for (var i = 0; i < selectedElements.length; i++) {
@@ -545,13 +543,14 @@ function kwCheckForm() {
 }
 
 function _fillFormElement(element) {
-	var createVar = this._prefService.getBoolPref(
+	var createVar = prefService.getBoolPref(
 		"extensions.firerobot.variables.create");
-	var useVar = this._prefService.getBoolPref(
+	var useVar = prefService.getBoolPref(
 		"extensions.firerobot.variables.use");
 	var locator = getLocator(element);
 	var testStep;
 	var varName;
+	var boxText;
 
 	if (element.tagName == "INPUT") {
 		if ((element.type == "text" ||
@@ -565,10 +564,10 @@ function _fillFormElement(element) {
 				element.type == "date" ||
 				element.type === undefined) &&
 			element.value) {
-			testStep = "Input Text  \t" +
+			testStep = "Input Text   \t" +
 				locator +
-				"  \t";
-			var boxText = element.value;
+				"   \t";
+			boxText = element.value;
 			boxText = escapeRobot(boxText);
 			boxText = escapeSpace(boxText);
 			if (useVar || createVar) {
@@ -584,7 +583,7 @@ function _fillFormElement(element) {
 				_addStepToTest(testStep + boxText);
 			}
 		} else if (element.type == "checkbox" && element.checked) {
-			_addStepToTest("Select Checkbox  \t" + locator);
+			_addStepToTest("Select Checkbox   \t" + locator);
 		}
 		//TODO would this be useful?
 		/*
@@ -593,16 +592,16 @@ function _fillFormElement(element) {
 			}
 		*/
 		else if (element.type == "radio" && element.checked) {
-			_addStepToTest("Select Radio Button  \t" +
+			_addStepToTest("Select Radio Button   \t" +
 				element.name +
-				"  \t" +
+				"   \t" +
 				element.value);
 		} else if (element.type == "password" && element.value) {
 			testStep = "Input Password   \t" +
-					locator +
-					"  \t";
+				locator +
+				"   \t";
 			var passText = element.value;
-            passText= escapeRobot(passText);
+			passText = escapeRobot(passText);
 			passText = escapeSpace(passText);
 			if (useVar || createVar) {
 				varName = getVarNameFromValue(passText);
@@ -618,9 +617,9 @@ function _fillFormElement(element) {
 			}
 		}
 	} else if (element.tagName == "TEXTAREA" && element.value) {
-		testStep = "Input Text  \t" +
+		testStep = "Input Text   \t" +
 			locator +
-			"  \t";
+			"   \t";
 		var areaText = element.value;
 		areaText = escapeRobot(areaText);
 		areaText = areaText.replace(/(\r\n|\n|\r)/gm, "\\n");
@@ -652,24 +651,24 @@ function _fillFormElement(element) {
 				var matcheNodeLoc;
 
 				if (locType == "value") {
-					testStep = "Select From List By Value  \t" +
+					testStep = "Select From List By Value   \t" +
 						locator +
-						"  \t";
+						"   \t";
 					matcheNodeLoc = matchedNode.getAttribute("value");
 				} else if (locType == "label") {
-					testStep = "Select From List By Label  \t" +
+					testStep = "Select From List By Label   \t" +
 						locator +
-						"  \t";
+						"   \t";
 					matcheNodeLoc = matchedNode.label;
 				} else if (locType == "index") {
-					testStep = "Select From List By Index  \t" +
+					testStep = "Select From List By Index   \t" +
 						locator +
-						"  \t";
+						"   \t";
 					matcheNodeLoc = matchedNode.index;
 				} else if (matchedNode.label && matchedNode.label !== "") {
-					testStep = "Select From List By Label  \t" +
+					testStep = "Select From List By Label   \t" +
 						locator +
-						"  \t";
+						"   \t";
 					matcheNodeLoc = matchedNode.label;
 				}
 
@@ -695,16 +694,43 @@ function _fillFormElement(element) {
 			matchedNode = xPathResult.iterateNext();
 		}
 	}
+	//TODO improve
+	//For custom input boxes
+	else if (element.getAttribute("contenteditable") == "true" && element.innerHTML !== "") {
+		testStep = "Input Text   \t" +
+			locator +
+			"   \t";
+		var cleanElement = getCleanClone(element);
+		boxText = cleanElement.innerHTML;
+		boxText = escapeRobot(boxText).
+		replace(/<br>|<br\/>|<p[^>]*>/gmi, "\\n").
+		replace(/<[^>]*>/gmi, "").
+		replace(/&nbsp;/gmi, " ");
+		boxText = escapeSpace(boxText);
+		if (useVar || createVar) {
+			varName = getVarNameFromValue(boxText);
+		}
+		if (createVar && !varName) {
+			varName = createVarName(element);
+			addVariable(varName, boxText);
+		}
+		if (useVar && varName) {
+			_addStepToTest(testStep + "${" + varName + "}");
+		} else {
+			_addStepToTest(testStep + boxText);
+		}
+	}
 }
 
 function _checkFormElement(element) {
-	var createVar = this._prefService.getBoolPref(
+	var createVar = prefService.getBoolPref(
 		"extensions.firerobot.variables.create");
-	var useVar = this._prefService.getBoolPref(
+	var useVar = prefService.getBoolPref(
 		"extensions.firerobot.variables.use");
 	var locator = getLocator(element);
 	var testStep;
 	var varName;
+	var boxText;
 
 	if (element.tagName == "INPUT") {
 		if ((element.type == "text" ||
@@ -718,10 +744,10 @@ function _checkFormElement(element) {
 				element.type == "date" ||
 				element.type === undefined) &&
 			element.value) {
-			testStep = "Textfield Value Should Be  \t" +
+			testStep = "Textfield Value Should Be   \t" +
 				locator +
-				"  \t";
-			var boxText = element.value;
+				"   \t";
+			boxText = element.value;
 			boxText = escapeRobot(boxText);
 			boxText = escapeSpace(boxText);
 			if (useVar || createVar) {
@@ -737,22 +763,22 @@ function _checkFormElement(element) {
 				_addStepToTest(testStep + boxText);
 			}
 		} else if (element.type == "checkbox" && element.checked) {
-			_addStepToTest("Checkbox Should Be Selected  \t" +
+			_addStepToTest("Checkbox Should Be Selected   \t" +
 				locator);
 		} else if (element.type == "checkbox" && !element.checked) {
-			_addStepToTest("Checkbox Should Not Be Selected  \t" +
+			_addStepToTest("Checkbox Should Not Be Selected   \t" +
 				locator);
 			//TODO Use the "radio button should no be selected" keyword?
 		} else if (element.type == "radio" && element.checked) {
-			_addStepToTest("Radio Button Should Be Set To  \t" +
+			_addStepToTest("Radio Button Should Be Set To   \t" +
 				element.name +
 				"\tvalue=" +
 				element.value);
 		}
 	} else if (element.tagName == "TEXTAREA" && element.value) {
-		testStep = "Textarea Value Should Be  \t" +
+		testStep = "Textarea Value Should Be   \t" +
 			locator +
-			"  \t";
+			"   \t";
 		var areaText = element.value;
 		areaText = escapeRobot(areaText);
 		areaText = areaText.replace(/(\r\n|\n|\r)/gm, "\\n");
@@ -781,9 +807,9 @@ function _checkFormElement(element) {
 		while (matchedNode) {
 			if (matchedNode.selected) {
 				var locType = getLocatorType(matchedNode);
-				testStep = "List Selection Should Be  \t" +
+				testStep = "List Selection Should Be   \t" +
 					locator +
-					"  \t";
+					"   \t";
 				var matcheNodeLoc;
 				if (locType == "value" || locType == "label") {
 					matcheNodeLoc = getLocator(matchedNode);
@@ -813,14 +839,14 @@ function _checkFormElement(element) {
 }
 
 function _addTextVerifications(keyword) {
-	var selectedElements = _Application.storage.get("selectedElements", undefined);
+	var selectedElements = Application.storage.get("selectedElements", undefined);
 	if (!selectedElements || selectedElements.length === 0) {
 		warning("firerobot.warn.no-el-select");
 		return;
 	}
 	var textFragments;
 	var numTextFragmentInSelection = 0;
-	var useVar = _prefService.getBoolPref("extensions.firerobot.variables.use");
+	var useVar = prefService.getBoolPref("extensions.firerobot.variables.use");
 	for (var i = 0; i < selectedElements.length; i++) {
 
 		textFragments = getTextFragments(selectedElements[i]);
@@ -831,12 +857,12 @@ function _addTextVerifications(keyword) {
 			if (useVar) {
 				var varName = getVarNameFromValue(textFragments[j]);
 				if (varName) {
-					_addStepToTest(keyword + "  \t${" + varName + "}");
+					_addStepToTest(keyword + "   \t${" + varName + "}");
 				} else {
-					_addStepToTest(keyword + "  \t" + textFragments[j]);
+					_addStepToTest(keyword + "   \t" + textFragments[j]);
 				}
 			} else {
-				_addStepToTest(keyword + "  \t" + textFragments[j]);
+				_addStepToTest(keyword + "   \t" + textFragments[j]);
 			}
 		}
 	}
@@ -846,7 +872,7 @@ function _addTextVerifications(keyword) {
 }
 
 function _addStepToTest(step) {
-	var frWindow = _Application.storage.get("frWindow", undefined);
+	var frWindow = Application.storage.get("frWindow", undefined);
 	var testCaseTextArea = frWindow.document.getElementById("testCaseTextArea");
 	var testCase = testCaseTextArea.value;
 	testCase = testCase + "\r\n    " + step;

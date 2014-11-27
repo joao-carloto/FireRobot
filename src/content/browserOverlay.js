@@ -13,19 +13,6 @@ if (!FireRobot.BrowserOverlay) FireRobot.BrowserOverlay = {};
 
 FireRobot.BrowserOverlay = {
 
-	windowMediator: Components.classes["@mozilla.org/appshell/window-mediator;1"]
-		.getService(Components.interfaces.nsIWindowMediator),
-
-	prefService: Components.classes["@mozilla.org/preferences-service;1"]
-		.getService(Components.interfaces.nsIPrefBranch),
-
-	Application: Components.classes["@mozilla.org/fuel/application;1"]
-		.getService(Components.interfaces.fuelIApplication),
-
-	promptService: Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
-		.getService(Components.interfaces.nsIPromptService),
-
-
 	openFRWindow: function() {
 		var frWindow = Application.storage.get("frWindow", undefined);
 
@@ -33,7 +20,7 @@ FireRobot.BrowserOverlay = {
 		if (typeof(frWindow) != 'undefined' && !frWindow.closed) {
 			return;
 		}
-		var windowModePreference = this.prefService.getCharPref(
+		var windowModePreference = prefService.getCharPref(
 			"extensions.firerobot.window-mode");
 
 		if (windowModePreference == "float") {
@@ -44,21 +31,13 @@ FireRobot.BrowserOverlay = {
 		Application.storage.set("frWindow", frWindow);
 
 		frWindow.addEventListener('load', function() {
-			addVariable('BROWSER', 'FireFox');
+			addVariable('BROWSER', 'Firefox');
 		}, true);
 
-		var toolbarIcon = document.getElementById("fire-robot-toolbar-button");
-
-		if (toolbarIcon) {
-			toolbarIcon.style.listStyleImage = "url('chrome://firerobot/skin/fire_robot_toolbar_on.png')";
-		}
+		var browserWindow  = setBrowserWindow();
+		setBrowserIconOn(browserWindow);
 
 		Application.storage.set("selectedElements", []);
-
-		var browserWindow = this.windowMediator.getMostRecentWindow(
-			"navigator:browser");
-
-		Application.storage.set("browserWindow", browserWindow);
 	},
 
 	selectBtn: function() {
@@ -179,13 +158,8 @@ FireRobot.BrowserOverlay = {
 			resetSelectContext();
 
 			var browserWindow = Application.storage.get("browserWindow", undefined);
+			setBrowserIconOff(browserWindow);
 
-			if (browserWindow && !browserWindow.closed) {
-				var toolbarIcon = browserWindow.document.getElementById("fire-robot-toolbar-button");
-				if (toolbarIcon) {
-					toolbarIcon.style.listStyleImage = "url('chrome://firerobot/skin/fire_robot_toolbar_off.png')";
-				}
-			}
 			Application.storage.set("frWindow", undefined);
 			Application.storage.set("testFile", undefined);
 		}
@@ -197,7 +171,7 @@ FireRobot.BrowserOverlay = {
 
 		if (currentWindow.frameElement) {
 
-			this.prefService.setCharPref("extensions.firerobot.window-mode", "float");
+			prefService.setCharPref("extensions.firerobot.window-mode", "float");
 
 			newWindow = createFloatWindow();
 			newWindow.addEventListener('load', function() {
@@ -205,7 +179,7 @@ FireRobot.BrowserOverlay = {
 				removeSideBar();
 			}, true);
 		} else {
-			this.prefService.setCharPref("extensions.firerobot.window-mode",
+			prefService.setCharPref("extensions.firerobot.window-mode",
 				"sidebar");
 
 			newWindow = createSideBar();

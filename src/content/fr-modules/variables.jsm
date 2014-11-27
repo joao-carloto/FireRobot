@@ -16,9 +16,6 @@ Components.utils.import("chrome://firerobot/content/fr-modules/utils.jsm");
 Components.utils.import("chrome://firerobot/content/external-modules/xregexp.jsm");
 
 
-var _Application = Components.classes["@mozilla.org/fuel/application;1"]
-	.getService(Components.interfaces.fuelIApplication);
-
 function createVarName(element) {
 	var varName;
 	if (element.tagName == "INPUT" &&
@@ -29,7 +26,7 @@ function createVarName(element) {
 		var selText = "";
 		var nodes = element.parentNode.childNodes;
 		for (var i = 0; i < nodes.length; ++i) {
-			if (nodes[i].nodeType === 3  && nodes[i].wholeText.trim() !== "") { // 3 means "text"
+			if (nodes[i].nodeType === 3 && nodes[i].wholeText.trim() !== "") { // 3 means "text"
 				selText += nodes[i].wholeText + " ";
 			}
 		}
@@ -37,10 +34,20 @@ function createVarName(element) {
 			varName = selText;
 		}
 	}
-	if (varName == undefined) {
+	if (varName === undefined) {
 		var nearTextElement = getNearTextElement(element);
 		if (nearTextElement) {
-			varName = nearTextElement.textContent;
+			editableXPath = ".//*[@contenteditable = 'true']";
+			var xPathResult = nearTextElement.ownerDocument.
+			evaluate(editableXPath, nearTextElement, null, 0, null);
+			var matchedNode = xPathResult.iterateNext();
+			if (matchedNode) {
+				//Exclude text of children
+				varName = nearTextElement.childNodes[0].nodeValue;
+			} else {
+				//Include text of children
+				varName = nearTextElement.textContent;
+			}
 		}
 	}
 	if (varName !== undefined) {
@@ -54,7 +61,7 @@ function createVarName(element) {
 	} else {
 		varName = "var-name";
 	}
-	var frWindow = _Application.storage.get("frWindow", undefined);
+	var frWindow = Application.storage.get("frWindow", undefined);
 	var rows = frWindow.document.getElementById("varListBox").childNodes;
 	for (var i = 0; i < rows.length; i++) {
 		if (varNameExists(varName)) {
@@ -68,7 +75,7 @@ function createVarName(element) {
 }
 
 function addVariable(name, value) {
-	frWindow = _Application.storage.get("frWindow", undefined);
+	frWindow = Application.storage.get("frWindow", undefined);
 
 	varListBox = frWindow.document.getElementById("varListBox");
 
@@ -105,7 +112,7 @@ function addVariable(name, value) {
 }
 
 function removeVariable() {
-	var frWindow = _Application.storage.get("frWindow", undefined);
+	var frWindow = Application.storage.get("frWindow", undefined);
 	var varListBox = frWindow.document.getElementById("varListBox");
 	var selectedItem = varListBox.selectedItem;
 
@@ -126,7 +133,7 @@ function removeVariable() {
 }
 
 function increaseVarIndex() {
-	var frWindow = _Application.storage.get("frWindow", undefined);
+	var frWindow = Application.storage.get("frWindow", undefined);
 	var varListBox = frWindow.document.getElementById("varListBox");
 	var selectedItem = varListBox.selectedItem;
 	var selectedIndex = varListBox.selectedIndex;
@@ -146,7 +153,7 @@ function increaseVarIndex() {
 }
 
 function decreaseVarIndex() {
-	var frWindow = _Application.storage.get("frWindow", undefined);
+	var frWindow = Application.storage.get("frWindow", undefined);
 	var varListBox = frWindow.document.getElementById("varListBox");
 	var selectedItem = varListBox.selectedItem;
 	var selectedIndex = varListBox.selectedIndex;
@@ -160,7 +167,7 @@ function decreaseVarIndex() {
 }
 
 function loadVariables(str) {
-	var frWindow = _Application.storage.get("frWindow", undefined);
+	var frWindow = Application.storage.get("frWindow", undefined);
 	var varListBox = frWindow.document.getElementById("varListBox");
 	while (varListBox.firstChild) {
 		varListBox.removeChild(varListBox.firstChild);
@@ -168,7 +175,7 @@ function loadVariables(str) {
 	var lines = str.split(/\r?\n/);
 	for (var i = 0; i < lines.length; i++) {
 
-		if (lines[i].match(/\${.*}/)[0]) {
+		if (lines[i].match(/\${.*}/)) {
 			var name = lines[i].match(/\${.*}/)[0].replace(/^\${/, "").replace(/}$/, "");
 			var value = lines[i].replace(/\s*\${.*}=*\s{2,}/, "");
 
@@ -178,7 +185,7 @@ function loadVariables(str) {
 }
 
 function getVarNameFromValue(value) {
-	var frWindow = _Application.storage.get("frWindow", undefined);
+	var frWindow = Application.storage.get("frWindow", undefined);
 	var rows = frWindow.document.getElementById("varListBox").childNodes;
 	for (var i = 0; i < rows.length; i++) {
 		if (value == rows[i].childNodes[3].value) {
@@ -189,15 +196,15 @@ function getVarNameFromValue(value) {
 }
 
 function setFocusedVarName(event) {
-	_Application.storage.set("focusedVarName", event.target.value);
+	Application.storage.set("focusedVarName", event.target.value);
 }
 
 function updateVarName(event) {
 	//TODO some kind of validation
-	var focusedVarName = _Application.storage.get("focusedVarName", undefined);
+	var focusedVarName = Application.storage.get("focusedVarName", undefined);
 	var realOldVarName = "${" + focusedVarName + "}";
 	var realNewVarName = "${" + event.target.value + "}";
-	var frWindow = _Application.storage.get("frWindow", undefined);
+	var frWindow = Application.storage.get("frWindow", undefined);
 	var tests = frWindow.document.getElementById("testCaseTextArea").value;
 	var newTests = tests.replace(realOldVarName, realNewVarName, "g");
 
@@ -205,10 +212,10 @@ function updateVarName(event) {
 }
 
 function varNameExists(varName) {
-	var frWindow = _Application.storage.get("frWindow", undefined);
+	var frWindow = Application.storage.get("frWindow", undefined);
 	var rows = frWindow.document.getElementById("varListBox").childNodes;
 	for (var i = 0; i < rows.length; i++) {
-		if (varName == rows[i].childNodes[1].value) {
+		if (varName.toLowerCase() == rows[i].childNodes[1].value.toLowerCase()) {
 			return true;
 		}
 	}

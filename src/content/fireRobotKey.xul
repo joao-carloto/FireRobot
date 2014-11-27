@@ -18,12 +18,16 @@
       id="string-bundle" 
       src="chrome://firerobot/locale/fireRobot.properties"/>
   </stringbundleset>
-  <prefpane>
+  <prefpane flex="1">
     <preferences id="keyword-panel">
       <preference 
         id="pref-key-replace" 
         name="extensions.firerobot.key.replace" 
         type="bool"/>
+     <preference 
+        id="pref-key-target" 
+        name="extensions.firerobot.key.target" 
+        type="string"/>
     </preferences>
     <vbox flex="1">
       <spacer style="height: 5px"/>
@@ -47,7 +51,12 @@
         rows="16" 
         type="unichar"/>
       <spacer style="height: 5px"/>
+      <radiogroup id="key_target" preference="pref-key-target">
+        <radio value="self" label="&firerobot.key.target_self;"/>
+        <radio value="res_file" label="&firerobot.key.target_file;"/>
+      </radiogroup>
       <hbox align="center">
+        <spacer style="width: 20px"/>
         <textbox
           id="resFileBox"
           class="testBox" 
@@ -59,7 +68,10 @@
           onclick="FireRobot.Key.selectResForKey()" 
           tooltiptext="&firerobot.key.placeholder2;"/>
       </hbox>
-      <description>&firerobot.key.warn_res_file;</description>
+      <hbox>
+        <spacer style="width: 20px"/>
+        <description>&firerobot.key.warn_res_file;</description>
+      </hbox>
       <spacer style="height: 5px"/>
       <checkbox 
         id="useVarCheckBox"

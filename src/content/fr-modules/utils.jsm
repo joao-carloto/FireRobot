@@ -1,9 +1,18 @@
 var EXPORTED_SYMBOLS = [
+	"Application",
+	"prefService",
+	"promptService",
+	"windowMediator",
+	"windowWatcher",
+	"setBrowserWindow",
+	"setBrowserIconOn",
+	"setBrowserIconOff",
 	"warning",
 	"escapeRobot",
 	"escapeSpace",
 	"getNodeValue",
 	"getTextFragments",
+	"getCleanClone",
 	"getElementXPath",
 	"getNearTextElement",
 	"isVisible",
@@ -12,27 +21,61 @@ var EXPORTED_SYMBOLS = [
 
 Components.utils.import("chrome://firerobot/content/external-modules/xregexp.jsm");
 
-
-var _promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
-	.getService(Components.interfaces.nsIPromptService);
-
-var _Application = Components.classes["@mozilla.org/fuel/application;1"]
+var Application = Components.classes["@mozilla.org/fuel/application;1"]
 	.getService(Components.interfaces.fuelIApplication);
 
+var	prefService = Components.classes["@mozilla.org/preferences-service;1"]
+		.getService(Components.interfaces.nsIPrefBranch);
 
-//To produce located warnings from .js or .jsm files not directly associated with a window.
+var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
+	.getService(Components.interfaces.nsIPromptService);
+
+var windowMediator = Components.classes["@mozilla.org/appshell/window-mediator;1"]
+	.getService(Components.interfaces.nsIWindowMediator);
+
+var windowWatcher = Components.classes["@mozilla.org/embedcomp/window-watcher;1"]
+		.getService(Components.interfaces.nsIWindowWatcher);
+
+
+function setBrowserWindow() {
+	var browserWindow = windowMediator.getMostRecentWindow("navigator:browser");
+	Application.storage.set("browserWindow", browserWindow);
+	return browserWindow;
+}
+
+function setBrowserIconOn(browserWindow) {
+	if (browserWindow && !browserWindow.closed) {
+		var toolbarIcon = browserWindow.document.getElementById("fire-robot-toolbar-button");
+		if (toolbarIcon) {
+			toolbarIcon.style.listStyleImage = "url('chrome://firerobot/skin/fire_robot_toolbar_on.png')";
+		}
+	}
+}
+
+function setBrowserIconOff(browserWindow) {
+	if (browserWindow && !browserWindow.closed) {
+		var toolbarIcon = browserWindow.document.getElementById("fire-robot-toolbar-button");
+		if (toolbarIcon) {
+			toolbarIcon.style.listStyleImage = "url('chrome://firerobot/skin/fire_robot_toolbar_off.png')";
+		}
+	}
+}
+
+//To produce localized warnings from .js or .jsm files not directly associated with a window.
 function warning(propRef) {
-	var frWindow = _Application.storage.get("frWindow", undefined);
+	var frWindow = Application.storage.get("frWindow", undefined);
 	if (!frWindow) return;
 	var strBundle = frWindow.document.getElementById("string-bundle");
 	var header = strBundle.getString("firerobot.warn.warn");
 	var text = strBundle.getString(propRef);
-	_promptService.alert(null, header, text);
+	promptService.alert(null, header, text);
 }
 
 function escapeRobot(text) {
 	text = text.replace(/\\/g, "\\\\");
 	text = text.replace(/\$\{/g, "\\${");
+	text = text.replace(/@\{/g, "\\@{");
+	text = text.replace(/%\{/g, "\\%{");
 	text = text.replace(/#/g, "\\#");
 	return text;
 }
@@ -64,7 +107,7 @@ function getTextFragments(element) {
 		return element.textFragments;
 	}
 
-	var cleanClone = _getCleanClone(element);
+	var cleanClone = getCleanClone(element);
 
 	var textFragments = cleanClone.innerHTML.split(/<[^>]*>/);
 
@@ -79,6 +122,7 @@ function getTextFragments(element) {
 		textFragments[i] = textFragments[i].replace(/(\r\n|\n|\r)/gm, "\\n");
 		textFragments[i] = textFragments[i].trim();
 		textFragments[i] = escapeSpace(textFragments[i]);
+
 		textFragments[i] = textFragments[i].replace(/^((\\n)|(\\t)|\s|\\\s)*/, "");
 		textFragments[i] = textFragments[i].replace(/((\\n)|(\\t)|\s|\\\s)*$/, "");
 
@@ -105,6 +149,7 @@ function getTextFragments(element) {
 	element.textFragments = textFragments;
 	return textFragments;
 }
+
 
 function getElementXPath(element) {
 	var tag = _getTag(element);
@@ -213,8 +258,6 @@ function _getElementXPathIndex(element, xpath) {
 		return "[last()]";
 	} else {
 		if (index === undefined) {
-			//_promptService.alert(null, "", xpath);
-			//_promptService.alert(null, "", element.outerHTML);
 			warning("firerobot.warn.no-xpath");
 		}
 		return "[" + index + "]";
@@ -232,7 +275,7 @@ function getNearTextElement(element) {
 
 	//We don't want to use the options as a variable name.
 	//TODO is this a good idea?
-	if(element.tagName != "SELECT") {
+	if (element.tagName != "SELECT") {
 		parentTextElement = _getParentTextElement(element);
 	}
 
@@ -272,7 +315,7 @@ function isVisible(element) {
 }
 
 function getOSName() {
-	var frWindow = _Application.storage.get("frWindow", undefined);
+	var frWindow = Application.storage.get("frWindow", undefined);
 	var appVersion = frWindow.navigator.appVersion;
 	var OSName = "Unknown OS";
 
@@ -288,29 +331,25 @@ function getOSName() {
 	return OSName;
 }
 
-
-function _getCleanClone(element) {
+function getCleanClone(element) {
 	var clone = element.cloneNode(true);
-
 	for (var i = 0; i < element.childNodes.length; i++) {
-		var child = element.childNodes[i];
-		var childClone = clone.childNodes[i];
-
-		//attributes
-		if (child.nodeType === 2) {
-			childClone.nodeValue = "";
+		//go recursive
+		if (element.childNodes[i].childNodes.length > 0) {
+			clone.childNodes[i].outerHTML = getCleanClone(element.childNodes[i]).outerHTML;
 		}
 		//comments
-		else if (child.nodeType === 8) {
-			childClone.data = "";
+		if (element.childNodes[i].nodeType === 8) {
+			clone.childNodes[i].data = "";
 		}
 		//hidden elements
-		else if (child.nodeType !== 3 && !isVisible(child)) {
-			childClone.outerHTML = "<!---->";
+		else if ((element.childNodes[i].nodeType !== 3 && !isVisible(element.childNodes[i]) && element.childNodes[i].tagName != "BR")  
+			|| element.childNodes[i].tagName == "IFRAME"  || element.childNodes[i].tagName == "FRAME"){
+			clone.childNodes[i].outerHTML = "<!---->";
 		}
-		//go recursive
-		else if (child.childNodes.length > 0) {
-			childClone.outerHTML = _getCleanClone(child).outerHTML;
+		//attributes
+		else if (element.childNodes[i].nodeType === 2) {
+			clone.childNodes[i].nodeValue = "";
 		}
 	}
 	return clone;
@@ -324,7 +363,7 @@ function _getPrecTextElement(element) {
 	for (var i = 0; true; i++) {
 		nearestTextElementXpath = "(" +
 			tempXpath +
-			"/preceding::*[normalize-space(.)!=''])[last() - " +
+			"/preceding::*[normalize-space(.)!=''][not(@contenteditable and @contenteditable = 'true')])[last() - " +
 			i +
 			"]";
 		var xPathResult = elContainingDocument.
@@ -345,7 +384,7 @@ function _getFollowingTextElement(element) {
 	var elContainingDocument = element.ownerDocument;
 	var tempXpath = "(.//" + _getTag(element) + ")";
 	tempXpath += _getElementXPathIndex(element, tempXpath);
-	nearestTextElementXpath = tempXpath + "/following::*[normalize-space(.)!='']";
+	nearestTextElementXpath = tempXpath + "/following::*[normalize-space(.)!=''][not(@contenteditable and @contenteditable = 'true')]";
 	var xPathResult = elContainingDocument.
 	evaluate(nearestTextElementXpath, elContainingDocument.body, null, 0, null);
 	var matchedNode = xPathResult.iterateNext();
@@ -366,7 +405,7 @@ function _getParentTextElement(element) {
 	tempXpath += _getElementXPathIndex(element, tempXpath);
 
 	for (var i = 1; true; i++) {
-		nearestTextElementXpath = tempXpath + "/parent::*[normalize-space(.)!=''][" + i + "]";
+		nearestTextElementXpath = tempXpath + "/parent::*[normalize-space(.)!=''][not(@contenteditable and @contenteditable = 'true')][" + i + "]";
 		var xPathResult = elContainingDocument.
 		evaluate(nearestTextElementXpath, elContainingDocument.body, null, 0, null);
 		var matchedNode = xPathResult.iterateNext();
@@ -439,8 +478,8 @@ function _replaceHTMLEntities(text) {
 
 function _getXPathText(element) {
 
-	//TODO check other empty space representations
-	if (!element.innerHTML || element.innerHTML.match(/^(&nbsp;){1,}$/)) {
+	//TODO check other empty space representations 
+	if (!element.innerHTML || element.innerHTML.match(/^(&nbsp;){1,}$/) || element.getAttribute("contenteditable") == "true") {
 		return "";
 	}
 	var elementText = element.innerHTML;
@@ -452,7 +491,19 @@ function _getXPathText(element) {
 
 	var tmpElement = element.ownerDocument.createElement("div");
 	tmpElement.innerHTML = elementText;
-	elementText = tmpElement.textContent || tmpElement.innerText || "";
+
+	editableXPath = ".//*[@contenteditable = 'true']";
+	var xPathResult = element.ownerDocument.
+	evaluate(editableXPath, element, null, 0, null);
+	var matchedNode = xPathResult.iterateNext();
+	if (matchedNode) {
+		//Exclude text of children
+		elementText = tmpElement.childNodes[0].nodeValue || "";
+	} else {
+		//Include text of children
+		elementText = tmpElement.textContent || "";
+	}
+
 	elementText = elementText.trim();
 
 	var splitElementText = elementText.split(guid);

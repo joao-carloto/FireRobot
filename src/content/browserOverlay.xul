@@ -77,7 +77,7 @@
             hidden="true">
             <menupopup 
                 id="fire-robot-element-should-popup">
-                <!--TODO broken in the java2library. Wait for fix.-->
+                <!--TODO was broken in the java2library. Fix allready available. Implement next release-->
                 <!--https://github.com/MarkusBernhardt/robotframework-selenium2library-java/issues/53-->
                 <!--menuitem 
                     id="fire-robot-element-should-be-enabled" 

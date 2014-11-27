@@ -7,10 +7,6 @@ var EXPORTED_SYMBOLS = [
 Components.utils.import("chrome://firerobot/content/fr-modules/utils.jsm");
 
 
-
-var _prefService = Components.classes["@mozilla.org/preferences-service;1"].
-getService(Components.interfaces.nsIPrefBranch);
-
 function getLocator(element) {
 	var locatorPreferences = _getLocPrefs();
 	var i;
@@ -20,7 +16,8 @@ function getLocator(element) {
 		validLocators = _linkLocators;
 	} else if (element.tagName == "BUTTON" ||
 		(element.tagName == "INPUT" &&
-			element.type == "button")) {
+			(element.type == "button" ||
+			 element.type == "submit"))) {
 		validLocators = _btnLocators;
 	} else if (element.tagName == "INPUT" &&
 		(element.type == "text" ||
@@ -100,8 +97,10 @@ function getLocatorType(element) {
 
 	if (element.tagName == "A") {
 		validLocators = _linkLocators;
-	} else if (element.tagName == "BUTTON" || (element.tagName == "INPUT" &&
-		element.type == "button")) {
+	} else if (element.tagName == "BUTTON" ||
+		(element.tagName == "INPUT" &&
+			(element.type == "button" ||
+			 element.type == "submit"))) {
 		validLocators = _btnLocators;
 	} else if (element.tagName == "INPUT" &&
 		(element.type == "text" ||
@@ -257,7 +256,7 @@ var _elementLocators = [
 
 function _getLocPrefs() {
 	var enabledLocPreferences;
-	enabledLocPreferences = _prefService.getCharPref(
+	enabledLocPreferences = prefService.getCharPref(
 		"extensions.firerobot.enabled-locators");
 	return enabledLocPreferences.split(",");
 }

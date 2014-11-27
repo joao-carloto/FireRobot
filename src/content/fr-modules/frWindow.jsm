@@ -9,18 +9,8 @@ Components.utils.import("chrome://firerobot/content/fr-modules/utils.jsm");
 Components.utils.import("chrome://firerobot/content/fr-modules/select.jsm");
 Components.utils.import("chrome://firerobot/content/fr-modules/variables.jsm");
 
-
-var _Application = Components.classes["@mozilla.org/fuel/application;1"]
-	.getService(Components.interfaces.fuelIApplication);
-
-var _windowMediator = Components.classes["@mozilla.org/appshell/window-mediator;1"]
-	.getService(Components.interfaces.nsIWindowMediator);
-
-var _windowWatcher = Components.classes["@mozilla.org/embedcomp/window-watcher;1"]
-	.getService(Components.interfaces.nsIWindowWatcher);
-
 function createFloatWindow() {
-	var floatWindow = _windowWatcher.openWindow(null,
+	var floatWindow = windowWatcher.openWindow(null,
 		"chrome://firerobot/content/fireRobotWindow.xul",
 		"firerobot", "chrome, resizable", null);
 	floatWindow.addEventListener('load', function() {
@@ -35,24 +25,32 @@ function createFloatWindow() {
 }
 
 function createSideBar() {
-	var ffWindow = _windowMediator.getMostRecentWindow("navigator:browser");
+	var ffWindow = windowMediator.getMostRecentWindow("navigator:browser");
 	if (!ffWindow) {
 		warning("firerobot.warn.no-window");
 		return;
 	}
+
+	var oldWindow = Application.storage.get("browserWindow", undefined);
+
+	if(oldWindow != ffWindow) {
+		setBrowserIconOff(oldWindow);
+		setBrowserIconOn(ffWindow);
+		Application.storage.set("browserWindow", ffWindow);
+	}
 	var document = ffWindow.document;
 	var frContainer = document.getElementById("browser");
-	_Application.storage.set("frContainer", frContainer);
+	Application.storage.set("frContainer", frContainer);
 
 	var frSplitter = document.createElement('splitter');
 	frSplitter.setAttribute("orient", "horizontal");
 	frSplitter.innerHTML = "<grippy/>";
 	frSplitter.setAttribute("collapse", "after");
-	_Application.storage.set("frSplitter", frSplitter);
+	Application.storage.set("frSplitter", frSplitter);
 
 	var frBox = document.createElement('vbox');
 	frBox.setAttribute("width", "530rem");
-	_Application.storage.set("frBox", frBox);
+	Application.storage.set("frBox", frBox);
 
 	var frBrowser = document.createElement('browser');
 	frBrowser.setAttribute("flex", "2");
@@ -61,7 +59,7 @@ function createSideBar() {
 	frBrowser.setAttribute("disablehistory", "true");
 	//frBrowser.setAttribute("collapsed", "true");
 	frBrowser.setAttribute("persist", "height,width");
-	_Application.storage.set("frBrowser", frBrowser);
+	Application.storage.set("frBrowser", frBrowser);
 
 	frBox.appendChild(frBrowser);
 
@@ -70,9 +68,13 @@ function createSideBar() {
 
 	var sideBar = frBrowser.contentDocument.defaultView ||
 		frBrowser.contentDocument.parentWindow;
-	_Application.storage.set("sideBar", sideBar);
+
+	Application.storage.set("sideBar", sideBar);
+
 	sideBar.addEventListener('load', function() {
+
 		sideBar.document.getElementById("closeButton").setAttribute("hidden", "false");
+
 		sideBar.document.getElementById("windowModeButton").setAttribute("class",
 			"btn floatButton");
 	}, true);
@@ -80,23 +82,23 @@ function createSideBar() {
 }
 
 function removeSideBar() {
-	var frBrowser = _Application.storage.get("frBrowser", undefined);
+	var frBrowser = Application.storage.get("frBrowser", undefined);
 	if (frBrowser) {
 		frBrowser.contentDocument.defaultView.close();
 		frBrowser.parentNode.removeChild(frBrowser);
 	}
-	var frBox = _Application.storage.get("frBox", undefined);
+	var frBox = Application.storage.get("frBox", undefined);
 	if (frBox) {
 		frBox.parentNode.removeChild(frBox);
 	}
-	var frSplitter = _Application.storage.get("frSplitter", undefined);
+	var frSplitter = Application.storage.get("frSplitter", undefined);
 	if (frSplitter) {
 		frSplitter.parentNode.removeChild(frSplitter);
 	}
-	_Application.storage.set("frBrowser", undefined);
-	_Application.storage.set("frBox", undefined);
-	_Application.storage.set("frSplitter", undefined);
-	_Application.storage.set("frContainer", undefined);
+	Application.storage.set("frBrowser", undefined);
+	Application.storage.set("frBox", undefined);
+	Application.storage.set("frSplitter", undefined);
+	Application.storage.set("frContainer", undefined);
 }
 
 function copyWindowContent(oldWindow, newWindow) {
@@ -106,12 +108,16 @@ function copyWindowContent(oldWindow, newWindow) {
 	document.getElementById("settingsTextArea").value;
 	newWindow.document.getElementById("testCaseTextArea").value = oldWindow.
 	document.getElementById("testCaseTextArea").value;
+	newWindow.document.getElementById("keywordsTextArea").value = oldWindow.
+	document.getElementById("keywordsTextArea").value;
 	newWindow.document.getElementById("selectButton").setAttribute("class",
 		oldWindow.document.getElementById("selectButton").getAttribute("class"));
 	newWindow.document.getElementById("playButton").setAttribute("class",
 		oldWindow.document.getElementById("playButton").getAttribute("class"));
+	newWindow.document.getElementById("testTabBox").selectedIndex = oldWindow.
+	document.getElementById("testTabBox").selectedIndex;
 
-	_Application.storage.set("frWindow", newWindow);
+	Application.storage.set("frWindow", newWindow);
 
 	var rows = oldWindow.document.getElementById("varListBox").childNodes;
 
@@ -122,14 +128,8 @@ function copyWindowContent(oldWindow, newWindow) {
 
 function _closeFRWindow() {
 	resetSelectContext();
-
-	var browserWindow = _Application.storage.get("browserWindow", undefined);
-	if (browserWindow && !browserWindow.closed) {
-	var toolbarIcon = browserWindow.document.getElementById("fire-robot-toolbar-button");
-		if (toolbarIcon) {
-			toolbarIcon.style.listStyleImage = "url('chrome://firerobot/skin/fire_robot_toolbar_off.png')";
-		}		
-	}
-	_Application.storage.set("frWindow", undefined);
-	_Application.storage.set("testFile", undefined);
+	var browserWindow = Application.storage.get("browserWindow", undefined);
+	setBrowserIconOff(browserWindow);
+	Application.storage.set("frWindow", undefined);
+	Application.storage.set("testFile", undefined);
 }

@@ -61,10 +61,12 @@
 <!ENTITY firerobot.window.save-as-btn              "Save As">
 <!ENTITY firerobot.window.save-btn                 "Save">
 
-<!ENTITY firerobot.key.replace                	   "Replace test steps by the new keyword.">
+<!ENTITY firerobot.key.replace                	   "Replace selected test steps by the new keyword.">
 <!ENTITY firerobot.key.placeholder1				   "Enter Keyword Name">
 <!ENTITY firerobot.key.placeholder2				   "Select Resource File">
 <!ENTITY firerobot.key.warn_res_file			   "Make sure the resource file includes the *Keywords* section. The new keyword will be added to the end of the file.">
+<!ENTITY firerobot.key.target_self			       "Add the new keyword to the current file">
+<!ENTITY firerobot.key.target_file			       "Add the new keyword to a resource file:">
 
 
 
