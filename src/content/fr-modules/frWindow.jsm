@@ -49,7 +49,7 @@ function createSideBar() {
 	Application.storage.set("frSplitter", frSplitter);
 
 	var frBox = document.createElement('vbox');
-	frBox.setAttribute("width", "530rem");
+	frBox.setAttribute("width", "505rem");
 	Application.storage.set("frBox", frBox);
 
 	var frBrowser = document.createElement('browser');
