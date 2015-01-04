@@ -197,10 +197,6 @@
             modifiers="accel alt" 
             key="S" 
             oncommand="FireRobot.BrowserOverlay.selectBtn();"/>
-            <key 
-            id="fire-robot-clear-key" 
-            keycode="VK_ESCAPE"
-            oncommand="FireRobot.BrowserOverlay.escClearSelections();"/>
         </keyset>
         <toolbarpalette 
         id="BrowserToolbarPalette">

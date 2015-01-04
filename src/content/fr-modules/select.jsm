@@ -116,6 +116,7 @@ function _addEventListners(doc) {
 	doc.addEventListener('mouseup', _blockMouseUpDown, true);
 	doc.addEventListener('mousedown', _blockMouseUpDown, true);
 	doc.addEventListener('contextmenu', _setContextMenu, true);
+	doc.addEventListener('keydown', _keyDown, true);
 
 	docWindow = doc.defaultView || doc.parentWindow;
 	docWindow.addEventListener('unload', resetSelectContext, true);
@@ -128,6 +129,7 @@ function _addEventListners(doc) {
 	Application.storage.set("mouseupdown", _blockMouseUpDown);
 	Application.storage.set("contextmenu", _setContextMenu);
 	Application.storage.set("unload", resetSelectContext);
+	Application.storage.set("keydown", _keyDown);
 
 	//Go recursive for frames
 	var frames = doc.querySelectorAll('iframe, frame');
@@ -147,6 +149,7 @@ function _removeEventListners(doc) {
 	var _blockMouseUpDown = Application.storage.get("mouseupdown", _blockMouseUpDown);
 	var _setContextMenu = Application.storage.get("contextmenu", _setContextMenu);
 	var _resetSelectContext = Application.storage.get("unload", resetSelectContext);
+	var _keyDown = Application.storage.get("keydown", _keyDown);
 
 	doc.body.style.border = "";
 
@@ -156,6 +159,7 @@ function _removeEventListners(doc) {
 	doc.removeEventListener('mouseup', _blockMouseUpDown, true);
 	doc.removeEventListener('mousedown', _blockMouseUpDown, true);
 	doc.removeEventListener('contextmenu', _setContextMenu, true);
+	doc.removeEventListener('keydown', _keyDown, true);
 
 	docWindow = doc.defaultView || doc.parentWindow;
 	docWindow.removeEventListener('unload', _resetSelectContext, true);
@@ -324,6 +328,13 @@ function _outElement(e) {
 	if (selectedElements.indexOf(el) == -1) {
 		el.style.outline = el.originalOutline;
 	}
+}
+
+function _keyDown(e) {
+	e = e || window.event;
+	if (e.keyCode == 27) {
+		clearSelections();
+	} 
 }
 
 function _blockMouseUpDown(e) {
