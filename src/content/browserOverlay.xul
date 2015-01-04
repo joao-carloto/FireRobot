@@ -188,10 +188,19 @@
         </menupopup>
         <keyset>
             <key 
-            id="fire-robot-run-key" 
+            id="fire-robot-open-key" 
             modifiers="accel alt" 
             key="R" 
             oncommand="FireRobot.BrowserOverlay.openFRWindow(event);"/>
+            <key 
+            id="fire-robot-select-key" 
+            modifiers="accel alt" 
+            key="S" 
+            oncommand="FireRobot.BrowserOverlay.selectBtn();"/>
+            <key 
+            id="fire-robot-clear-key" 
+            keycode="VK_ESCAPE"
+            oncommand="FireRobot.BrowserOverlay.escClearSelections();"/>
         </keyset>
         <toolbarpalette 
         id="BrowserToolbarPalette">

@@ -9,8 +9,9 @@ Components.utils.import("chrome://firerobot/content/fr-modules/locators.jsm");
 
 
 function toggleSelectMode() {
-	var selectModeOn = Application.storage.get("selectModeOn", false);
 	var frWindow = Application.storage.get("frWindow", undefined);
+	if (!frWindow) return;
+	var selectModeOn = Application.storage.get("selectModeOn", false);
 	var btn = frWindow.document.getElementById("selectButton");
 
 	if (selectModeOn) {
@@ -43,7 +44,7 @@ function clearSelections() {
 	for (var i = 0; i < selectedElements.length; i++) {
 		try {
 			selectedElements[i].isSelected = false;
-			selectedElements[i].style.outline = "";
+			selectedElements[i].style.outline = selectedElements[i].originalOutline;
 		} catch (error) {
 			//Object might be dead due to reload. Do nothing.
 		}
@@ -57,6 +58,13 @@ function resetSelectContext() {
 	var frWindow = Application.storage.get("frWindow", undefined);
 	frWindow.document.getElementById("selectButton").setAttribute("class", "btn");
 	clearSelections();
+
+	var overElement = Application.storage.get("overElement", undefined);
+	if(overElement) {
+		overElement.style.outline = overElement.originalOutline;
+	}
+	Application.storage.set("overElement", undefined);
+
 	var doc = Application.storage.get("selectContextDoc", undefined);
 	if (doc) {
 		_removeEventListners(doc);
@@ -105,7 +113,6 @@ function _addEventListners(doc) {
 	doc.addEventListener('click', _selectElement, true);
 	doc.addEventListener('mouseover', _overElement, true);
 	doc.addEventListener('mouseout', _outElement, true);
-	doc.addEventListener('keydown', _keyDown, true);
 	doc.addEventListener('mouseup', _blockMouseUpDown, true);
 	doc.addEventListener('mousedown', _blockMouseUpDown, true);
 	doc.addEventListener('contextmenu', _setContextMenu, true);
@@ -118,7 +125,6 @@ function _addEventListners(doc) {
 	Application.storage.set("click", _selectElement);
 	Application.storage.set("mouseover", _overElement);
 	Application.storage.set("mouseout", _outElement);
-	Application.storage.set("keydown", _keyDown);
 	Application.storage.set("mouseupdown", _blockMouseUpDown);
 	Application.storage.set("contextmenu", _setContextMenu);
 	Application.storage.set("unload", resetSelectContext);
@@ -138,7 +144,6 @@ function _removeEventListners(doc) {
 	var _selectElement = Application.storage.get("click", _selectElement);
 	var _overElement = Application.storage.get("mouseover", _overElement);
 	var _outElement = Application.storage.get("mouseout", _outElement);
-	var _keyDown = Application.storage.get("keydown", _keyDown);
 	var _blockMouseUpDown = Application.storage.get("mouseupdown", _blockMouseUpDown);
 	var _setContextMenu = Application.storage.get("contextmenu", _setContextMenu);
 	var _resetSelectContext = Application.storage.get("unload", resetSelectContext);
@@ -148,7 +153,6 @@ function _removeEventListners(doc) {
 	doc.removeEventListener('click', _selectElement, true);
 	doc.removeEventListener('mouseover', _overElement, true);
 	doc.removeEventListener('mouseout', _outElement, true);
-	doc.removeEventListener('keydown', _keyDown, true);
 	doc.removeEventListener('mouseup', _blockMouseUpDown, true);
 	doc.removeEventListener('mousedown', _blockMouseUpDown, true);
 	doc.removeEventListener('contextmenu', _setContextMenu, true);
@@ -206,7 +210,7 @@ function _selectElement(e) {
 			el.style.outline = "dashed blue 2px";
 			el.isSelected = true;
 		} else {
-			el.style.outline = "";
+			el.style.outline = el.originalOutline;
 			selectedElements.splice(selectedElements.indexOf(el), 1);
 			el.isSelected = false;
 		}
@@ -297,12 +301,14 @@ function _overElement(e) {
 	e.stopImmediatePropagation();
 	e.stopPropagation();
 	e.preventDefault();
-
 	var el = e.target;
+	Application.storage.set("overElement", el);
 	if (!el.originalHTML) {
 		el.originalHTML = e.target.outerHTML;
 	}
-
+	if (typeof el.originalOutline === 'undefined') {
+				el.originalOutline = el.style.outline || null;
+	}
 	var selectedElements = Application.storage.get("selectedElements", undefined);
 	if (selectedElements.indexOf(el) == -1) {
 		el.style.outline = "solid lightBlue 2px";
@@ -316,16 +322,7 @@ function _outElement(e) {
 	e.preventDefault();
 	var el = e.target;
 	if (selectedElements.indexOf(el) == -1) {
-		el.style.outline = "";
-	}
-}
-
-function _keyDown(e) {
-	e = e || window.event;
-	if (e.keyCode == 27) {
-		clearSelections();
-	} else if (e.ctrlKey && e.altKey && e.keyCode == 83) {
-		toggleSelectMode();
+		el.style.outline = el.originalOutline;
 	}
 }
 
