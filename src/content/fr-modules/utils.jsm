@@ -24,8 +24,8 @@ Components.utils.import("chrome://firerobot/content/external-modules/xregexp.jsm
 var Application = Components.classes["@mozilla.org/fuel/application;1"]
 	.getService(Components.interfaces.fuelIApplication);
 
-var	prefService = Components.classes["@mozilla.org/preferences-service;1"]
-		.getService(Components.interfaces.nsIPrefBranch);
+var prefService = Components.classes["@mozilla.org/preferences-service;1"]
+	.getService(Components.interfaces.nsIPrefBranch);
 
 var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
 	.getService(Components.interfaces.nsIPromptService);
@@ -34,7 +34,7 @@ var windowMediator = Components.classes["@mozilla.org/appshell/window-mediator;1
 	.getService(Components.interfaces.nsIWindowMediator);
 
 var windowWatcher = Components.classes["@mozilla.org/embedcomp/window-watcher;1"]
-		.getService(Components.interfaces.nsIWindowWatcher);
+	.getService(Components.interfaces.nsIWindowWatcher);
 
 
 function setBrowserWindow() {
@@ -110,10 +110,6 @@ function getTextFragments(element) {
 	var cleanClone = getCleanClone(element);
 	var textFragments = cleanClone.innerHTML.split(/<[^>]*>/);
 
-	//Remove duplicates
-	textFragments = textFragments.filter(function(elem, pos) {
-		return textFragments.indexOf(elem) == pos;
-	});
 	//More sanitizing on the text fragments
 	for (var i = 0; i < textFragments.length; i++) {
 		textFragments[i] = _replaceHTMLEntities(textFragments[i]);
@@ -139,11 +135,17 @@ function getTextFragments(element) {
 				textFragments.splice(i + j, 0, splitTextFragment[j]);
 			}
 		}
+		
 		if (textFragments[i].length == 0 || !(_isPrintable(textFragments[i]))) {
 			textFragments.splice(i, 1);
 			i--;
 			continue;
 		}
+
+		//Remove duplicates
+		textFragments = textFragments.filter(function(elem, pos) {
+			return textFragments.indexOf(elem) == pos;
+		});
 	}
 	element.textFragments = textFragments;
 	return textFragments;
@@ -343,8 +345,7 @@ function getCleanClone(element) {
 			clone.childNodes[i].data = "";
 		}
 		//hidden elements
-		else if ((element.childNodes[i].nodeType !== 3 && !isVisible(element.childNodes[i]) && element.childNodes[i].tagName != "BR")  
-			|| element.childNodes[i].tagName == "IFRAME"  || element.childNodes[i].tagName == "FRAME"){
+		else if ((element.childNodes[i].nodeType !== 3 && !isVisible(element.childNodes[i]) && element.childNodes[i].tagName != "BR") || element.childNodes[i].tagName == "IFRAME" || element.childNodes[i].tagName == "FRAME") {
 			clone.childNodes[i].outerHTML = "<!---->";
 		}
 		//attributes
