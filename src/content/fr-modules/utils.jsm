@@ -108,7 +108,6 @@ function getTextFragments(element) {
 	}
 
 	var cleanClone = getCleanClone(element);
-
 	var textFragments = cleanClone.innerHTML.split(/<[^>]*>/);
 
 	//Remove duplicates
@@ -140,7 +139,7 @@ function getTextFragments(element) {
 				textFragments.splice(i + j, 0, splitTextFragment[j]);
 			}
 		}
-		if (textFragments[i] === "") {
+		if (textFragments[i].length == 0 || !(_isPrintable(textFragments[i]))) {
 			textFragments.splice(i, 1);
 			i--;
 			continue;
@@ -331,6 +330,7 @@ function getOSName() {
 	return OSName;
 }
 
+//TODO improve, sometimes script elements are not removed
 function getCleanClone(element) {
 	var clone = element.cloneNode(true);
 	for (var i = 0; i < element.childNodes.length; i++) {
@@ -606,4 +606,10 @@ function _getTag(element) {
 		tag = "*[local-name() = '" + tag + "']";
 	}
 	return tag;
+}
+
+//TODO any other characters?
+function _isPrintable(str) {
+	var patt = new RegExp(/[^\u200c\u200d\u200e\u200f]+/gm);
+	return patt.test(str);
 }
