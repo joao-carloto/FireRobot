@@ -28,6 +28,14 @@
                id="pref-use-variables" 
                name="extensions.firerobot.variables.use" 
                type="bool"/>
+            <preference 
+               id="pref-create-var-for-loc" 
+               name="extensions.firerobot.variables.create-for-loc" 
+               type="bool"/>
+            <preference 
+               id="pref-use-var-for-loc" 
+               name="extensions.firerobot.variables.use-for-loc" 
+               type="bool"/>
         </preferences>
         <vbox>
             <hbox 
@@ -96,6 +104,16 @@
                checked="true" 
                label="&firerobot.preferences.use-var;" 
                preference="pref-use-variables"/>
+            <checkbox 
+               id="useVarForLocCheckBox" 
+               checked="false" 
+               label="&firerobot.preferences.create-var-for-loc;" 
+               preference="pref-create-var-for-loc"/>
+            <checkbox 
+               id="useVarForLocCheckBox" 
+               checked="false" 
+               label="&firerobot.preferences.use-var-for-loc;" 
+               preference="pref-use-var-for-loc"/>
         </vbox>
     </prefpane>
 </prefwindow>

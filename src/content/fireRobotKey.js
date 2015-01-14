@@ -10,6 +10,14 @@ if (!FireRobot.Key) FireRobot.Key = {};
 
 FireRobot.Key = {
 
+
+	//To force the OK button on Linux and OS X
+	setButtons: function(e) {
+		var buttonAccept = document.documentElement.getButton('accept');
+		buttonAccept.hidden = false;
+		buttonAccept.disabled = false;
+	},
+
 	loadSelSteps: function() {
 
 		var keyWindow = Application.storage.get("keyWindow", undefined);
@@ -46,16 +54,16 @@ FireRobot.Key = {
 				sameVar = matchLocalVar[i].trim();
 				var firstOcurrencePos = selectedSteps.indexOf(sameVar);
 				var defPos = selectedSteps.indexOf(matchLocalVar[i]);
-				if(defPos <= firstOcurrencePos) {
+				if (defPos <= firstOcurrencePos) {
 					//Yes this was defined inside the selected steps, so it will not be an argument of the new keyword
 					//Let's remove the variable
 					sameVar = sameVar.replace("$", "\\$");
 					var regex = new RegExp(sameVar, "g");
-					selectedSteps = selectedSteps.replace(regex, "");	
+					selectedSteps = selectedSteps.replace(regex, "");
 				}
 			}
 		}
-		
+
 		var matchVar = selectedSteps.match(/\${[^${}]*}/g);
 		if (matchVar) {
 			//Remove duplicates
@@ -147,7 +155,7 @@ FireRobot.Key = {
 		var keywordsTextArea = frWindow.document.getElementById("keywordsTextArea");
 		var oldKeywords = keywordsTextArea.value;
 
-		if(oldKeywords !== "") {
+		if (oldKeywords !== "") {
 			keyword = "\r\n\r\n" + keyword;
 		}
 

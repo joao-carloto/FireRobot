@@ -5,6 +5,7 @@ var EXPORTED_SYMBOLS = [
 ];
 
 Components.utils.import("chrome://firerobot/content/fr-modules/utils.jsm");
+Components.utils.import("chrome://firerobot/content/fr-modules/variables.jsm");
 
 
 function getLocator(element) {
@@ -87,7 +88,25 @@ function getLocator(element) {
 	if (!loc) {
 		loc = "xpath=" + (element.xpath || getElementXPath(element));
 	}
-	return escapeRobot(loc);
+
+	loc = escapeRobot(loc);
+
+	if (prefService.getBoolPref("extensions.firerobot.variables.create-for-loc")) {
+		varName = getVarNameFromValue(loc);
+		if(!varName) {
+			var varName = "locator-" + createVarName(element);
+			//varName = indexVarName(varName);
+			addVariable(varName, loc);
+		}
+	}
+
+	if (prefService.getBoolPref("extensions.firerobot.variables.use-for-loc")) {
+		var varName = getVarNameFromValue(loc);
+		if (varName) { 
+			loc = "${" + varName + "}";
+		}
+	}
+	return loc;
 }
 
 function getLocatorType(element) {
@@ -184,7 +203,26 @@ function getLocatorForGenericElement(element) {
 	if (!loc) {
 		loc = "xpath=" + (element.xpath || getElementXPath(element));
 	}
-	return escapeRobot(loc);
+
+	loc = escapeRobot(loc);
+
+	if (prefService.getBoolPref("extensions.firerobot.variables.create-for-loc")) {
+		varName = getVarNameFromValue(loc);
+		if(!varName) {
+			var varName = "locator-" + createVarName(element);
+			//varName = indexVarName(varName);
+			addVariable(varName, loc);
+		}
+	}
+
+	if (prefService.getBoolPref("extensions.firerobot.variables.use-for-loc")) {
+		var varName = getVarNameFromValue(loc);
+		if (varName) { 
+			loc = "${" + varName + "}";
+		}
+	}
+
+	return loc;
 }
 
 
@@ -255,8 +293,7 @@ var _elementLocators = [
 ];
 
 function _getLocPrefs() {
-	var enabledLocPreferences;
-	enabledLocPreferences = prefService.getCharPref(
+	var enabledLocPreferences = prefService.getCharPref(
 		"extensions.firerobot.enabled-locators");
 	return enabledLocPreferences.split(",");
 }

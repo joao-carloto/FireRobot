@@ -5,9 +5,10 @@
   SYSTEM 'chrome://firerobot/locale/fireRobot.dtd'>
 <prefwindow 
   class="frBase" 
-  id="keyword-window" 
+  id="keyword-window"
+  buttons="accept, cancel" 
   ondialogaccept="return FireRobot.Key.addKey();" 
-  onload="FireRobot.Key.loadSelSteps();" 
+  onload="FireRobot.Key.loadSelSteps(); FireRobot.Key.setButtons();"
   title="Extract Keyword" 
   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
   <script 
@@ -30,7 +31,7 @@
         type="string"/>
     </preferences>
     <vbox flex="1">
-      <spacer style="height: 5px"/>
+      <spacer style="height: 0.4rem"/>
       <hbox align="center">
         <textbox
           id="keyNameBox"
@@ -50,13 +51,13 @@
         multiline="true" 
         rows="16" 
         type="unichar"/>
-      <spacer style="height: 5px"/>
+      <spacer style="height: 0.4rem"/>
       <radiogroup id="key_target" preference="pref-key-target">
         <radio value="self" label="&firerobot.key.target_self;"/>
         <radio value="res_file" label="&firerobot.key.target_file;"/>
       </radiogroup>
       <hbox align="center">
-        <spacer style="width: 20px"/>
+        <spacer style="width: 1.6rem"/>
         <textbox
           id="resFileBox"
           class="testBox" 
@@ -69,10 +70,10 @@
           tooltiptext="&firerobot.key.placeholder2;"/>
       </hbox>
       <hbox>
-        <spacer style="width: 20px"/>
+        <spacer style="width: 1.6rem"/>
         <description>&firerobot.key.warn_res_file;</description>
       </hbox>
-      <spacer style="height: 5px"/>
+      <spacer style="height: 0.4rem"/>
       <checkbox 
         id="useVarCheckBox"
         checked="true"

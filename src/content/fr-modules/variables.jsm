@@ -6,6 +6,7 @@ var EXPORTED_SYMBOLS = [
 	"decreaseVarIndex",
 	"loadVariables",
 	"getVarNameFromValue",
+	"indexVarName",
 	"setFocusedVarName",
 	"updateVarName",
 	"varNameExists"
@@ -61,6 +62,11 @@ function createVarName(element) {
 	} else {
 		varName = "var-name";
 	}
+	varName = indexVarName(varName);
+	return varName;
+}
+
+function indexVarName(varName) {
 	var frWindow = Application.storage.get("frWindow", undefined);
 	var rows = frWindow.document.getElementById("varListBox").childNodes;
 	for (var i = 0; i < rows.length; i++) {

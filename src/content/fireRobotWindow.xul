@@ -3,7 +3,7 @@
 <?xml-stylesheet type="text/css" href="chrome://firerobot/skin/firerobot.css" ?>
 <!DOCTYPE overlay
   SYSTEM 'chrome://firerobot/locale/fireRobot.dtd'>
-<window class="frBase" fullscreenbutton="true" height="760rem" id="firerobot-window" orient="vertical" resizable="true" title="FireRobot" width="505rem" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<window class="frBase" fullscreenbutton="true" height="760rem" id="firerobot-window" orient="vertical" resizable="true" title="FireRobot" width="520rem" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <stringbundleset id="string-bundle-set">
         <stringbundle id="string-bundle" src="chrome://firerobot/locale/fireRobot.properties"/>
     </stringbundleset>
@@ -13,7 +13,7 @@
     </keyset>
     <script src="chrome://firerobot/content/browserOverlay.js" type="application/x-javascript"/>
     <vbox flex="1">
-        <spacer style="height: 5px"/>
+        <spacer style="height: 0.4rem"/>
         <hbox align="center">
             <img class="btn" id="selectButton" onclick="FireRobot.BrowserOverlay.selectBtn();" onmouseout="FireRobot.BrowserOverlay.selectButtonOut();" onmouseover="FireRobot.BrowserOverlay.selectButtonOver();" title="Select Elements" tooltiptext="&firerobot.window.select-btn;"/>
             <label control="selectButton" value="Select page elements and then use the right mouse button for the keyword menu."/>
@@ -30,13 +30,13 @@
             <description control="htmlTextArea">HTML:</description>
             <textbox class="testBox" flex="1" id="htmlTextArea" multiline="true" readonly="true" rows="8"/>
         </vbox>
-        <!--spacer style="height: 5px"/-->
+        <!--spacer style="height: 0.4rem"/-->
         <!--TODO Moving splitter sometimes does not reestablish text box size. Report at bugzilla?-->
         <splitter collapse="before" resizeafter="grow" resizebefore="grow">
             <grippy/>
         </splitter>
         <vbox id="lowerArea" flex="1">
-            <spacer style="height: 6px"/>
+            <spacer style="height: 0.5rem"/>
             <tabbox id="testTabBox" selectedIndex="2" flex="1">
                 <tabs>
                     <tab class="frBaseTab" label="*** Settings ***"/>

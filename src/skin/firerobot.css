@@ -13,7 +13,7 @@
 }
 
 .btn#selectButton {
-    margin-left:5px;
+    margin-left:0.4rem;
     background-image:url(chrome://firerobot/skin/white-icons/select.png);
 }
 
@@ -22,7 +22,7 @@
 }
 
 .selectOn {
-    margin-left:5px;
+    margin-left:0.4rem;
     width:2.7rem;
     height:2.7rem;
     background-size:2.7rem 2.7rem;
@@ -33,7 +33,7 @@
 }
 
 .btn#closeButton {
-    margin-right:5px;
+    margin-right:0.4rem;
     background-image:url(chrome://firerobot/skin/white-icons/appbar.close.png);
 }
 
@@ -58,7 +58,7 @@
 }
 
 .sideBarButton {
-    margin-right:5px;
+    margin-right:0.4rem;
     background-image:url(chrome://firerobot/skin/white-icons/appbar.layout.sidebar.png);
 }
 
@@ -68,7 +68,7 @@
 }
 
 .floatButton {
-    margin-right:5px;
+    margin-right:0.4rem;
     background-image:url(chrome://firerobot/skin/white-icons/appbar.new.window.png);
 }
 
@@ -77,9 +77,9 @@
 }
 
 .btn#addResourceButton {
-    margin-top:3px;
-    margin-bottom:3px;
-    margin-right:5px;
+    margin-top:0.2rem;
+    margin-bottom:0.2rem;
+    margin-right:0.4rem;
     background-image:url(chrome://firerobot/skin/white-icons/appbar.add.png);
 }
 
@@ -88,8 +88,8 @@
 }
 
 .btn#moveVarDownButton {
-    margin-top:3px;
-    margin-bottom:3px;
+    margin-top:0.2rem;
+    margin-bottom:0.2rem;
     background-image:url(chrome://firerobot/skin/white-icons/appbar.chevron.down.png);
 }
 
@@ -98,8 +98,8 @@
 }
 
 .btn#moveVarUpButton {
-    margin-top:3px;
-    margin-bottom:3px;
+    margin-top:0.2rem;
+    margin-bottom:0.2rem;
     background-image:url(chrome://firerobot/skin/white-icons/appbar.chevron.up.png);
 }
 
@@ -108,8 +108,8 @@
 }
 
 .btn#removeVarButton {
-    margin-top:3px;
-    margin-bottom:3px;
+    margin-top:0.2rem;
+    margin-bottom:0.2rem;
     background-image:url(chrome://firerobot/skin/white-icons/appbar.minus.png);
 }
 
@@ -118,9 +118,9 @@
 }
 
 .btn#addVarButton {
-    margin-top:3px;
-    margin-bottom:3px;
-    margin-right:5px;
+    margin-top:0.2rem;
+    margin-bottom:0.2rem;
+    margin-right:0.4rem;
     background-image:url(chrome://firerobot/skin/white-icons/appbar.add.png);
 }
 
@@ -129,9 +129,9 @@
 }
 
 .btn#playButton {
-    margin-top:3px;
-    margin-bottom:3px;
-    margin-left:5px;
+    margin-top:0.2rem;
+    margin-bottom:0.2rem;
+    margin-left:0.4rem;
     background-image:url(chrome://firerobot/skin/white-icons/appbar.control.play.png);
 }
 
@@ -140,9 +140,9 @@
 }
 
 .playOn {
-    margin-top:3px;
-    margin-bottom:3px;
-    margin-left:5px;
+    margin-top:0.2rem;
+    margin-bottom:0.2rem;
+    margin-left:0.4rem;
     background-image:url(chrome://firerobot/skin/black-icons/appbar.control.play.png);
     width:2.7rem;
     height:2.7rem;
@@ -152,8 +152,8 @@
 }
 
 .btn#reportButton {
-    margin-top:3px;
-    margin-bottom:3px;
+    margin-top:0.2rem;
+    margin-bottom:0.2rem;
     background-image:url(chrome://firerobot/skin/white-icons/appbar.list.png);
 }
 
@@ -162,8 +162,8 @@
 }
 
 .btn#keyWordButton{
-    margin-top:3px;
-    margin-bottom:3px;
+    margin-top:0.2rem;
+    margin-bottom:0.2rem;
     background-image:url(chrome://firerobot/skin/white-icons/appbar.key.png);
 }
 
@@ -172,8 +172,8 @@
 }
 
 .btn#openButton {
-    margin-top:3px;
-    margin-bottom:3px;
+    margin-top:0.2rem;
+    margin-bottom:0.2rem;
     background-image:url(chrome://firerobot/skin/white-icons/appbar.folder.open.png);
 }
 
@@ -182,8 +182,8 @@
 }
 
 .btn#saveAsButton {
-    margin-top:3px;
-    margin-bottom:3px;
+    margin-top:0.2rem;
+    margin-bottom:0.2rem;
     background-image:url(chrome://firerobot/skin/white-icons/appbar.save-as.png);
 }
 
@@ -192,9 +192,9 @@
 }
 
 .btn#saveButton {
-    margin-top:3px;
-    margin-bottom:3px;
-    margin-right:5px;
+    margin-top:0.2rem;
+    margin-bottom:0.2rem;
+    margin-right:0.4rem;
     background-image:url(chrome://firerobot/skin/white-icons/appbar.save.png);
 }
 
@@ -236,7 +236,7 @@
 
 .btn#selResButton {
     background-image:url(chrome://firerobot/skin/white-icons/appbar.folder.open.png);
-    margin-right:5px;
+    margin-right:0.4rem;
 }
 
 .btn#selResButton:hover {

@@ -135,7 +135,7 @@ function getTextFragments(element) {
 				textFragments.splice(i + j, 0, splitTextFragment[j]);
 			}
 		}
-		
+
 		if (textFragments[i].length == 0 || !(_isPrintable(textFragments[i]))) {
 			textFragments.splice(i, 1);
 			i--;
