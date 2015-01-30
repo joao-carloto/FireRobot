@@ -369,7 +369,7 @@ function getOSName() {
 
 function getURL() {
 	var browserWindow = windowMediator.getMostRecentWindow("navigator:browser");
-	url = browserWindow.content.location.href;
+	var url = browserWindow.content.location.href;
 	url = decodeURIComponent(url);
 	return url;
 }
