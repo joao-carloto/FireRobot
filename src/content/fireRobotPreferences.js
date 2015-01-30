@@ -146,7 +146,6 @@ FireRobot.Preferences = {
 			}
 		}
 
-
 		//css pseudoclass :focus will not work, ence the following code
 		enabledLocList.addEventListener('select', function() {
 			var previousSelEnable = Application.storage.get("selectedEnabledLocator", undefined);
@@ -185,7 +184,6 @@ FireRobot.Preferences = {
 
 
 	getDisabledLocPrefsFromEnabled: function(enabledLocPreferences) {
-		//TODO put this on locators.jsm?
 		var allLocPrefs = [
 			"id",
 			"name",

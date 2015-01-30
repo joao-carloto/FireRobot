@@ -55,12 +55,12 @@ xpi_built := install.rdf \
              chrome.manifest \
              $(wildcard content/*.js) \
              $(wildcard content/*.jsm) \
+             $(wildcard content/external-modules/*.js) \
              $(wildcard content/external-modules/*.jsm) \
              $(wildcard content/fr-modules/*.jsm) \
              $(wildcard content/*.xul) \
              $(wildcard content/*.xml) \
              $(wildcard content/*.css) \
-			 $(wildcard content/java/*.jar) \
              $(wildcard defaults/*/*.js) \
              $(wildcard skin/*.css) \
              $(wildcard skin/*/*.png) \

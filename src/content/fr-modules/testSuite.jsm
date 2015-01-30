@@ -3,11 +3,13 @@
 		"showReport",
 		"openTest",
 		"saveAs",
-		"save",
-		"getOSName"
+		"save"
 	];
 
 	Components.utils.import("resource://gre/modules/FileUtils.jsm");
+	Components.utils.import("resource://gre/modules/devtools/Console.jsm");
+
+	Components.utils.import("chrome://firerobot/content/external-modules/subprocess.jsm");
 
 	Components.utils.import("chrome://firerobot/content/fr-modules/variables.jsm");
 	Components.utils.import("chrome://firerobot/content/fr-modules/utils.jsm");
@@ -19,47 +21,32 @@
 		if (testRunning) return;
 
 		var frWindow = Application.storage.get("frWindow", undefined);
-		if (!frWindow.navigator.javaEnabled()) {
-			warning("firerobot.warn.no-java");
-			return;
-		}
-
-		var appVersion = frWindow.navigator.appVersion;
 		var testDir = FileUtils.getDir("ProfD", ["extensions",
 				"{91d9d8dc-09f8-4890-b6d8-32cbbf0a2f0e}",
 				"run"
 			],
 			true);
 
-		//Remove old screen shots
-		testDir.remove(true);
+		//Remove old screen shots, we don't want to keep old logs if the test is interrupted in the middle
+		//This may fail if we are using the Open Browser ... ff_profile_dir option, ence the try/catch
+		try {
+			testDir.remove(true);
+		} catch (err) {
+			//We do nothing because content will be re-written anyway, unless test is interrupted in the middle
+		}
 		//Create new test execution folder
 		testDir = FileUtils.getDir("ProfD", ["extensions",
 				"{91d9d8dc-09f8-4890-b6d8-32cbbf0a2f0e}",
 				"run"
 			],
 			true);
+
 		var testDirPath = testDir.path;
-
-		var robotFramework = FileUtils.getFile("ProfD", ["extensions",
-			"{91d9d8dc-09f8-4890-b6d8-32cbbf0a2f0e}",
-			"content",
-			"java",
-			"robotframework-2.8.4.jar"
-		]);
-		var robotFrameworkPath = robotFramework.path;
-
-		var selenium2Library = FileUtils.getFile("ProfD", ["extensions",
-			"{91d9d8dc-09f8-4890-b6d8-32cbbf0a2f0e}",
-			"content",
-			"java",
-			"robotframework-selenium2library-java-1.4.0.7-SNAPSHOT-jar-with-dependencies.jar"
-		]);
-		var selenium2LibraryPath = selenium2Library.path;
-
 		var shell;
 		var args;
 		var testFile;
+		var pybotErrMsg;
+		var pybotTestArgs;
 
 		var OSName = getOSName();
 		if (OSName == "Windows") {
@@ -69,15 +56,17 @@
 			var env = Components.classes["@mozilla.org/process/environment;1"]
 				.getService(Components.interfaces.nsIEnvironment);
 			shell = new FileUtils.File(env.get("COMSPEC"));
+
 			args = ["/C",
-				"java",
-				"-Xbootclasspath/a:" + selenium2LibraryPath,
-				"-jar",
-				robotFrameworkPath,
+				"pybot",
 				"-d",
 				testDirPath,
 				testFile.path
 			];
+
+			pybotTestArgs = ["/C", "pybot", "-h"];
+			pybotErrMsg = "\'pybot\' is not recognized as an internal or external command";
+
 		} else if (OSName == "MacOS") {
 			testFile = new FileUtils.File(testDirPath + "/FireRobot.txt");
 
@@ -89,11 +78,7 @@
 			createInstance(Components.interfaces.nsIConverterOutputStream);
 			converter.init(outStream, "UTF-8", 0, 0);
 
-			var script = "osascript -e 'tell app \"Terminal\" to do script \"java -Xbootclasspath/a:" +
-				selenium2LibraryPath.replace(/ /g, "\\\\ ") +
-				" -jar " +
-				robotFrameworkPath.replace(/ /g, "\\\\ ") +
-				" -d " +
+			var script = "osascript -e 'tell app \"Terminal\" to do script \"pybot -d" +
 				testDirPath.replace(/ /g, "\\\\ ") +
 				" " +
 				testFile.path.replace(/ /g, "\\\\ ") +
@@ -102,24 +87,51 @@
 			converter.writeString(script);
 			converter.close();
 			args = [testScript.path];
+
+			pybotTestArgs = ["pybot", "-h"];
+
+			pybotErrMsg = "pybot: No such file or directory";
+
 		} else {
 			testFile = new FileUtils.File(testDirPath + "/FireRobot.txt");
 
 			_saveTest(testFile);
 			shell = new FileUtils.File("/bin/sh");
 			args = ["-c",
-				"x-terminal-emulator -e java -Xbootclasspath/a:" +
-				selenium2LibraryPath.replace(/ /g, "\\ ") +
-				" -jar " +
-				robotFrameworkPath.replace(/ /g, "\\ ") +
-				" -d " +
+				"x-terminal-emulator -e pybot -d " +
 				testDirPath.replace(/ /g, "\\ ") +
 				" " +
 				testFile.path.replace(/ /g, "\\ ")
 			];
+
+			pybotTestArgs = ["-c", "pybot -h"];
+			pybotErrMsg = "pybot: not found";
 		}
 
+		var p = subprocess.call({
+			command: shell.path,
+			arguments: pybotTestArgs,
+			charset: 'UTF-8',
+			stderr: function(data) {
+				console.log("ERROR DATA: ", data + "\n");
+				var pos = data.indexOf(pybotErrMsg);
+				if (pos != -1) {
+					windowWatcher.openWindow(null,
+						"chrome://firerobot/content/noRFWarning.xul",
+						"fire-robot-preferences", "chrome, dialog, centerscreen",
+						null);
+					Application.storage.set("rfIsInstalled", false);
+				}
+			},
+			mergeStderr: false
+		});
+		p.wait();
+
+		if (!Application.storage.get("rfIsInstalled", true)) return;
+
 		var playButton = frWindow.document.getElementById("playButton");
+		playButton.setAttribute("class", "playOn");
+		Application.storage.set("testRunning", true);
 
 		var process = Components.classes["@mozilla.org/process/util;1"]
 			.createInstance(Components.interfaces.nsIProcess);
@@ -139,7 +151,13 @@
 				playButton = frWindow.document.getElementById("playButton");
 				playButton.setAttribute("class", "btn");
 			}
-			showReport();
+			//nsIProcess doesn't seem to work as expected in Linux and OS X.
+			//It returns immediatelly and tries to open a report that does not yet exist.
+			//This induces the "No Report Found" popup
+			//TODO report at bugzilla?
+			if (OSName == "Windows") {
+				showReport();
+			}
 		});
 	}
 

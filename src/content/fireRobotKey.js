@@ -35,11 +35,9 @@ FireRobot.Key = {
 		var start = testArea.selectionStart;
 		var end = testArea.selectionEnd;
 
-		var selectedSteps = steps.substring(start, end).
-		trim();
-		//TODO test this in OS X
-
+		var selectedSteps = steps.substring(start, end).trim();
 		selectedSteps = "    " + selectedSteps;
+		
 		var stepsArea = keyWindow.document.getElementById("keyStepsArea");
 		stepsArea.value = selectedSteps;
 

@@ -1,5 +1,6 @@
 var EXPORTED_SYMBOLS = [
-	"createVarName",
+	"createVarNameForInput",
+	"createVarNameFromText",
 	"addVariable",
 	"removeVariable",
 	"increaseVarIndex",
@@ -16,8 +17,13 @@ Components.utils.import("chrome://firerobot/content/fr-modules/utils.jsm");
 
 Components.utils.import("chrome://firerobot/content/external-modules/xregexp.jsm");
 
-
-function createVarName(element) {
+//TODO improve this
+function createVarNameForInput(element) {
+	var prefix = "";
+	if(arguments.length > 1) {
+		prefix = arguments[0];
+		element = arguments[1];
+	}
 	var varName;
 	if (element.tagName == "INPUT" &&
 		element.placeholder &&
@@ -31,23 +37,28 @@ function createVarName(element) {
 				selText += nodes[i].wholeText + " ";
 			}
 		}
-		if (selText !== "") {
+		if (selText != "") {
 			varName = selText;
 		}
 	}
 	if (varName === undefined) {
 		var nearTextElement = getNearTextElement(element);
 		if (nearTextElement) {
-			editableXPath = ".//*[@contenteditable = 'true']";
-			var xPathResult = nearTextElement.ownerDocument.
-			evaluate(editableXPath, nearTextElement, null, 0, null);
-			var matchedNode = xPathResult.iterateNext();
-			if (matchedNode) {
-				//Exclude text of children
-				varName = nearTextElement.childNodes[0].nodeValue;
+			var label = getLabel(element, nearTextElement);
+			if (label && label.textContent.length > 0) {
+				varName = label.textContent;
 			} else {
-				//Include text of children
-				varName = nearTextElement.textContent;
+				editableXPath = ".//*[@contenteditable = 'true']";
+				var xPathResult = nearTextElement.ownerDocument.
+				evaluate(editableXPath, nearTextElement, null, 0, null);
+				var matchedNode = xPathResult.iterateNext();
+				if (matchedNode) {
+					//Exclude text of children
+					varName = nearTextElement.childNodes[0].nodeValue;
+				} else {
+					//Include text of children
+					varName = nearTextElement.textContent;
+				}
 			}
 		}
 	}
@@ -62,7 +73,53 @@ function createVarName(element) {
 	} else {
 		varName = "var-name";
 	}
+	varName = prefix + varName;
 	varName = indexVarName(varName);
+	return varName;
+}
+
+function createVarNameFromText(element) {
+	var prefix = "";
+	if(arguments.length > 1) {
+		prefix = arguments[0];
+		element = arguments[1];
+	}
+	var varName;
+	if (element.tagName == "INPUT" &&
+		element.placeholder &&
+		element.placeholder !== "") {
+		varName = element.placeholder;
+	} else if (element.tagName == "SELECT") {
+		var selText = "";
+		var nodes = element.parentNode.childNodes;
+		for (var i = 0; i < nodes.length; ++i) {
+			if (nodes[i].nodeType === 3 && nodes[i].wholeText.trim() !== "") { // 3 means "text"
+				selText += nodes[i].wholeText + " ";
+			}
+		}
+		if (selText != "") {
+			varName = selText;
+		}
+	} else if (element.tagName == "IMG" && 
+		element.alt && 
+		element.alt !== "") {
+		varName = element.alt;
+	} else if (!varName && element.textContent) {
+		varName = element.textContent;
+		varName = varName.toLowerCase();
+		varName = varName.trim();
+		varName = varName.replace(/\s{1,}/g, "-");
+		var regex = new XRegExp("[^\\p{N}\\p{L}-_]", "g");
+		varName = XRegExp.replace(varName, regex, "");
+		varName = varName.replace(/-{2,}/g, "-").replace(/^-|-$/g, "");
+		varName = varName.substring(0, 63);
+	}
+	if (!varName || varName == "") {
+		varName = null;
+	} else {
+		varName = prefix + varName;
+		varName = indexVarName(varName);
+	}
 	return varName;
 }
 
@@ -81,6 +138,7 @@ function indexVarName(varName) {
 }
 
 function addVariable(name, value) {
+
 	frWindow = Application.storage.get("frWindow", undefined);
 
 	varListBox = frWindow.document.getElementById("varListBox");
@@ -132,7 +190,6 @@ function removeVariable() {
 		} else if (selectedIndex != varListBox.itemCount) {
 			varListBox.selectedIndex = selectedIndex;
 		}
-		//TODO disable instead of warning.
 	} else {
 		warning("firerobot.warn.no-var-select");
 	}
@@ -206,7 +263,7 @@ function setFocusedVarName(event) {
 }
 
 function updateVarName(event) {
-	//TODO some kind of validation
+	//TODO do validation for RF reserved chars
 	var focusedVarName = Application.storage.get("focusedVarName", undefined);
 	var realOldVarName = "${" + focusedVarName + "}";
 	var realNewVarName = "${" + event.target.value + "}";

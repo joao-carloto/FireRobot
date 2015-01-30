@@ -18,7 +18,7 @@ function getLocator(element) {
 	} else if (element.tagName == "BUTTON" ||
 		(element.tagName == "INPUT" &&
 			(element.type == "button" ||
-			 element.type == "submit"))) {
+				element.type == "submit"))) {
 		validLocators = _btnLocators;
 	} else if (element.tagName == "INPUT" &&
 		(element.type == "text" ||
@@ -61,9 +61,7 @@ function getLocator(element) {
 				loc = element.name;
 			} else if (selLocType == "href" && element.href) {
 				loc = element.getAttribute("href");
-			}
-			//TODO BUG will return absolute paths not compatible with test
-			else if (selLocType == "src" && element.src) {
+			} else if (selLocType == "src" && element.src) {
 				loc = element.getAttribute("src");
 			} else if (selLocType == "value" &&
 				element.getAttribute("value") &&
@@ -92,17 +90,19 @@ function getLocator(element) {
 	loc = escapeRobot(loc);
 
 	if (prefService.getBoolPref("extensions.firerobot.variables.create-for-loc")) {
-		varName = getVarNameFromValue(loc);
-		if(!varName) {
-			var varName = "locator-" + createVarName(element);
-			//varName = indexVarName(varName);
+		var varName = getVarNameFromValue(loc);
+		if (!varName) {
+			var args = ["locator-", element];
+			varName = createVarNameFromText.apply(null, args);
+			if (!varName) {
+				varName = createVarNameForInput.apply(null, args);
+			}
 			addVariable(varName, loc);
 		}
 	}
-
 	if (prefService.getBoolPref("extensions.firerobot.variables.use-for-loc")) {
 		var varName = getVarNameFromValue(loc);
-		if (varName) { 
+		if (varName) {
 			loc = "${" + varName + "}";
 		}
 	}
@@ -119,7 +119,7 @@ function getLocatorType(element) {
 	} else if (element.tagName == "BUTTON" ||
 		(element.tagName == "INPUT" &&
 			(element.type == "button" ||
-			 element.type == "submit"))) {
+				element.type == "submit"))) {
 		validLocators = _btnLocators;
 	} else if (element.tagName == "INPUT" &&
 		(element.type == "text" ||
@@ -207,21 +207,22 @@ function getLocatorForGenericElement(element) {
 	loc = escapeRobot(loc);
 
 	if (prefService.getBoolPref("extensions.firerobot.variables.create-for-loc")) {
-		varName = getVarNameFromValue(loc);
-		if(!varName) {
-			var varName = "locator-" + createVarName(element);
-			//varName = indexVarName(varName);
+		var varName = getVarNameFromValue(loc);
+		if (!varName) {
+			var args = ["locator-", element];
+			varName = createVarNameFromText.apply(null, args);
+			if (!varName) {
+				varName = createVarNameForInput.apply(null, args);
+			}
 			addVariable(varName, loc);
 		}
 	}
-
 	if (prefService.getBoolPref("extensions.firerobot.variables.use-for-loc")) {
 		var varName = getVarNameFromValue(loc);
-		if (varName) { 
+		if (varName) {
 			loc = "${" + varName + "}";
 		}
 	}
-
 	return loc;
 }
 

@@ -9,7 +9,7 @@
     </stringbundleset>
     <keyset>
         <key id="clear_selections_cmd" keycode="VK_ESCAPE" oncommand="FireRobot.BrowserOverlay.escClearSelections();"/>
-        <key id="toggle_sel_mode_cmd" key="S" modifiers="control alt" oncommand="FireRobot.BrowserOverlay.selectBtn();"/>
+        <!--key id="toggle_sel_mode_cmd" key="S" modifiers="control alt" oncommand="FireRobot.BrowserOverlay.selectBtn();"/-->
     </keyset>
     <script src="chrome://firerobot/content/browserOverlay.js" type="application/x-javascript"/>
     <vbox flex="1">
@@ -31,7 +31,7 @@
             <textbox class="testBox" flex="1" id="htmlTextArea" multiline="true" readonly="true" rows="8"/>
         </vbox>
         <!--spacer style="height: 0.4rem"/-->
-        <!--TODO Moving splitter sometimes does not reestablish text box size. Report at bugzilla?-->
+        <!--TODO Moving splitter sometimes does not reestablish button rendering . Report at bugzilla?-->
         <splitter collapse="before" resizeafter="grow" resizebefore="grow">
             <grippy/>
         </splitter>

@@ -8,7 +8,6 @@
     <script 
         type="application/x-javascript" 
         src="chrome://firerobot/content/browserOverlay.js" />
-    <!--TODO: Only show usable keywords depending on selection (Too much overhead?)-->
     <popup 
         id="contentAreaContextMenu">
         <menuitem 
@@ -21,13 +20,54 @@
             label="Page Should Contain &lt;type&gt;" 
             hidden="true" 
             oncommand="FireRobot.BrowserOverlay.addKeyword(this.id);"/>
+        <menuseparator 
+            id="fire-robot-separator-1" 
+            hidden="true"/>
         <menuitem 
             id="fire-robot-click-smart" 
             label="Click &lt;type&gt;" 
             hidden="true" 
             oncommand="FireRobot.BrowserOverlay.addKeyword(this.id);"/>
+        <menuitem 
+            id="fire-robot-open-context" 
+            label="Open Context Menu" 
+            hidden="true" 
+            oncommand="FireRobot.BrowserOverlay.addKeyword(this.id);"/>
+        <!--There seems to be a bug here see https://groups.google.com/forum/#!msg/robotframework-users/eNg03fQ-Mwg/JqmCDLUcfWkJ-->
+        <!--menuitem 
+            id="fire-robot-focus"
+            label="Focus" 
+            hidden="true" 
+            oncommand="FireRobot.BrowserOverlay.addKeyword(this.id);"/-->
         <menuseparator 
-            id="fire-robot-separator-1" 
+            id="fire-robot-separator-2" 
+            hidden="true"/>
+        <menu 
+            id="fire-robot-mouse" 
+            label="Mouse..." 
+            hidden="true">
+            <menupopup 
+                id="fire-robot-mouse-popup">
+                <menuitem 
+                id="fire-robot-mouse-down" 
+                label="Mouse Down &lt;type&gt;" 
+                oncommand="FireRobot.BrowserOverlay.addKeyword(this.id);"/>
+                <menuitem 
+                id="fire-robot-mouse-up" 
+                label="Mouse Up" 
+                oncommand="FireRobot.BrowserOverlay.addKeyword(this.id);"/>
+                <menuitem 
+                id="fire-robot-mouse-over" 
+                label="Mouse Over" 
+                oncommand="FireRobot.BrowserOverlay.addKeyword(this.id);"/>
+                <menuitem 
+                id="fire-robot-mouse-out" 
+                label="Mouse Out" 
+                oncommand="FireRobot.BrowserOverlay.addKeyword(this.id);"/>
+            </menupopup>
+        </menu>
+        <menuseparator 
+            id="fire-robot-separator-3" 
             hidden="true"/>
         <menu 
             id="fire-robot-page-should-not" 
@@ -36,17 +76,17 @@
             <menupopup 
                 id="fire-robot-page-should-not-popup">
                 <menuitem 
-                id="fire-robot-page-should-not-contain" 
-                label="Page Should Not Contain" 
-                oncommand="FireRobot.BrowserOverlay.addKeyword(this.id);"/>
+                    id="fire-robot-page-should-not-contain" 
+                    label="Page Should Not Contain" 
+                    oncommand="FireRobot.BrowserOverlay.addKeyword(this.id);"/>
                 <menuitem 
-                id="fire-robot-page-should-not-contain-smart" 
-                label="Page Should Not Contain &lt;type&gt;" 
-                oncommand="FireRobot.BrowserOverlay.addKeyword(this.id);"/>
+                    id="fire-robot-page-should-not-contain-smart" 
+                    label="Page Should Not Contain &lt;type&gt;" 
+                    oncommand="FireRobot.BrowserOverlay.addKeyword(this.id);"/>
             </menupopup>
         </menu>
         <menuseparator 
-            id="fire-robot-separator-2" 
+            id="fire-robot-separator-4" 
             hidden="true"/>
         <menu 
             id="fire-robot-wait" 
@@ -69,7 +109,7 @@
             </menupopup>
         </menu>
         <menuseparator 
-            id="fire-robot-separator-3" 
+            id="fire-robot-separator-5" 
             hidden="true"/>
         <menu 
             id="fire-robot-element-should" 
@@ -77,15 +117,18 @@
             hidden="true">
             <menupopup 
                 id="fire-robot-element-should-popup">
-                <!--TODO was broken in the java2library. Fix allready available. Implement next release-->
-                <!--https://github.com/MarkusBernhardt/robotframework-selenium2library-java/issues/53-->
-                <!--menuitem 
+                <menuitem 
                     id="fire-robot-element-should-be-enabled" 
                     label="Element Should Be Enabled" 
                     oncommand="FireRobot.BrowserOverlay.addKeyword(this.id);"/>
                 <menuitem 
                     id="fire-robot-element-should-be-disabled" 
                     label="Element Should Be Disabled" 
+                    oncommand="FireRobot.BrowserOverlay.addKeyword(this.id);"/>
+                    <!--Selenium Webdriver text method output seems to be unpredictable reagarding text breaks. Couldn't get a reliable algorithm for this-->
+                    <!--menuitem 
+                    id="fire-robot-element-text-should-be" 
+                    label="Element Text Should Be" 
                     oncommand="FireRobot.BrowserOverlay.addKeyword(this.id);"/-->
                     <menuitem 
                     id="fire-robot-element-should-be-visible" 
@@ -98,7 +141,7 @@
                 </menupopup>
             </menu>
             <menuseparator 
-            id="fire-robot-separator-4" 
+            id="fire-robot-separator-6" 
             hidden="true"/>
             <menu 
             id="fire-robot-browser" 
@@ -111,6 +154,10 @@
                     label="Open Browser" 
                     oncommand="FireRobot.BrowserOverlay.addKeyword(this.id);"/>
                     <menuitem 
+                    id="fire-robot-open-browser-ff_profile_dir" 
+                    label="Open Browser ff_profile_dir" 
+                    oncommand="FireRobot.BrowserOverlay.addKeyword(this.id);"/>
+                    <menuitem 
                     id="fire-robot-go-to" 
                     label="Go To" 
                     hidden="true" 
@@ -120,16 +167,24 @@
                     label="Go Back" 
                     oncommand="FireRobot.BrowserOverlay.addKeyword(this.id);"/>
                     <menuitem 
+                    id="fire-robot-reload-page" 
+                    label="Reload Page" 
+                    oncommand="FireRobot.BrowserOverlay.addKeyword(this.id);"/>
+                    <menuitem 
+                    id="fire-robot-location-should-be" 
+                    label="Location Should Be" 
+                    oncommand="FireRobot.BrowserOverlay.addKeyword(this.id);"/>
+                    <menuitem 
+                    id="fire-robot-set-window-size" 
+                    label="Set Window Size" 
+                    oncommand="FireRobot.BrowserOverlay.addKeyword(this.id);"/>
+                    <menuitem 
                     id="fire-robot-close-browser" 
                     label="Close Browser" 
                     oncommand="FireRobot.BrowserOverlay.addKeyword(this.id);"/>
                     <menuitem 
                     id="fire-robot-close-all-browsers" 
                     label="Close All Browsers" 
-                    oncommand="FireRobot.BrowserOverlay.addKeyword(this.id);"/>
-                    <menuitem 
-                    id="fire-robot-reload-page" 
-                    label="Reload Page" 
                     oncommand="FireRobot.BrowserOverlay.addKeyword(this.id);"/>
                 </menupopup>
             </menu>
@@ -160,7 +215,7 @@
                 </menupopup>
             </menu>
             <menuseparator 
-            id="fire-robot-separator-5" 
+            id="fire-robot-separator-7" 
             hidden="true"/>
             <menuitem 
             id="fire-robot-fill-form" 
@@ -174,7 +229,7 @@
             oncommand="FireRobot.BrowserOverlay.addKeyword(this.id);"/>
         </popup>
         <menupopup 
-        id="menuWebDeveloperPopup">
+            id="menuWebDeveloperPopup">
             <menuitem
             id="fire-robot-dev-tool-item"
             class="menuitem-iconic"
@@ -194,9 +249,9 @@
             oncommand="FireRobot.BrowserOverlay.openFRWindow(event);"/>
             <key 
             id="fire-robot-select-key" 
-            modifiers="accel alt" 
-            key="S" 
-            oncommand="FireRobot.BrowserOverlay.selectBtn();"/>
+            modifiers="alt" 
+            key="Z" 
+            oncommand="FireRobot.BrowserOverlay.selectBtn(event);"/>
         </keyset>
         <toolbarpalette 
         id="BrowserToolbarPalette">

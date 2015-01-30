@@ -12,9 +12,12 @@ var EXPORTED_SYMBOLS = [
 	"escapeSpace",
 	"getNodeValue",
 	"getTextFragments",
+	"getElementText",
 	"getCleanClone",
 	"getElementXPath",
 	"getNearTextElement",
+	"getLabel",
+	"getURL",
 	"isVisible",
 	"getOSName"
 ];
@@ -135,20 +138,29 @@ function getTextFragments(element) {
 				textFragments.splice(i + j, 0, splitTextFragment[j]);
 			}
 		}
-
-		if (textFragments[i].length == 0 || !(_isPrintable(textFragments[i]))) {
+		if (textFragments[i].length === 0 || !(_isPrintable(textFragments[i]))) {
 			textFragments.splice(i, 1);
 			i--;
 			continue;
 		}
-
-		//Remove duplicates
-		textFragments = textFragments.filter(function(elem, pos) {
-			return textFragments.indexOf(elem) == pos;
-		});
 	}
+	//Remove duplicates
+	textFragments = textFragments.filter(function(elem, pos) {
+		return textFragments.indexOf(elem) == pos;
+	});
 	element.textFragments = textFragments;
 	return textFragments;
+}
+
+
+function getElementText(element) {
+	var textFragments = getTextFragments(element);
+	var text = textFragments[0];
+	for (var i = 1; i < textFragments.length; i++) {
+		text += "\\n";
+		text += textFragments[i];
+	}
+	return text;
 }
 
 
@@ -174,34 +186,53 @@ function getElementXPath(element) {
 	} else if (element.title && element.title !== "") {
 		var title = _resolveApostrophes(element.title);
 		xpath = ".//" + tag + "[@title=" + title + "]";
-	} else {
-		txt = _getXPathText(element);
-		if (txt !== "") {
-			xpath = ".//" +
-				tag +
-				"[contains(normalize-space(.), " +
-				_resolveApostrophes(txt) +
-				")]";
-		} else if (tag == "input" &&
-			(type == "button" || type == "reset" || type == "submit") &&
-			element.value &&
-			element.value !== "") {
-			xpath = ".//input[@value='" + element.value + "']";
+	} else if (tag == "input" &&
+		(type == "button" || type == "reset" || type == "submit") &&
+		element.value &&
+		element.value !== "") {
+		xpath = ".//input[@value='" + element.value + "']";
+	}
+	//Check if the element has text
+
+	//Yes, I know that declaring variables here is not good practice.
+	//But the alternative would produce too much indentation and worse readability
+	//I also don't want to call the function twice
+	else if (tag != "SELECT" && (txt = _getXPathText(element)) !== "") {
+		xpath = ".//" +
+			tag +
+			"[contains(normalize-space(.), " +
+			_resolveApostrophes(txt) +
+			")]";
+	} else if ((nearTextElement = getNearTextElement(element)) !== null) {
+		//Search for associated labels in the context of the "nearTextElement"
+		var LabelText;
+		if (nearTextElement.tagName == "LABEL" &&
+			nearTextElement.for == element.id &&
+			nearTextElement.textContent.length > 0) {
+			labelText = _getXPathText(nearTextElement);
+			labelText = _resolveApostrophes(labelText);
+			xpath = ".//" + tag + "[@id=//label[contains(normalize-space(.)," + labelText + ")]/@for]";
 		} else {
-			var nearTextElement = getNearTextElement(element);
-			if (nearTextElement !== null) {
-				var nearestText = _getXPathText(nearTextElement);
-				xpath = ".//" + _getTag(nearTextElement) +
-					"[contains(normalize-space(.)," +
-					_resolveApostrophes(nearestText) +
-					")]";
-				var nearestTextElementXpathIndex = _getElementXPathIndex(nearTextElement, xpath);
-				if (nearestTextElementXpathIndex !== "") {
-					xpath = "(" + xpath + ")" + nearestTextElementXpathIndex;
-				}
-				xpath += "/" + nearTextElement.relationship + "::";
-				xpath += tag;
+			var label = getLabel(element, nearTextElement);
+			if (label && label.textContent.length > 0) {
+				labelText = _getXPathText(label);
+				labelText = _resolveApostrophes(labelText);
+				xpath = ".//" + tag + "[@id=//label[contains(normalize-space(.)," + labelText + ")]/@for]";
 			}
+		}
+		//No label found, use the nerTextElement text
+		if (!xpath) {
+			var nearestText = _getXPathText(nearTextElement);
+			xpath = ".//" + _getTag(nearTextElement) +
+				"[contains(normalize-space(.)," +
+				_resolveApostrophes(nearestText) +
+				")]";
+			var nearestTextElementXpathIndex = _getElementXPathIndex(nearTextElement, xpath);
+			if (nearestTextElementXpathIndex !== "") {
+				xpath = "(" + xpath + ")" + nearestTextElementXpathIndex;
+			}
+			xpath += "/" + nearTextElement.relationship + "::";
+			xpath += tag;
 		}
 	}
 	//The element does not have text included or nearby.
@@ -265,21 +296,16 @@ function _getElementXPathIndex(element, xpath) {
 	}
 }
 
-//TODO improve this?
+//TODO improve this
 function getNearTextElement(element) {
-	var tempXpath = "(.//" + _getTag(element) + ")";
 	var parentTextElement;
 	var precTextElement;
 	var followingTextElement;
 
+	var tempXpath = "(.//" + _getTag(element) + ")";
 	tempXpath += _getElementXPathIndex(element, tempXpath);
 
-	//We don't want to use the options as a variable name.
-	//TODO is this a good idea?
-	if (element.tagName != "SELECT") {
-		parentTextElement = _getParentTextElement(element);
-	}
-
+	parentTextElement = _getParentTextElement(element);
 	if (parentTextElement) {
 		return parentTextElement;
 	} else {
@@ -311,6 +337,15 @@ function getNearTextElement(element) {
 	}
 }
 
+function getLabel(input, contextEl) {
+	if (!input.id) return null;
+	xpath = ".//label[@for='" + input.id + "']";
+	var xPathResult = contextEl.ownerDocument.
+	evaluate(xpath, contextEl, null, 0, null);
+	var matchedNode = xPathResult.iterateNext();
+	return matchedNode;
+}
+
 function isVisible(element) {
 	return element.offsetWidth > 0 || element.offsetHeight > 0;
 }
@@ -324,15 +359,22 @@ function getOSName() {
 		OSName = "Windows";
 	} else if (appVersion.indexOf("Mac") != -1) {
 		OSName = "MacOS";
-	} else if (appVersion.indexOf("X11") != -1) {
-		OSName = "UNIX";
 	} else if (appVersion.indexOf("Linux") != -1) {
 		OSName = "Linux";
+	} else if (appVersion.indexOf("X11") != -1) {
+		OSName = "UNIX";
 	}
 	return OSName;
 }
 
-//TODO improve, sometimes script elements are not removed
+function getURL() {
+	var browserWindow = windowMediator.getMostRecentWindow("navigator:browser");
+	var url = browserWindow.content.document.URL;
+	url = decodeURIComponent(url);
+	return url;
+}
+
+//TODO improve
 function getCleanClone(element) {
 	var clone = element.cloneNode(true);
 	for (var i = 0; i < element.childNodes.length; i++) {
@@ -345,7 +387,11 @@ function getCleanClone(element) {
 			clone.childNodes[i].data = "";
 		}
 		//hidden elements
-		else if ((element.childNodes[i].nodeType !== 3 && !isVisible(element.childNodes[i]) && element.childNodes[i].tagName != "BR") || element.childNodes[i].tagName == "IFRAME" || element.childNodes[i].tagName == "FRAME") {
+		else if ((element.childNodes[i].nodeType !== 3 &&
+				!isVisible(element.childNodes[i]) &&
+				element.childNodes[i].tagName != "BR") ||
+			element.childNodes[i].tagName == "IFRAME" ||
+			element.childNodes[i].tagName == "FRAME") {
 			clone.childNodes[i].outerHTML = "<!---->";
 		}
 		//attributes
@@ -399,24 +445,25 @@ function _getFollowingTextElement(element) {
 	return null;
 }
 
+//TODO improve this
 function _getParentTextElement(element) {
 	var nearestTextElementXpath;
 	var elContainingDocument = element.ownerDocument;
 	var tempXpath = "(.//" + _getTag(element) + ")";
 	tempXpath += _getElementXPathIndex(element, tempXpath);
-
-	for (var i = 1; true; i++) {
-		nearestTextElementXpath = tempXpath + "/parent::*[normalize-space(.)!=''][not(@contenteditable and @contenteditable = 'true')][" + i + "]";
-		var xPathResult = elContainingDocument.
-		evaluate(nearestTextElementXpath, elContainingDocument.body, null, 0, null);
-		var matchedNode = xPathResult.iterateNext();
-		if (!matchedNode) {
-			return null;
-		} else if (_elTextContainsAlphanum(matchedNode) && isVisible(matchedNode)) {
-			matchedNode.relationship = "child";
-			return matchedNode;
-		}
+	nearestTextElementXpath = tempXpath + "/parent::*[normalize-space(.)!=''][not(@contenteditable and @contenteditable = 'true')]"; //[" + i + "]";
+	var xPathResult = elContainingDocument.
+	evaluate(nearestTextElementXpath, elContainingDocument.body, null, 0, null);
+	var matchedNode = xPathResult.iterateNext();
+	if (!matchedNode) {
+		return null;
+	} else if (_elTextContainsAlphanum(matchedNode) &&
+		isVisible(matchedNode) &&
+		matchedNode.textContent.trim() !== element.textContent.trim()) {
+		matchedNode.relationship = "child";
+		return matchedNode;
 	}
+	return null;
 }
 
 //Adapted from http://razgulyaev.blogspot.pt/2012/07/selenium-2-java-client-how-to-resolve.html#!/2012/07/selenium-2-java-client-how-to-resolve.html
@@ -518,7 +565,7 @@ function _getXPathText(element) {
 	elementText = elementText.replace(/(\r\n|\n|\r)/gm, " ");
 	elementText = elementText.replace(/\s+/g, " ");
 	elementText = _replaceHTMLEntities(elementText);
-	//TODO should this be bigger?
+	//TODO should this be bigger/smaller?
 	elementText = elementText.substring(0, 100);
 
 	return elementText;

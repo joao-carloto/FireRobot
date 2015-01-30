@@ -71,6 +71,25 @@
 <!ENTITY firerobot.key.target_file			       "Add the new keyword to a resource file:">
 
 
+<!ENTITY firerobot.norf.h1		       "Mmmm... you don't seem to have the Robot Framework installed on your system.">
+<!ENTITY firerobot.norf.p1			   "I'm assuming this, because the 'pybot' command was not recognized.">
+<!ENTITY firerobot.norf.p2			   "As of version 1.1, FireRobot is no longer a standalone application regarding test execution.">
+<!ENTITY firerobot.norf.p3			   "The following components are now necessary to run tests in FireRobot:">
+<!ENTITY firerobot.norf.li_1		   "Python 2.7.x (Java is no longer needed)">
+<!ENTITY firerobot.norf.li_2		   "Robot Framework">
+<!ENTITY firerobot.norf.li_3		   "Selenium2Library">
+<!ENTITY firerobot.norf.p4		   	   "To make this installation easier, a script was made available ">
+<!ENTITY firerobot.norf.here   		   "here">
+<!ENTITY firerobot.norf.p5		   	   "If you prefer to install manually, follow the official installation guide ">
+<!ENTITY firerobot.norf.p6		   	   "Please restart Firefox after installing these dependencies.">
+<!ENTITY firerobot.norf.p7		   	   "If you are a user of the previous standalone version, I hope you are not too angry.">
+<!ENTITY firerobot.norf.p8		   	   "The reasons for this change are explained ">
+<!ENTITY firerobot.norf.salut		   "Salutations">
+
+
+
+
+
 
 
 

@@ -79,6 +79,24 @@ FireRobot.BrowserOverlay = {
 			case "fire-robot-click-smart":
 				kwClickSmart();
 				break;
+			case "fire-robot-open-context":
+				kwOpenContext();
+				break;
+			case "fire-robot-focus":
+				kwFocus();
+				break;
+			case "fire-robot-mouse-down":
+				kwMouseDownSmart();
+				break;
+			case "fire-robot-mouse-up":
+				kwMouseUp();
+				break;
+			case "fire-robot-mouse-over":
+				kwMouseOver();
+				break;
+			case "fire-robot-mouse-out":
+				kwMouseOut();
+				break;
 			case "fire-robot-page-should-not-contain":
 				kwPageShouldNotContain();
 				break;
@@ -99,6 +117,9 @@ FireRobot.BrowserOverlay = {
 				break;
 			case "fire-robot-element-should-be-disabled":
 				kwElementShouldBeDisabled();
+				break;
+			case "fire-robot-element-text-should-be":
+				kwElementTextShouldBe();
 				break;
 			case "fire-robot-element-should-be-visible":
 				kwElementShouldBeVisible();
@@ -124,11 +145,17 @@ FireRobot.BrowserOverlay = {
 			case "fire-robot-open-browser":
 				kwOpenBrowser();
 				break;
+			case "fire-robot-open-browser-ff_profile_dir":
+				kwOpenBrowserFFProfDir();
+				break;
 			case "fire-robot-go-to":
 				kwGoTo();
 				break;
 			case "fire-robot-go-back":
 				kwGoBack();
+				break;
+			case "fire-robot-location-should-be":
+				kwLocationShouldBe();
 				break;
 			case "fire-robot-close-browser":
 				kwCloseBrowser();
@@ -138,6 +165,9 @@ FireRobot.BrowserOverlay = {
 				break;
 			case "fire-robot-reload-page":
 				kwReloadPage();
+				break;
+			case "fire-robot-set-window-size":
+				kwSetWindowSize();
 				break;
 			case "fire-robot-fill-form":
 				kwFillForm();
@@ -203,6 +233,13 @@ FireRobot.BrowserOverlay = {
 			"chrome://firerobot/content/fireRobotHelp.xul",
 			"FireRobot Help", "chrome, resizable,centerscreen");
 		Application.storage.set("helpWindow", helpWindow);
+	},
+
+	openNoRFWarning: function() {
+		var noRFWarning = window.open(
+			"chrome://firerobot/content/noRFWarning.xul",
+			"FireRobot Help", "chrome, resizable,centerscreen");
+		Application.storage.set("noRFWarning", noRFWarning);
 	},
 
 	addResourceBtn: function() {

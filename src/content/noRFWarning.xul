@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet type="text/css" href="chrome://firerobot/skin/firerobot.css" ?>
+<!DOCTYPE overlay SYSTEM "chrome://firerobot/locale/fireRobot.dtd">
+<window 
+   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" 
+   xmlns:html="http://www.w3.org/1999/xhtml"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink" 
+   id="no-rf-warning" 
+   title="Robot Framework Not Installed" 
+   orient="vertical" 
+   height="345rem"
+   width="520rem"
+   resizable="true" 
+   fullscreenbutton="true"
+   class="frBase">
+   <script type="text/javascript">
+     function unhide(id) {
+    var el = document.getElementById(id);
+    if (el) {
+      el.style.display=(el.style.display=='none')?'block':'none';
+    }
+  }</script>
+    <vbox 
+      flex="1" 
+      style="padding:5px; overflow-y: auto; overflow-x: hidden;">
+        <html:p>
+            <html:b>&firerobot.norf.h1;</html:b>
+            <html:br/>
+            <html:br/>&firerobot.norf.p1;
+            <html:br/>&firerobot.norf.p2;
+            <html:br/>&firerobot.norf.p3;
+            <html:ul>
+                <html:li>&firerobot.norf.li_1;</html:li>
+                <html:li>&firerobot.norf.li_2;</html:li>
+                <html:li>&firerobot.norf.li_3;</html:li>
+            </html:ul>
+            &firerobot.norf.p4;
+                <html:a 
+                    href='http://joao-carloto.github.io/RF_Install_Script/' 
+                    target='_blank'>
+                    <html:u>&firerobot.norf.here;</html:u>
+                </html:a>.
+            <html:br/>&firerobot.norf.p5;
+            <html:a 
+                    href='http://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#installation-instructions' 
+                    target='_blank'>
+                    <html:u>&firerobot.norf.here;</html:u>
+                </html:a>.
+            <html:br/>&firerobot.norf.p6;                
+            <html:br/>&firerobot.norf.p7;
+            <html:br/>&firerobot.norf.p8;
+                <html:a 
+                    href='https://github.com/joao-carloto/FireRobot/issues/44' 
+                    target='_blank'>
+                    <html:u>&firerobot.norf.here;</html:u>
+                </html:a>.
+            <html:br/> <html:br/>&firerobot.norf.salut;
+            <html:br/> <html:br/>João Carloto
+        </html:p>
+    </vbox>
+</window>

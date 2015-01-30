@@ -6,23 +6,32 @@ var EXPORTED_SYMBOLS = [
 	"kwWaitUntilPageContains",
 	"kwWaitUntilPageContainsElement",
 	"kwWaitUntilElementIsVisible",
+	"kwElementTextShouldBe",
 	"kwElementShouldBeEnabled",
 	"kwElementShouldBeDisabled",
 	"kwElementShouldBeVisible",
 	"kwElementShouldNotBeVisible",
 	"kwClickSmart",
+	"kwOpenContext",
+	"kwFocus",
+	"kwMouseDownSmart",
+	"kwMouseUp",
+	"kwMouseOver",
+	"kwMouseOut",
 	"kwSelectFrame",
 	"kwCurrentFrameContains",
 	"kwCurrentFrameShouldNotContain",
 	"kwFrameShouldContain",
 	"kwUnselectFrame",
 	"kwOpenBrowser",
-	"kwCloseAllBrowsers",
+	"kwOpenBrowserFFProfDir",
 	"kwGoTo",
 	"kwGoBack",
+	"kwLocationShouldBe",
+	"kwReloadPage",
 	"kwCloseBrowser",
 	"kwCloseAllBrowsers",
-	"kwReloadPage",
+	"kwSetWindowSize",
 	"kwFillForm",
 	"kwCheckForm"
 ];
@@ -168,6 +177,99 @@ function kwClickSmart() {
 	}
 }
 
+function kwOpenContext() {
+	var selectedElements = Application.storage.get("selectedElements", undefined);
+	if (!selectedElements || selectedElements.length === 0) {
+		warning("firerobot.warn.no-el-select");
+		return;
+	}
+	for (var i = 0; i < selectedElements.length; i++) {
+		var el = selectedElements[i];
+		_addStepToTest("Open Context Menu   \t" + getLocatorForGenericElement(el));
+	}
+}
+
+//REVIEW use var?
+function kwFocus() {
+	var selectedElements = Application.storage.get("selectedElements", undefined);
+	if (!selectedElements || selectedElements.length === 0) {
+		warning("firerobot.warn.no-el-select");
+		return;
+	}
+	for (var i = 0; i < selectedElements.length; i++) {
+		var el = selectedElements[i];
+		_addStepToTest("Focus   \t" + getLocatorForGenericElement(el));
+	}
+}
+
+function kwMouseDownSmart() {
+	var selectedElements = Application.storage.get("selectedElements", undefined);
+	if (!selectedElements || selectedElements.length === 0) {
+		warning("firerobot.warn.no-el-select");
+		return;
+	}
+	for (var i = 0; i < selectedElements.length; i++) {
+		var el = selectedElements[i];
+		var step = "Mouse Down ";
+		if (el.tagName == "A") {
+			step += "On Link";
+			var locType = getLocatorType(el);
+			if (locType == "link") {
+				var useVar = prefService.getBoolPref(
+					"extensions.firerobot.variables.use");
+				if (useVar) {
+					var varName = getVarNameFromValue(getLocator(el));
+					if (varName) {
+						step += "   \t${" + varName + "}";
+						_addStepToTest(step);
+						return;
+					}
+				}
+			}
+		} else if (el.tagName == "IMG") {
+			step += "On Image";
+		}
+		step += "   \t" + getLocator(el);
+		_addStepToTest(step);
+	}
+}
+
+function kwMouseUp() {
+	var selectedElements = Application.storage.get("selectedElements", undefined);
+	if (!selectedElements || selectedElements.length === 0) {
+		warning("firerobot.warn.no-el-select");
+		return;
+	}
+	for (var i = 0; i < selectedElements.length; i++) {
+		var el = selectedElements[i];
+		_addStepToTest("Mouse Up   \t" + getLocatorForGenericElement(el));
+	}
+}
+
+function kwMouseOver() {
+	var selectedElements = Application.storage.get("selectedElements", undefined);
+	if (!selectedElements || selectedElements.length === 0) {
+		warning("firerobot.warn.no-el-select");
+		return;
+	}
+	for (var i = 0; i < selectedElements.length; i++) {
+		var el = selectedElements[i];
+		_addStepToTest("Mouse Over   \t" + getLocatorForGenericElement(el));
+	}
+}
+
+function kwMouseOut() {
+	var selectedElements = Application.storage.get("selectedElements", undefined);
+	if (!selectedElements || selectedElements.length === 0) {
+		warning("firerobot.warn.no-el-select");
+		return;
+	}
+	for (var i = 0; i < selectedElements.length; i++) {
+		var el = selectedElements[i];
+		_addStepToTest("Mouse Out   \t" + getLocatorForGenericElement(el));
+	}
+}
+
 function kwWaitUntilPageContains() {
 	_addTextVerifications("Wait Until Page Contains");
 }
@@ -225,7 +327,7 @@ function kwElementShouldBeDisabled() {
 	for (var i = 0; i < selectedElements.length; i++) {
 		var el = selectedElements[i];
 		if (el.tagName == "INPUT") {
-			_addStepToTest("Element Should Disabled   \t" + getLocatorForGenericElement(el));
+			_addStepToTest("Element Should Be Disabled   \t" + getLocatorForGenericElement(el));
 			numInputElements++;
 		}
 	}
@@ -233,6 +335,33 @@ function kwElementShouldBeDisabled() {
 		warning("firerobot.warn.no-input-select");
 	}
 }
+
+//TODO Not Used. The selenium webriver interpretation of element.text seems a bit unpredictable,
+//particullarly concerning line breaks.
+//Could not yet acheive algorithm that would emulate it.
+/*
+function kwElementTextShouldBe() {
+	var selectedElements = Application.storage.get("selectedElements", undefined);
+	if (!selectedElements || selectedElements.length === 0) {
+		warning("firerobot.warn.no-el-select");
+		return;
+	}
+	var numElWithText = 0;
+	for (var i = 0; i < selectedElements.length; i++) {
+		var el = selectedElements[i];
+		var elText = getElementText(el);
+		if (elText) {
+			elText = escapeRobot(elText);
+			elText = escapeSpace(elText);
+			_addStepToTest("Element Text Should Be  \t" + getLocatorForGenericElement(el)  + "  \t" + elText);
+			numElWithText++;
+		}
+	}
+	if (numElWithText == 0) {
+		warning("firerobot.warn.no-el-with-text");
+	}
+}
+*/
 
 function kwElementShouldBeVisible() {
 	var selectedElements = Application.storage.get("selectedElements", undefined);
@@ -418,9 +547,7 @@ function kwUnselectFrame() {
 }
 
 function kwOpenBrowser() {
-	var browserWindow = windowMediator.getMostRecentWindow("navigator:browser");
-	var url = browserWindow.content.document.URL;
-	url = decodeURIComponent(url);
+	var url = getURL();
 	var step = "Open Browser  \t" + url;
 	var useVar = prefService.getBoolPref(
 		"extensions.firerobot.variables.use");
@@ -432,15 +559,49 @@ function kwOpenBrowser() {
 	_addStepToTest(step);
 }
 
+function kwOpenBrowserFFProfDir() {
+	var url = getURL();
+	var step = "Open Browser  \t" + url;
+	var useVar = prefService.getBoolPref(
+		"extensions.firerobot.variables.use");
+	if (useVar && varNameExists("BROWSER")) {
+		step += "   \t${BROWSER}"
+	} else {
+		step += "   \tFirefox"
+	}
+
+	// Get profile directory.
+	var profDir = Components.classes["@mozilla.org/file/directory_service;1"].
+	getService(Components.interfaces.nsIProperties).
+	get("ProfD", Components.interfaces.nsIFile);
+
+	profDirPath = profDir.path;
+
+	var OSName = getOSName();
+	if (OSName == "Windows") {
+		profDirPath = profDirPath.replace(/\\/g, "\\\\");
+	}
+	profDirPath = escapeSpace(profDirPath);
+	step += "   \tff_profile_dir=" + profDirPath;
+	_addStepToTest(step);
+}
+
 function kwGoTo() {
-	var browserWindow = windowMediator.getMostRecentWindow("navigator:browser");
-	var url = browserWindow.content.document.URL;
-	url = decodeURIComponent(url);
+	var url = getURL();
 	_addStepToTest("Go To   \t" + url);
 }
 
 function kwGoBack() {
 	_addStepToTest("Go Back");
+}
+
+function kwLocationShouldBe() {
+	var url = getURL();
+	_addStepToTest("Location Should be  \t" + url);
+}
+
+function kwReloadPage() {
+	_addStepToTest("Reload Page");
 }
 
 function kwCloseBrowser() {
@@ -451,8 +612,11 @@ function kwCloseAllBrowsers() {
 	_addStepToTest("Close All Browsers");
 }
 
-function kwReloadPage() {
-	_addStepToTest("Reload Page");
+function kwSetWindowSize() {
+	var browserWindow = windowMediator.getMostRecentWindow("navigator:browser");
+	var x = browserWindow.innerWidth;
+	var y = browserWindow.innerHeight;
+	_addStepToTest("Set window Size  \t" + x + "  \t" + y);
 }
 
 function kwFillForm() {
@@ -552,7 +716,9 @@ function _fillFormElement(element) {
 	var varName;
 	var boxText;
 
-	if (element.tagName == "INPUT") {
+	if (element.tagName == "INPUT" &&
+		!_isReadOnly(element) &&
+		!_isDisabled(element)) {
 		if ((element.type == "text" ||
 				element.type == "email" ||
 				element.type == "tel" ||
@@ -574,7 +740,7 @@ function _fillFormElement(element) {
 				varName = getVarNameFromValue(boxText);
 			}
 			if (createVar && !varName) {
-				varName = createVarName(element);
+				varName = createVarNameForInput(element);
 				addVariable(varName, boxText);
 			}
 			if (useVar && varName) {
@@ -607,7 +773,7 @@ function _fillFormElement(element) {
 				varName = getVarNameFromValue(passText);
 			}
 			if (createVar && !varName) {
-				varName = createVarName(element);
+				varName = createVarNameForInput(element);
 				addVariable(varName, passText);
 			}
 			if (useVar && varName) {
@@ -616,7 +782,10 @@ function _fillFormElement(element) {
 				_addStepToTest(testStep + passText);
 			}
 		}
-	} else if (element.tagName == "TEXTAREA" && element.value) {
+	} else if (element.tagName == "TEXTAREA" &&
+		element.value &&
+		!_isReadOnly(element) &&
+		!_isDisabled(element)) {
 		testStep = "Input Text   \t" +
 			locator +
 			"   \t";
@@ -629,7 +798,7 @@ function _fillFormElement(element) {
 			varName = getVarNameFromValue(areaText);
 		}
 		if (createVar && !varName) {
-			varName = createVarName(element);
+			varName = createVarNameForInput(element);
 			addVariable(varName, areaText);
 		}
 		if (useVar && varName) {
@@ -637,7 +806,8 @@ function _fillFormElement(element) {
 		} else {
 			_addStepToTest(testStep + areaText);
 		}
-	} else if (element.tagName == "SELECT") {
+	} else if (element.tagName == "SELECT" &&
+		!_isDisabled(element)) {
 		var elContainingDocument = element.ownerDocument;
 		var xPathResult = elContainingDocument.evaluate(".//option",
 			element,
@@ -676,7 +846,7 @@ function _fillFormElement(element) {
 					varName = getVarNameFromValue(matcheNodeLoc);
 				}
 				if (createVar && !varName) {
-					varName = createVarName(element);
+					varName = createVarNameForInput(element);
 					addVariable(varName, matcheNodeLoc);
 				}
 				if (useVar && varName) {
@@ -711,7 +881,7 @@ function _fillFormElement(element) {
 			varName = getVarNameFromValue(boxText);
 		}
 		if (createVar && !varName) {
-			varName = createVarName(element);
+			varName = createVarNameForInput(element);
 			addVariable(varName, boxText);
 		}
 		if (useVar && varName) {
@@ -754,7 +924,7 @@ function _checkFormElement(element) {
 				varName = getVarNameFromValue(boxText);
 			}
 			if (createVar && !varName) {
-				varName = createVarName(element);
+				varName = createVarNameForInput(element);
 				addVariable(varName, boxText);
 			}
 			if (useVar && varName) {
@@ -788,7 +958,7 @@ function _checkFormElement(element) {
 			varName = getVarNameFromValue(areaText);
 		}
 		if (createVar && !varName) {
-			varName = createVarName(element);
+			varName = createVarNameForInput(element);
 			addVariable(varName, areaText);
 		}
 		if (useVar && varName) {
@@ -824,7 +994,7 @@ function _checkFormElement(element) {
 					varName = getVarNameFromValue(matcheNodeLoc);
 				}
 				if (createVar && !varName) {
-					varName = createVarName(element);
+					varName = createVarNameForInput(element);
 					addVariable(varName, matcheNodeLoc);
 				}
 				if (useVar && varName) {
@@ -880,4 +1050,12 @@ function _addStepToTest(step) {
 	var ti = frWindow.document.getAnonymousNodes(testCaseTextArea)[0].
 	childNodes[0];
 	ti.scrollTop = ti.scrollHeight;
+}
+
+function _isReadOnly(element) {
+	return element.readOnly || element.getAttribute("readonly") == "readonly";
+}
+
+function _isDisabled(element) {
+	return element.disabled || element.getAttribute("disabled") == "disabled";
 }
