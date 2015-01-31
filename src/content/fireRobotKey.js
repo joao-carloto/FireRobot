@@ -10,7 +10,6 @@ if (!FireRobot.Key) FireRobot.Key = {};
 
 FireRobot.Key = {
 
-
 	//To force the OK button on Linux and OS X
 	setButtons: function(e) {
 		var buttonAccept = document.documentElement.getButton('accept');
@@ -19,7 +18,7 @@ FireRobot.Key = {
 	},
 
 	loadSelSteps: function() {
-
+		
 		var keyWindow = Application.storage.get("keyWindow", undefined);
 
 		resFilePath = prefService.getCharPref("extensions.firerobot.key.res_file");

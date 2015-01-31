@@ -17,9 +17,7 @@ FireRobot.Preferences = {
 			disabledLocList.removeItemAt(selectedIndex);
 
 			var enabledLocList = document.getElementById("enabled-locators-list");
-
 			enabledLocList.insertBefore(selectedItem, enabledLocList.getItemAtIndex(0));
-
 			enabledLocList.selectItem(selectedItem);
 			this.updateLocators();
 		} else {
@@ -115,11 +113,8 @@ FireRobot.Preferences = {
 			enabledLocPreferences);
 
 		var enabledLocList = document.getElementById("enabled-locators-list");
-
 		var disabledLocList = document.getElementById("disabled-locators-list");
-
 		var appendedItem;
-
 		var i;
 
 		if (enabledLocPreferences[0] !== "") {

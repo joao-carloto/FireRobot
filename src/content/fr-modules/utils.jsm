@@ -152,7 +152,6 @@ function getTextFragments(element) {
 	return textFragments;
 }
 
-
 function getElementText(element) {
 	var textFragments = getTextFragments(element);
 	var text = textFragments[0];
@@ -162,7 +161,6 @@ function getElementText(element) {
 	}
 	return text;
 }
-
 
 function getElementXPath(element) {
 	var tag = _getTag(element);

@@ -552,9 +552,9 @@ function kwOpenBrowser() {
 	var useVar = prefService.getBoolPref(
 		"extensions.firerobot.variables.use");
 	if (useVar && varNameExists("BROWSER")) {
-		step += "   \t${BROWSER}"
+		step += "   \t${BROWSER}";
 	} else {
-		step += "   \tFirefox"
+		step += "   \tFirefox";
 	}
 	_addStepToTest(step);
 }
@@ -565,9 +565,9 @@ function kwOpenBrowserFFProfDir() {
 	var useVar = prefService.getBoolPref(
 		"extensions.firerobot.variables.use");
 	if (useVar && varNameExists("BROWSER")) {
-		step += "   \t${BROWSER}"
+		step += "   \t${BROWSER}";
 	} else {
-		step += "   \tFirefox"
+		step += "   \tFirefox";
 	}
 
 	// Get profile directory.

@@ -24,7 +24,7 @@ HOW TO INSTALL FIREROBOT?
 - Go to the releases page (https://github.com/joao-carloto/FireRobot/releases).
 - Get the firerobot.xpi file.
 - Drag it over a window of your Firefox browser.
-- Confirm the installation (you will have trust me on this being safe, the reason why this is not in the official Mozilla repository is explained <a href="https://forums.mozilla.org/addons/viewtopic.php?f=21&t=19759">here</a>).
+- Confirm the installation (you will have trust me on this being safe).
 - Restart the browser.
 - You may start the extension at the Developer menu.
 - For more convenience drag the FireRobot icon from the "Customize" menu onto the browser toolbar.
@@ -32,7 +32,7 @@ HOW TO INSTALL FIREROBOT?
 
 HOW TO USE FIREROBOT?
 
-- Toggle the select button.
+- Toggle the select button (shortcut keys Alt + Z).
 - The active web page will get a dashed border, along with any included frames or iframes.
 - Click to select page elements of interest.
 - Right-click the page under testing to access the keyword context menu.
@@ -43,8 +43,7 @@ HOW TO USE FIREROBOT?
 - Use the preferences window to change the locator preferences and the options for variable creation and usage.
 - You may select resource files and automatically add its path to the *Settings* section.
 - You may select a group of test steps and automatically convert them to a new keyword that will be added to a resource file.
-- You may use any RF standard library (OperatingSystem, String, etc). Just include it on the *Settings* section.
-- To run the current test script just click on the play button.
+- To run the current test script just click on the play button. You must have the <a href='http://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#installation-instructions' target='_blank'>RobotFramework</a> and the <a href='https://github.com/rtomac/robotframework-selenium2library#installation' target='_blank'>Selenium2Library</a> installed. To help the installation you might want to use this <a href='http://joao-carloto.github.io/RF_Install_Script/' target='_blank'>script</a>.
 - The test script can be saved to a .txt or .robot file and reused later, on FireRobot or another IDE. In Linux, or Mac OS X, you must explicitly use one of these extensions when naming the test file. In Windows, .txt will be used by default, if none is indicated explicitly.
 - Linux and Mac OS X users must open the test report manually, after the test is run.
 

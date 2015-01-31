@@ -10,8 +10,8 @@
    id="no-rf-warning" 
    title="Robot Framework Not Installed" 
    orient="vertical" 
-   height="345rem"
-   width="520rem"
+   height="360rem"
+   width="510rem"
    resizable="true" 
    fullscreenbutton="true"
    class="frBase">
@@ -47,10 +47,14 @@
                     href='http://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#installation-instructions' 
                     target='_blank'>
                     <html:u>&firerobot.norf.here;</html:u>
-                </html:a>.
-            <html:br/>&firerobot.norf.p6;                
-            <html:br/>&firerobot.norf.p7;
+                </html:a>&firerobot.norf.p6;             
+                <html:a 
+                    href='https://github.com/rtomac/robotframework-selenium2library#installation' 
+                    target='_blank'>
+                    <html:u>&firerobot.norf.here;</html:u></html:a>.
+            <html:br/>&firerobot.norf.p7;                
             <html:br/>&firerobot.norf.p8;
+            <html:br/>&firerobot.norf.p9;
                 <html:a 
                     href='https://github.com/joao-carloto/FireRobot/issues/44' 
                     target='_blank'>

@@ -87,7 +87,6 @@ function resetSelectContext() {
 }
 
 function _setSelectContext() {
-
 	var browserWindow = Application.storage.get("browserWindow", undefined);
 	var doc = browserWindow.content.document;
 

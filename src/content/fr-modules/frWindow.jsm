@@ -32,8 +32,7 @@ function createSideBar() {
 	}
 
 	var oldWindow = Application.storage.get("browserWindow", undefined);
-
-	if(oldWindow != ffWindow) {
+	if (oldWindow != ffWindow) {
 		setBrowserIconOff(oldWindow);
 		setBrowserIconOn(ffWindow);
 		Application.storage.set("browserWindow", ffWindow);

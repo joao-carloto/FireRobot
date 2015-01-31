@@ -37,7 +37,7 @@ function createVarNameForInput(element) {
 				selText += nodes[i].wholeText + " ";
 			}
 		}
-		if (selText != "") {
+		if (selText !== "") {
 			varName = selText;
 		}
 	}
@@ -97,7 +97,7 @@ function createVarNameFromText(element) {
 				selText += nodes[i].wholeText + " ";
 			}
 		}
-		if (selText != "") {
+		if (selText !== "") {
 			varName = selText;
 		}
 	} else if (element.tagName == "IMG" && 
@@ -114,7 +114,7 @@ function createVarNameFromText(element) {
 		varName = varName.replace(/-{2,}/g, "-").replace(/^-|-$/g, "");
 		varName = varName.substring(0, 63);
 	}
-	if (!varName || varName == "") {
+	if (!varName || varName === "") {
 		varName = null;
 	} else {
 		varName = prefix + varName;
