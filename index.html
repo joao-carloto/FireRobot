@@ -63,7 +63,7 @@ Although this tool has some features in common with record and play tools, it's 
 <li>Go to the <a href="https://github.com/joao-carloto/FireRobot/releases" target='_blank'>releases page</a>.</li>
 <li>Get the latest firerobot.xpi installer.</li>
 <li>Drag it over a window of your Firefox browser.</li>
-<li>Confirm the installation (you will have trust me on this being safe, the reason why this is not in the official Mozilla repository is explained <a target='_blank' href="https://forums.mozilla.org/addons/viewtopic.php?f=21&t=19759">here</a>).</li>
+<li>Confirm the installation (you will have trust me on this being safe).</li>
 <li>Restart the browser.</li>
 <li>You may start the extension at the Developer menu.</li>
 <li>For more convenience drag the FireRobot icon from the "Customize" menu onto the browser toolbar.</li>
@@ -71,7 +71,7 @@ Although this tool has some features in common with record and play tools, it's 
 <a name="how-to-use-firerobot" class="anchor" href="#how-to-use-firerobot"><span class="octicon octicon-link"></span></a>How to use FireRobot?</h2>
 
 <ul>
-<li>Toggle the select button. The active web page will get a dashed border, along with any included frames or iframes.</li>
+<li>Toggle the select button (shortcut keys Alt + Z). The active web page will get a dashed border, along with any included frames or iframes.</li>
 <li>Click to select page elements of interest.</li>
 <li>Right-click the page under testing to access the keyword context menu.</li>
 <li>Select the menu options and test steps will be added.</li>
@@ -82,7 +82,9 @@ Although this tool has some features in common with record and play tools, it's 
 <li>You may select resource files and automatically add its path to the *Settings* section.</li>
 <li>You may select a group of test steps and automatically convert them to a new keyword that will be added to a resource file.</li>
 <li>You may use any <a href="https://code.google.com/p/robotframework/wiki/TestLibraries" target='_blank'>RF Standard Library</a> (OperatingSystem, String, etc). Just include it on the <em>Settings</em> section.</li>
-<li>To run the current test script just click on the play button.</li>
+<li>To run the current test script just click on the play button. 
+You must have the <a href='http://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#installation-instructions' target='_blank'>Robot Framework</a>
+and the <a href='https://github.com/rtomac/robotframework-selenium2library#installation' target='_blank'>Selenium2Library</a> installed. To help the installation you might want to use this <a href='http://joao-carloto.github.io/RF_Install_Script/' target='_blank'>script</a>.</li>
 <li>The test script can be saved to a .txt or .robot file and reused later, on FireRobot or another IDE. In Linux, or Mac OS X, you must explicitly use one of these extensions when naming the test file. In Windows, .txt will be used if none is indicated explicitly.</li>
 <li>Linux and Mac OS X users must open the test report manually, after the test is run.</li>
 </ul>
