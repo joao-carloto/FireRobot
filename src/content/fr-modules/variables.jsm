@@ -237,11 +237,9 @@ function loadVariables(str) {
 	}
 	var lines = str.split(/\r?\n/);
 	for (var i = 0; i < lines.length; i++) {
-
 		if (lines[i].match(/\${.*}/)) {
-			var name = lines[i].match(/\${.*}/)[0].replace(/^\${/, "").replace(/}$/, "");
-			var value = lines[i].replace(/\s*\${.*}=*\s{2,}/, "");
-
+			var name = lines[i].match(/\${[^}]*}/)[0].replace(/^\${/, "").replace(/}$/, "");
+			var value = lines[i].replace(/\s*\${[^}]*}=*\s{2,}/, "");
 			this.addVariable(name, value);
 		}
 	}

@@ -981,8 +981,10 @@ function _checkFormElement(element) {
 					locator +
 					"   \t";
 				var matcheNodeLoc;
-				if (locType == "value" || locType == "label") {
-					matcheNodeLoc = getLocator(matchedNode);
+				if (locType == "value") {
+					matcheNodeLoc = matchedNode.getAttribute("value");
+				} else if (locType == "label") {
+					matcheNodeLoc = matchedNode.label;
 				}
 				//Index is valid for filling but not for checking, use value as default
 				else if (matchedNode.getAttribute("value") &&

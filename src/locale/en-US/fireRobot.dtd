@@ -80,16 +80,12 @@
 <!ENTITY firerobot.norf.li_3		   "Selenium2Library">
 <!ENTITY firerobot.norf.p4		   	   "To make this installation easier, a script was made available ">
 <!ENTITY firerobot.norf.here   		   "here">
-<!ENTITY firerobot.norf.p5		   	   "If you prefer to install manually, follow the RF official installation guide">
+<!ENTITY firerobot.norf.p5		   	   "If you prefer to install manually, check the RF official installation guide">
 <!ENTITY firerobot.norf.p6		   	   ", and the Selenium2Library project ">
 <!ENTITY firerobot.norf.p7		   	   "Please restart Firefox after installing these dependencies.">
 <!ENTITY firerobot.norf.p8		   	   "If you are a user of the previous standalone version, I hope you are not too angry.">
 <!ENTITY firerobot.norf.p9		   	   "The reasons for this change are explained ">
 <!ENTITY firerobot.norf.salut		   "Salutations">
-
-
-
-
 
 
 
