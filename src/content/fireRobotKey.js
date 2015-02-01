@@ -216,7 +216,7 @@ FireRobot.Key = {
 		}
 
 		var keyStepsArea = keyWindow.document.getElementById("keyStepsArea");
-		var steps = keyStepsArea.value;
+		var steps = keyStepsArea.value.replace(/(\r\n|\n|\r)/gm, "\r\n");
 
 		keyword += "\r\n" + steps;
 		try {

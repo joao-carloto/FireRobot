@@ -189,7 +189,8 @@ function kwOpenContext() {
 	}
 }
 
-//REVIEW use var?
+//TODO not working in Firefox 35
+/*
 function kwFocus() {
 	var selectedElements = Application.storage.get("selectedElements", undefined);
 	if (!selectedElements || selectedElements.length === 0) {
@@ -201,6 +202,7 @@ function kwFocus() {
 		_addStepToTest("Focus   \t" + getLocatorForGenericElement(el));
 	}
 }
+*/
 
 function kwMouseDownSmart() {
 	var selectedElements = Application.storage.get("selectedElements", undefined);
