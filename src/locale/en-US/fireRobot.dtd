@@ -6,10 +6,10 @@
 <!ENTITY firerobot.help.what_is.li_2      "Filling and verification of forms based on their current state.">
 <!ENTITY firerobot.help.what_is.li_3      "Easy preference definition for the page element locators.">
 <!ENTITY firerobot.help.what_is.li_4      "Element localization thru automatically generated XPath, based on an element's own text or text of a nearby element.">
-<!ENTITY firerobot.help.what_is.li_5      "Automatic creation of variables based on the value of inputs.">
+<!ENTITY firerobot.help.what_is.li_5      "Automatic creation of variables based on input elements.">
 
 <!ENTITY firerobot.help.how_to.title      "HOW TO USE FIREROBOT?">
-<!ENTITY firerobot.help.how_to.li_1       "Toggle the select button. The active web page will get a dashed border, along with any included frames or iframes.">
+<!ENTITY firerobot.help.how_to.li_1       "Toggle the select button (or use Alt + Z). The active web page will get a dashed border, along with any included frames or iframes.">
 <!ENTITY firerobot.help.how_to.li_2       "Click to select page elements of interest.">
 <!ENTITY firerobot.help.how_to.li_3       "Right-click the page under testing to access the keyword context menu.">
 <!ENTITY firerobot.help.how_to.li_4       "Select the menu options and test steps will be added.">
@@ -19,10 +19,10 @@
 <!ENTITY firerobot.help.how_to.li_8       "Use the preferences window to change the locator preferences and the options for variable creation and usage.">
 <!ENTITY firerobot.help.how_to.li_9       "You may select resource files and automatically add its path to the *Settings* section.">
 <!ENTITY firerobot.help.how_to.li_10      "You may select a group of test steps and automatically convert them to a new keyword that will be added to a resource file.">
-<!ENTITY firerobot.help.how_to.li_11      "You may use any <html:u><html:a target='_blank' href='https://code.google.com/p/robotframework/wiki/TestLibraries'>RF standard library</html:a></html:u> (OperatingSystem, String, etc). Just include it on the *Settings* section.">
-<!ENTITY firerobot.help.how_to.li_12      "To run the current test script just click on the play button.">
-<!ENTITY firerobot.help.how_to.li_13      "The test script can be saved to a .txt or .robot file and reused later, on FireRobot or another IDE. In Linux, or Mac OS X, you must explicitly use one of these extensions when naming the test file. In Windows, .txt will be used by default, if none is indicated explicitly.">
-<!ENTITY firerobot.help.how_to.li_14      "Linux and Mac OS X users must open the test report manually, after the test is run.">
+<!ENTITY firerobot.help.how_to.li_11      "To run the current test script just click on the play button. 
+You must have the <html:a href='http://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#installation-instructions' target='_blank'><html:u>Robot Framework</html:u></html:a> and the <html:a href='https://github.com/rtomac/robotframework-selenium2library#installation' target='_blank'><html:u>Selenium2Library</html:u></html:a> installed. To help the installation you might want to use this <html:a href='http://joao-carloto.github.io/RF_Install_Script/' target='_blank'><html:u>script</html:u></html:a>.">
+<!ENTITY firerobot.help.how_to.li_12      "The test script can be saved to a .txt or .robot file and reused later, on FireRobot or another IDE. In Linux, or Mac OS X, you must explicitly use one of these extensions when naming the test file. In Windows, .txt will be used by default, if none is indicated explicitly.">
+<!ENTITY firerobot.help.how_to.li_13      "Linux and Mac OS X users must open the test report manually, after the test is run.">
 
 <!ENTITY firerobot.help.official      "You  might want to check the offcial page at <html:a href='http://joao-carloto.github.io/FireRobot/' target='_blank'> <html:u>GitHub</html:u></html:a>.">
 
