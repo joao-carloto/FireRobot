@@ -10,7 +10,7 @@
    id="firerobot-help" 
    title="FireRobot Help" 
    orient="vertical" 
-   height="750rem"
+   height="765rem"
    width="850rem"
    resizable="true" 
    fullscreenbutton="true"
@@ -84,9 +84,9 @@
                 </html:li>
                 <html:li>
                     <html:a 
-                      href='https://github.com/MarkusBernhardt/robotframework-selenium2library-java'
+                      href='https://github.com/rtomac/robotframework-selenium2library'
                       target='_blank'>
-                        <html:u>selenium2library-java</html:u>
+                        <html:u>selenium2library</html:u>
                     </html:a>
                 </html:li>
             </html:ul>
