@@ -13,6 +13,7 @@ var EXPORTED_SYMBOLS = [
 	"kwElementShouldNotBeVisible",
 	"kwClickSmart",
 	"kwOpenContext",
+	"kwPressKey",
 	"kwFocus",
 	"kwMouseDownSmart",
 	"kwMouseUp",
@@ -36,6 +37,7 @@ var EXPORTED_SYMBOLS = [
 	"kwCheckForm"
 ];
 
+Components.utils.import("chrome://firerobot/content/external-modules/xregexp.jsm");
 
 Components.utils.import("chrome://firerobot/content/fr-modules/utils.jsm");
 Components.utils.import("chrome://firerobot/content/fr-modules/locators.jsm");
@@ -186,6 +188,79 @@ function kwOpenContext() {
 	for (var i = 0; i < selectedElements.length; i++) {
 		var el = selectedElements[i];
 		_addStepToTest("Open Context Menu   \t" + getLocatorForGenericElement(el));
+	}
+}
+
+function kwPressKey() {
+	var selectedElements = Application.storage.get("selectedElements", undefined);
+	if (!selectedElements || selectedElements.length === 0) {
+		warning("firerobot.warn.no-el-select");
+		return;
+	} else {
+		var doc = selectedElements[0].ownerDocument;
+		doc.addEventListener("keydown", _checkDownKey);
+		doc.addEventListener("keypress", _checkPressedKey);
+	}
+}
+
+
+
+function _checkDownKey(e) {
+	if (e.which) {
+		var keynum;
+		var doc;
+		var key;
+	if (e.which < 33 || e.which == 127) {
+				e.stopImmediatePropagation();
+				e.stopPropagation();
+				e.preventDefault();
+			key = "\\\\" + e.which;
+		} else {
+				return;
+		}
+		var selectedElements = Application.storage.get("selectedElements", undefined);
+		if (!selectedElements || selectedElements.length === 0) {
+			warning("firerobot.warn.no-el-select");
+			return;
+		} else {
+			var doc = selectedElements[0].ownerDocument;
+			for (var i = 0; i < selectedElements.length; i++) {
+				var el = selectedElements[i];
+				_addStepToTest("Press Key   \t" + getLocatorForGenericElement(el) + "   \t" + key);
+			}
+			doc.removeEventListener("keydown", _checkDownKey);
+		}
+	}
+}
+
+
+
+
+function _checkPressedKey(e) {
+	if (e.which) {
+		var keynum;
+		var doc;
+		var key;
+		var keyLetter = String.fromCharCode(e.charCode);
+		var printable = XRegExp('[^\x00-\x1F\x7F]');
+		var isPrintable = printable.test(keyLetter);
+		if (isPrintable) {
+			key = keyLetter;
+		} else {
+			return;
+		}
+		var selectedElements = Application.storage.get("selectedElements", undefined);
+		if (!selectedElements || selectedElements.length === 0) {
+			warning("firerobot.warn.no-el-select");
+			return;
+		} else {
+			var doc = selectedElements[0].ownerDocument;
+			for (var i = 0; i < selectedElements.length; i++) {
+				var el = selectedElements[i];
+				_addStepToTest("Press Key   \t" + getLocatorForGenericElement(el) + "   \t" + key);
+			}
+			doc.removeEventListener("keypress", _checkPressedKey);
+		}
 	}
 }
 

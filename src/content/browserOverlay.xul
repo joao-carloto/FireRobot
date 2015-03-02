@@ -33,6 +33,11 @@
             label="Open Context Menu" 
             hidden="true" 
             oncommand="FireRobot.BrowserOverlay.addKeyword(this.id);"/>
+        <menuitem 
+            id="fire-robot-press-key" 
+            label="Press Key &lt;next key you press&gt;" 
+            hidden="true" 
+            oncommand="FireRobot.BrowserOverlay.addKeyword(this.id);"/>
         <!--There seems to be a bug here see https://groups.google.com/forum/#!msg/robotframework-users/eNg03fQ-Mwg/JqmCDLUcfWkJ-->
         <!--menuitem 
             id="fire-robot-focus"

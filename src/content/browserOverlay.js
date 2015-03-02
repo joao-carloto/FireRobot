@@ -82,6 +82,9 @@ FireRobot.BrowserOverlay = {
 			case "fire-robot-open-context":
 				kwOpenContext();
 				break;
+			case "fire-robot-press-key":
+				kwPressKey();
+				break;
 			case "fire-robot-focus":
 				kwFocus();
 				break;

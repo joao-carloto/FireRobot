@@ -246,7 +246,7 @@ function getElementXPath(element) {
 	}
 	//Robot Framework escaping has to be done after xpath definition. 
 	//Remember that escaped xpath will not work outside RF.
-	xpath = escapeRobot(xpath);
+	//xpath = escapeRobot(xpath);
 	return xpath;
 }
 
