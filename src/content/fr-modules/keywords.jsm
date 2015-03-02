@@ -210,13 +210,14 @@ function _checkDownKey(e) {
 		var keynum;
 		var doc;
 		var key;
-	if (e.which < 33 || e.which == 127) {
-				e.stopImmediatePropagation();
-				e.stopPropagation();
-				e.preventDefault();
+		if (e.which < 33 || e.which == 127) {
+			e.stopImmediatePropagation();
+			e.stopPropagation();
+			e.preventDefault();
 			key = "\\\\" + e.which;
 		} else {
-				return;
+			doc.removeEventListener("keydown", _checkDownKey);
+			return;
 		}
 		var selectedElements = Application.storage.get("selectedElements", undefined);
 		if (!selectedElements || selectedElements.length === 0) {
@@ -228,11 +229,11 @@ function _checkDownKey(e) {
 				var el = selectedElements[i];
 				_addStepToTest("Press Key   \t" + getLocatorForGenericElement(el) + "   \t" + key);
 			}
-			doc.removeEventListener("keydown", _checkDownKey);
 		}
 	}
+	doc.removeEventListener("keydown", _checkDownKey);
+	doc.removeEventListener("keypress", _checkPressedKey);
 }
-
 
 
 
@@ -247,6 +248,7 @@ function _checkPressedKey(e) {
 		if (isPrintable) {
 			key = keyLetter;
 		} else {
+			doc.removeEventListener("keypress", _checkPressedKey);
 			return;
 		}
 		var selectedElements = Application.storage.get("selectedElements", undefined);
@@ -259,9 +261,10 @@ function _checkPressedKey(e) {
 				var el = selectedElements[i];
 				_addStepToTest("Press Key   \t" + getLocatorForGenericElement(el) + "   \t" + key);
 			}
-			doc.removeEventListener("keypress", _checkPressedKey);
 		}
 	}
+	doc.removeEventListener("keydown", _checkDownKey);
+	doc.removeEventListener("keypress", _checkPressedKey);
 }
 
 //TODO not working in Firefox 35
