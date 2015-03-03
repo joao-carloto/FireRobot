@@ -6,7 +6,7 @@
     <em:id>{91d9d8dc-09f8-4890-b6d8-32cbbf0a2f0e}</em:id>
     <em:name>FireRobot</em:name>
     <em:description>Helps you create automated tests for web applications, based on the Robot Framework and the Selenium2 library.</em:description>
-    <em:version>1.1.0</em:version>
+    <em:version>1.1.1</em:version>
     <em:creator>João Miguel Gouveia Carloto</em:creator>
     <em:homepageURL>http://joao-carloto.github.io/FireRobot/</em:homepageURL>
     <em:type>2</em:type>

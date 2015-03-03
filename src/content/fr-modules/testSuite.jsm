@@ -212,7 +212,50 @@
 		var res = fp.show();
 		if (res != nsIFilePicker.returnCancel) {
 			Application.storage.set("testFile", fp.file);
-			_saveTest(fp.file);
+			var test = "";
+			var frWindow = Application.storage.get("frWindow", undefined);
+
+			//Add settings table
+			var newSettings = frWindow.document.getElementById("settingsTextArea").
+			value.
+			replace(/(\r\n|\n|\r)/gm, "\r\n");
+			test += "*** Settings ***\r\n\r\n" + newSettings;
+
+			//Add variables table
+			var rows = frWindow.document.getElementById("varListBox").childNodes;
+			var newVariables = "";
+			for (var i = 0; i < rows.length; i++) {
+				newVariables += "${" + rows[i].childNodes[1].value + "}" +
+					" \t" +
+					rows[i].childNodes[3].value +
+					"\r\n";
+			}
+			newVariables = newVariables.trim();
+			test += "\r\n\r\n\r\n*** Variables ***\r\n\r\n" + newVariables;
+
+			//Add test cases table
+			var newTestCases = frWindow.document.getElementById("testCaseTextArea").
+			value.
+			replace(/(\r\n|\n|\r)/gm, "\r\n");
+			test += "\r\n\r\n\r\n*** Test Cases ***\r\n\r\n" + newTestCases;
+
+			//Add keywords table
+			var newKeywords = frWindow.document.getElementById("keywordsTextArea").
+			value.
+			replace(/(\r\n|\n|\r)/gm, "\r\n");
+
+			if (newKeywords !== "") {
+				test += "\r\n\r\n\r\n*** Keywords ***\r\n\r\n" + newKeywords;
+			}
+
+
+			//Open the file for writting
+			var outStream = FileUtils.openFileOutputStream(fp.file);
+			var converter = Components.classes["@mozilla.org/intl/converter-output-stream;1"].
+			createInstance(Components.interfaces.nsIConverterOutputStream);
+			converter.init(outStream, "UTF-8", 0, 0);
+			converter.writeString(test);
+			converter.close();
 		}
 	}
 
@@ -365,7 +408,9 @@
 				var oldKeywords = oldContent.split(keyPattern)[1].split(headPattern)[0].trim();
 				newContent = newContent.replace(oldKeywords, newKeywords);
 			} else {
-				newContent += "\r\n\r\n\r\n*** Keywords ***\r\n\r\n" + newKeywords;
+				if (newKeywords !== "") {
+					newContent += "\r\n\r\n\r\n*** Keywords ***\r\n\r\n" + newKeywords;
+				}
 			}
 
 			//Open the file for writting
