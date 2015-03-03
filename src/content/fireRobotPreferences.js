@@ -177,7 +177,6 @@ FireRobot.Preferences = {
 		}, true);
 	},
 
-
 	getDisabledLocPrefsFromEnabled: function(enabledLocPreferences) {
 		var allLocPrefs = [
 			"id",

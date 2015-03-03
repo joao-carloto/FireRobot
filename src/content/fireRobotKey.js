@@ -123,7 +123,6 @@ FireRobot.Key = {
 		}
 	},
 
-
 	addKeyToSelf: function() {
 
 		var keyWindow = Application.storage.get("keyWindow", undefined);
@@ -174,7 +173,6 @@ FireRobot.Key = {
 		}
 		return true;
 	},
-
 
 	addKeyToFile: function() {
 
