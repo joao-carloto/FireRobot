@@ -9,14 +9,14 @@ if (!FireRobot.Preferences) FireRobot.Preferences = {};
 FireRobot.Preferences = {
 
 	enableLocator: function() {
-		var disabledLocList = document.getElementById("disabled-locators-list");
+		var disabledLocList = document.getElementById("fire-robot-disabled-locators-list");
 		var selectedItem = disabledLocList.selectedItem;
 
 		if (selectedItem) {
 			var selectedIndex = disabledLocList.selectedIndex;
 			disabledLocList.removeItemAt(selectedIndex);
 
-			var enabledLocList = document.getElementById("enabled-locators-list");
+			var enabledLocList = document.getElementById("fire-robot-enabled-locators-list");
 			enabledLocList.insertBefore(selectedItem, enabledLocList.getItemAtIndex(0));
 			enabledLocList.selectItem(selectedItem);
 			this.updateLocators();
@@ -26,7 +26,7 @@ FireRobot.Preferences = {
 	},
 
 	disableLocator: function() {
-		var enabledLocList = document.getElementById("enabled-locators-list");
+		var enabledLocList = document.getElementById("fire-robot-enabled-locators-list");
 		var selectedItem = enabledLocList.selectedItem;
 		var selectedIndex = enabledLocList.selectedIndex;
 
@@ -37,7 +37,7 @@ FireRobot.Preferences = {
 			}
 			enabledLocList.removeItemAt(selectedIndex);
 
-			var disabledLocList = document.getElementById("disabled-locators-list");
+			var disabledLocList = document.getElementById("fire-robot-disabled-locators-list");
 			disabledLocList.appendChild(selectedItem);
 
 			this.updateLocators();
@@ -47,7 +47,7 @@ FireRobot.Preferences = {
 	},
 
 	increaseLocatorIndex: function() {
-		var enabledLocList = document.getElementById("enabled-locators-list");
+		var enabledLocList = document.getElementById("fire-robot-enabled-locators-list");
 		var selectedItem = enabledLocList.selectedItem;
 		var selectedIndex = enabledLocList.selectedIndex;
 		var itemCount = enabledLocList.itemCount;
@@ -68,7 +68,7 @@ FireRobot.Preferences = {
 	},
 
 	decreaseLocatorIndex: function() {
-		var enabledLocList = document.getElementById("enabled-locators-list");
+		var enabledLocList = document.getElementById("fire-robot-enabled-locators-list");
 		var selectedItem = enabledLocList.selectedItem;
 		var selectedIndex = enabledLocList.selectedIndex;
 
@@ -89,7 +89,7 @@ FireRobot.Preferences = {
 	updateLocators: function() {
 		var i;
 		var enabledLocPreferences = "";
-		var enabledLocList = document.getElementById("enabled-locators-list");
+		var enabledLocList = document.getElementById("fire-robot-enabled-locators-list");
 
 		if (enabledLocList.itemCount > 0) {
 
@@ -100,7 +100,7 @@ FireRobot.Preferences = {
 				value;
 			}
 		}
-		document.getElementById("pref-enabled-locators").value = enabledLocPreferences;
+		document.getElementById("fire-robot-pref-enabled-locators").value = enabledLocPreferences;
 	},
 
 	loadLocatorListBoxes: function() {
@@ -112,8 +112,8 @@ FireRobot.Preferences = {
 		disabledLocPreferences = this.getDisabledLocPrefsFromEnabled(
 			enabledLocPreferences);
 
-		var enabledLocList = document.getElementById("enabled-locators-list");
-		var disabledLocList = document.getElementById("disabled-locators-list");
+		var enabledLocList = document.getElementById("fire-robot-enabled-locators-list");
+		var disabledLocList = document.getElementById("fire-robot-disabled-locators-list");
 		var appendedItem;
 		var i;
 

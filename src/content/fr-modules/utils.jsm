@@ -68,7 +68,7 @@ function setBrowserIconOff(browserWindow) {
 function warning(propRef) {
 	var frWindow = Application.storage.get("frWindow", undefined);
 	if (!frWindow) return;
-	var strBundle = frWindow.document.getElementById("string-bundle");
+	var strBundle = frWindow.document.getElementById("fire-robot-string-bundle");
 	var header = strBundle.getString("firerobot.warn.warn");
 	var text = strBundle.getString(propRef);
 	promptService.alert(null, header, text);
@@ -124,8 +124,9 @@ function getTextFragments(element) {
 		textFragments[i] = textFragments[i].replace(/^((\\n)|(\\t)|\s|\\\s)*/, "");
 		textFragments[i] = textFragments[i].replace(/((\\n)|(\\t)|\s|\\\s)*$/, "");
 
-		//Element.textContent will repalace &nbsp; with \u0020 instead of \u00A0. 
+		//&nbsp; will be replaced with space (\u0020) instead of non-breaking-space (\u00A0). 
 		//Bugzilla issue https://bugzilla.mozilla.org/show_bug.cgi?id=359303
+		//This will produce verifications that will fail although seem OK to the naked eye
 		if (textFragments[i].match(/^(&nbsp;){1,}$/)) {
 			textFragments.splice(i, 1);
 			i--;
@@ -244,9 +245,6 @@ function getElementXPath(element) {
 	if (elementXPathIndex !== "") {
 		xpath = "(" + xpath + ")" + elementXPathIndex;
 	}
-	//Robot Framework escaping has to be done after xpath definition. 
-	//Remember that escaped xpath will not work outside RF.
-	//xpath = escapeRobot(xpath);
 	return xpath;
 }
 
@@ -294,7 +292,7 @@ function _getElementXPathIndex(element, xpath) {
 	}
 }
 
-//TODO improve this
+//TODO improve this?
 function getNearTextElement(element) {
 	var parentTextElement;
 	var precTextElement;
@@ -372,19 +370,30 @@ function getURL() {
 	return url;
 }
 
-//TODO improve
 function getCleanClone(element) {
 	var clone = element.cloneNode(true);
 	for (var i = 0; i < element.childNodes.length; i++) {
 		//go recursive
 		if (element.childNodes[i].childNodes.length > 0) {
+
+			/***********************************************************************************
+			Note to Mozilla reviewers:
+			The next line of code will produce the following message in the automatic validation process:
+			"Markup should not be passed to `outerHTML` dynamically."
+			I'm assuming this case is valid, since it's just a recursive call to the same function, in case the cloned element has children.
+			Ultimately, once the element has no children, the outerHTML is not being modified dinamically (see following lines)
+			Also note that this cloned element is not being inserted back into the DOM.
+			This is just a stategy to squeze specific information from the element, namely fragments of visible text that can be used in
+			"Page Should Contain" automated test steps.
+			For more insight check the getTextFragments(element) function (which uses this one).
+			************************************************************************************/
 			clone.childNodes[i].outerHTML = getCleanClone(element.childNodes[i]).outerHTML;
 		}
-		//comments
+		//remove comments
 		if (element.childNodes[i].nodeType === 8) {
 			clone.childNodes[i].data = "";
 		}
-		//hidden elements
+		//remove hidden elements
 		else if ((element.childNodes[i].nodeType !== 3 &&
 				!isVisible(element.childNodes[i]) &&
 				element.childNodes[i].tagName != "BR") ||
@@ -392,7 +401,7 @@ function getCleanClone(element) {
 			element.childNodes[i].tagName == "FRAME") {
 			clone.childNodes[i].outerHTML = "<!---->";
 		}
-		//attributes
+		//remove attributes
 		else if (element.childNodes[i].nodeType === 2) {
 			clone.childNodes[i].nodeValue = "";
 		}
@@ -443,7 +452,7 @@ function _getFollowingTextElement(element) {
 	return null;
 }
 
-//TODO improve this
+//TODO improve this strategy?
 function _getParentTextElement(element) {
 	var nearestTextElementXpath;
 	var elContainingDocument = element.ownerDocument;
@@ -528,15 +537,23 @@ function _getXPathText(element) {
 	if (!element.innerHTML || element.innerHTML.match(/^(&nbsp;){1,}$/) || element.getAttribute("contenteditable") == "true") {
 		return "";
 	}
-	var elementText = element.innerHTML;
-	//TODO find better solution
-	//Element.textContent will repalace &nbsp; with \u0020 instead of \u00A0. 
-	//Bugzilla issue https://bugzilla.mozilla.org/show_bug.cgi?id=359303
 	var guid = "d313ad54-6482-4c26-8c2d-66a3050baeb4";
-	elementText = elementText.replace(/(&nbsp;){1,}/g, guid);
+	var clonedElement = element.cloneNode(true);
 
-	var tmpElement = element.ownerDocument.createElement("div");
-	tmpElement.innerHTML = elementText;
+	/***********************************************************************************
+	Note to Mozilla reviewers:
+	The next line of code will produce the following message in the automatic validation process:
+	"Markup should not be passed to `innerHTML` dynamically."
+	I hope this is valid in this circunstance, since we are only manupulating a cloned element that
+	will never be inserted back into the DOM.
+	What we are trying to do in this function is to get a text fragment that can be used to identify an element using XPath.
+	Unfortunately element.textContent will replace &nbsp; with \u0020 (space) instead of \u00A0 (non-breaking-space).
+	This will lead to XPath expressions that seem to be OK to the naked eye but will not match the element.
+	This may also be related to an old issue reported in mozilla: https://bugzilla.mozilla.org/show_bug.cgi?id=359303
+	In this function we will replace the &nbsp; with a GUID before we get clonedElement.textContent.
+	Later on we will select a fragment of the text that excludes the &nbsp;
+	************************************************************************************/
+	clonedElement.innerHTML = clonedElement.innerHTML.replace(/(&nbsp;){1,}/g, guid);
 
 	editableXPath = ".//*[@contenteditable = 'true']";
 	var xPathResult = element.ownerDocument.
@@ -544,14 +561,12 @@ function _getXPathText(element) {
 	var matchedNode = xPathResult.iterateNext();
 	if (matchedNode) {
 		//Exclude text of children
-		elementText = tmpElement.childNodes[0].nodeValue || "";
+		elementText = clonedElement.childNodes[0].nodeValue || "";
 	} else {
 		//Include text of children
-		elementText = tmpElement.textContent || "";
+		elementText = clonedElement.textContent || "";
 	}
-
 	elementText = elementText.trim();
-
 	var splitElementText = elementText.split(guid);
 	elementText = "";
 	for (var i = 0; i < splitElementText.length; i++) {
@@ -563,6 +578,7 @@ function _getXPathText(element) {
 	elementText = elementText.replace(/(\r\n|\n|\r)/gm, " ");
 	elementText = elementText.replace(/\s+/g, " ");
 	elementText = _replaceHTMLEntities(elementText);
+
 	//TODO should this be bigger/smaller?
 	elementText = elementText.substring(0, 100);
 

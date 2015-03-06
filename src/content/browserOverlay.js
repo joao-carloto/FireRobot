@@ -49,7 +49,7 @@ FireRobot.BrowserOverlay = {
 
 		if (!selectModeOn) {
 			var frWindow = Application.storage.get("frWindow", undefined);
-			var btn = frWindow.document.getElementById("selectButton");
+			var btn = frWindow.document.getElementById("fire-robot-selectButton");
 			btn.setAttribute("class", "selectOn");
 		}
 	},
@@ -59,7 +59,7 @@ FireRobot.BrowserOverlay = {
 
 		if (!selectModeOn) {
 			var frWindow = Application.storage.get("frWindow", undefined);
-			var btn = frWindow.document.getElementById("selectButton");
+			var btn = frWindow.document.getElementById("fire-robot-selectButton");
 			btn.setAttribute("class", "btn");
 		}
 	},
@@ -287,7 +287,7 @@ FireRobot.BrowserOverlay = {
 
 	extractKeywordBtn: function() {
 		var frWindow = Application.storage.get("frWindow", undefined);
-		var testArea = frWindow.document.getElementById("testCaseTextArea");
+		var testArea = frWindow.document.getElementById("fire-robot-testCaseTextArea");
 		var start = testArea.selectionStart;
 		var end = testArea.selectionEnd;
 		var activeElement = frWindow.document.activeElement;

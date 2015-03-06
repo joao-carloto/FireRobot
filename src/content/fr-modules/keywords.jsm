@@ -628,6 +628,7 @@ function kwUnselectFrame() {
 
 function kwOpenBrowser() {
 	var url = getURL();
+	url = escapeSpace(url);
 	var step = "Open Browser  \t" + url;
 	var useVar = prefService.getBoolPref(
 		"extensions.firerobot.variables.use");
@@ -641,6 +642,7 @@ function kwOpenBrowser() {
 
 function kwOpenBrowserFFProfDir() {
 	var url = getURL();
+	url = escapeSpace(url);
 	var step = "Open Browser  \t" + url;
 	var useVar = prefService.getBoolPref(
 		"extensions.firerobot.variables.use");
@@ -1125,7 +1127,7 @@ function _addTextVerifications(keyword) {
 
 function _addStepToTest(step) {
 	var frWindow = Application.storage.get("frWindow", undefined);
-	var testCaseTextArea = frWindow.document.getElementById("testCaseTextArea");
+	var testCaseTextArea = frWindow.document.getElementById("fire-robot-testCaseTextArea");
 	var testCase = testCaseTextArea.value;
 	testCase = testCase + "\r\n    " + step;
 	testCaseTextArea.value = testCase;

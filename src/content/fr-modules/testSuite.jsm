@@ -9,6 +9,15 @@
 	Components.utils.import("resource://gre/modules/FileUtils.jsm");
 	Components.utils.import("resource://gre/modules/devtools/Console.jsm");
 
+	/***********************************************************************************
+	Note to Mozilla reviewers:
+	The following imported module (subprocess.jsm) originates 3 different warning messages on the automatic validation processs
+	Since this is a module already used in other Mozilla Addons (e.g. Enigmail) I'm assuming it's safe to use.
+	In this extension, it's only scope of usage it's to verify if the Robot Framework is allready installed in the system,
+	and show a warning message if it's not.
+	For that it will run a "pybot -h" command and verify the output message.
+	In this case we don't want the CLI to be shown, so we are using the subprocess.jsm module and not the nsIProcess interface.
+	************************************************************************************/
 	Components.utils.import("chrome://firerobot/content/external-modules/subprocess.jsm");
 
 	Components.utils.import("chrome://firerobot/content/fr-modules/variables.jsm");
@@ -129,10 +138,22 @@
 
 		if (!Application.storage.get("rfIsInstalled", true)) return;
 
-		var playButton = frWindow.document.getElementById("playButton");
+		var playButton = frWindow.document.getElementById("fire-robot-playButton");
 		playButton.setAttribute("class", "playOn");
 		Application.storage.set("testRunning", true);
 
+		/***********************************************************************************
+		Note to Mozilla reviewers:
+		The next line of code will produce the following message in the automatic validation process:
+		"The use of nsIProcess is potentially dangerous and requires careful review by an administrative reviewer."
+		The purpose of this extension is to build test scripts by selecting web page elements,
+		and selecting specific keywords from the context menu.
+		These tests can then be run by making a call to the Robot Framework (that should be allready installed in your system),
+		by means of the "pybot" command. That is the sole usage scope for nsIProcess.
+		The Robot Framework has been extensivly used for thousands of software testers around the worlld,
+		so I belive this is a legitimate usage of the Mozilla nsIProcess interface.
+		For more info visit robotframework.org
+		************************************************************************************/
 		var process = Components.classes["@mozilla.org/process/util;1"]
 			.createInstance(Components.interfaces.nsIProcess);
 
@@ -148,7 +169,7 @@
 			//The window might have been closed or switched mode.
 			frWindow = Application.storage.get("frWindow", undefined);
 			if (frWindow) {
-				playButton = frWindow.document.getElementById("playButton");
+				playButton = frWindow.document.getElementById("fire-robot-playButton");
 				playButton.setAttribute("class", "btn");
 			}
 			//nsIProcess doesn't seem to work as expected in Linux and OS X.
@@ -216,13 +237,13 @@
 			var frWindow = Application.storage.get("frWindow", undefined);
 
 			//Add settings table
-			var newSettings = frWindow.document.getElementById("settingsTextArea").
+			var newSettings = frWindow.document.getElementById("fire-robot-settingsTextArea").
 			value.
 			replace(/(\r\n|\n|\r)/gm, "\r\n");
 			test += "*** Settings ***\r\n\r\n" + newSettings;
 
 			//Add variables table
-			var rows = frWindow.document.getElementById("varListBox").childNodes;
+			var rows = frWindow.document.getElementById("fire-robot-varListBox").childNodes;
 			var newVariables = "";
 			for (var i = 0; i < rows.length; i++) {
 				newVariables += "${" + rows[i].childNodes[1].value + "}" +
@@ -234,13 +255,13 @@
 			test += "\r\n\r\n\r\n*** Variables ***\r\n\r\n" + newVariables;
 
 			//Add test cases table
-			var newTestCases = frWindow.document.getElementById("testCaseTextArea").
+			var newTestCases = frWindow.document.getElementById("fire-robot-testCaseTextArea").
 			value.
 			replace(/(\r\n|\n|\r)/gm, "\r\n");
 			test += "\r\n\r\n\r\n*** Test Cases ***\r\n\r\n" + newTestCases;
 
 			//Add keywords table
-			var newKeywords = frWindow.document.getElementById("keywordsTextArea").
+			var newKeywords = frWindow.document.getElementById("fire-robot-keywordsTextArea").
 			value.
 			replace(/(\r\n|\n|\r)/gm, "\r\n");
 
@@ -292,34 +313,34 @@
 
 				if (data.match(settPattern)) {
 					var settings = data.split(settPattern)[1].split(headPattern)[0].trim();
-					frWindow.document.getElementById("settingsTextArea").value = settings;
+					frWindow.document.getElementById("fire-robot-settingsTextArea").value = settings;
 				} else {
 					warning("firerobot.warn.no-settings");
-					frWindow.document.getElementById("settingsTextArea").value = "";
+					frWindow.document.getElementById("fire-robot-settingsTextArea").value = "";
 				}
 				if (data.match(varPattern)) {
 					var variables = data.split(varPattern)[1].split(headPattern)[0].trim();
 					loadVariables(variables);
 				} else {
 					warning("firerobot.warn.no-variables");
-					varListBox = frWindow.document.getElementById("varListBox");
+					varListBox = frWindow.document.getElementById("fire-robot-varListBox");
 					while (varListBox.firstChild) {
 						varListBox.removeChild(varListBox.firstChild);
 					}
 				}
 				if (data.match(testPattern)) {
 					var tests = data.split(testPattern)[1].split(headPattern)[0].trim();
-					frWindow.document.getElementById("testCaseTextArea").value = tests;
+					frWindow.document.getElementById("fire-robot-testCaseTextArea").value = tests;
 				} else {
 					warning("firerobot.warn.no-tests");
-					frWindow.document.getElementById("testCaseTextArea").value = "";
+					frWindow.document.getElementById("fire-robot-testCaseTextArea").value = "";
 				}
 
 				if (data.match(keyPattern)) {
 					var keywords = data.split(keyPattern)[1].split(headPattern)[0].trim();
-					frWindow.document.getElementById("keywordsTextArea").value = keywords;
+					frWindow.document.getElementById("fire-robot-keywordsTextArea").value = keywords;
 				} else {
-					frWindow.document.getElementById("keywordsTextArea").value = "";
+					frWindow.document.getElementById("fire-robot-keywordsTextArea").value = "";
 				}
 			});
 		}
@@ -359,7 +380,7 @@
 			newContent = oldContent;
 
 			//Add or replace settings table
-			var newSettings = frWindow.document.getElementById("settingsTextArea").
+			var newSettings = frWindow.document.getElementById("fire-robot-settingsTextArea").
 			value.
 			replace(/(\r\n|\n|\r)/gm, "\r\n");
 
@@ -371,7 +392,7 @@
 			}
 
 			//Add or replace variables table
-			var rows = frWindow.document.getElementById("varListBox").childNodes;
+			var rows = frWindow.document.getElementById("fire-robot-varListBox").childNodes;
 			var newVariables = "";
 			for (var i = 0; i < rows.length; i++) {
 				newVariables += "${" + rows[i].childNodes[1].value + "}" +
@@ -389,7 +410,7 @@
 			}
 
 			//Add or repalce test cases table
-			var newTestCases = frWindow.document.getElementById("testCaseTextArea").
+			var newTestCases = frWindow.document.getElementById("fire-robot-testCaseTextArea").
 			value.
 			replace(/(\r\n|\n|\r)/gm, "\r\n");
 
@@ -401,7 +422,7 @@
 			}
 
 			//Add or replace keywords table
-			var newKeywords = frWindow.document.getElementById("keywordsTextArea").
+			var newKeywords = frWindow.document.getElementById("fire-robot-keywordsTextArea").
 			value.
 			replace(/(\r\n|\n|\r)/gm, "\r\n");
 			if (oldContent && oldContent.match(keyPattern)) {

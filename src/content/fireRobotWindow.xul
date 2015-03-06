@@ -4,40 +4,39 @@
 <!DOCTYPE overlay
   SYSTEM 'chrome://firerobot/locale/fireRobot.dtd'>
 <window class="frBase" fullscreenbutton="true" height="760rem" id="firerobot-window" orient="vertical" resizable="true" title="FireRobot" width="650rem" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <stringbundleset id="string-bundle-set">
-        <stringbundle id="string-bundle" src="chrome://firerobot/locale/fireRobot.properties"/>
+    <stringbundleset id="fire-robot-string-bundle-set">
+        <stringbundle id="fire-robot-string-bundle" src="chrome://firerobot/locale/fireRobot.properties"/>
     </stringbundleset>
     <keyset>
-        <key id="clear_selections_cmd" keycode="VK_ESCAPE" oncommand="FireRobot.BrowserOverlay.escClearSelections();"/>
-        <!--key id="toggle_sel_mode_cmd" key="S" modifiers="control alt" oncommand="FireRobot.BrowserOverlay.selectBtn();"/-->
+        <key id="fire-robot-clear_selections_cmd" keycode="VK_ESCAPE" oncommand="FireRobot.BrowserOverlay.escClearSelections();"/>
     </keyset>
     <script src="chrome://firerobot/content/browserOverlay.js" type="application/x-javascript"/>
     <vbox flex="1">
         <spacer style="height: 0.4rem"/>
         <hbox align="center">
-            <img class="btn" id="selectButton" onclick="FireRobot.BrowserOverlay.selectBtn();" onmouseout="FireRobot.BrowserOverlay.selectButtonOut();" onmouseover="FireRobot.BrowserOverlay.selectButtonOver();" title="Select Elements" tooltiptext="&firerobot.window.select-btn;"/>
+            <img class="btn" id="fire-robot-selectButton" onclick="FireRobot.BrowserOverlay.selectBtn();" onmouseout="FireRobot.BrowserOverlay.selectButtonOut();" onmouseover="FireRobot.BrowserOverlay.selectButtonOver();" title="Select Elements" tooltiptext="&firerobot.window.select-btn;"/>
             <label control="selectButton" value="Select page elements and then use the right mouse button for the keyword menu."/>
             <spacer flex="1"/>
-            <img class="btn" id="closeButton" onclick="FireRobot.BrowserOverlay.closeSideBar();" tooltiptext="&firerobot.window.close-btn;"/>
+            <img class="btn" id="fire-robot-closeButton" onclick="FireRobot.BrowserOverlay.closeSideBar();" tooltiptext="&firerobot.window.close-btn;"/>
         </hbox>
         <hbox>
             <spacer flex="1"/>
-            <img class="btn" id="prefButton" onclick="FireRobot.BrowserOverlay.openPreferences(event);" tooltiptext="&firerobot.window.pref-btn;"/>
-            <img class="btn" id="helpButton" onclick="FireRobot.BrowserOverlay.openHelp(event)" tooltiptext="&firerobot.window.help-btn;"/>
-            <img id="windowModeButton" onclick="FireRobot.BrowserOverlay.switchWindowMode(event);" tooltiptext="&firerobot.window.mode-btn;"/>
+            <img class="btn" id="fire-robot-prefButton" onclick="FireRobot.BrowserOverlay.openPreferences(event);" tooltiptext="&firerobot.window.pref-btn;"/>
+            <img class="btn" id="fire-robot-helpButton" onclick="FireRobot.BrowserOverlay.openHelp(event)" tooltiptext="&firerobot.window.help-btn;"/>
+            <img id="fire-robot-windowModeButton" onclick="FireRobot.BrowserOverlay.switchWindowMode(event);" tooltiptext="&firerobot.window.mode-btn;"/>
         </hbox>
         <vbox>
             <description control="htmlTextArea">HTML:</description>
-            <textbox class="testBox" flex="1" id="htmlTextArea" multiline="true" readonly="true" rows="8"/>
+            <textbox class="testBox" flex="1" id="fire-robot-htmlTextArea" multiline="true" readonly="true" rows="8"/>
         </vbox>
         <!--spacer style="height: 0.4rem"/-->
         <!--TODO Moving splitter sometimes does not reestablish button rendering . Report at bugzilla?-->
         <splitter collapse="before" resizeafter="grow" resizebefore="grow">
             <grippy/>
         </splitter>
-        <vbox id="lowerArea" flex="1">
+        <vbox id="fire-robot-lowerArea" flex="1">
             <spacer style="height: 0.5rem"/>
-            <tabbox id="testTabBox" selectedIndex="2" flex="1">
+            <tabbox id="fire-robot-testTabBox" selectedIndex="2" flex="1">
                 <tabs>
                     <tab class="frBaseTab" label="*** Settings ***"/>
                     <tab class="frBaseTab" label="*** Variables ***"/>
@@ -47,41 +46,41 @@
                 <tabpanels class="frBaseTab" equalsize="true" flex="1">
                     <tabpanel flex="1">
                         <vbox flex="1">
-                            <textbox class="testBox" id="settingsTextArea" flex="1" multiline="true" value="Documentation&#x9;     Test suite created with FireRobot.&#xA;Library&#x9;   Selenium2Library   15.0   5.0"/>
+                            <textbox class="testBox" id="fire-robot-settingsTextArea" flex="1" multiline="true" value="Documentation&#x9;     Test suite created with FireRobot.&#xA;Library&#x9;   Selenium2Library   15.0   5.0"/>
                             <hbox align="right">
                                 <spacer/>
-                                <img class="btn" id="addResourceButton" onclick="FireRobot.BrowserOverlay.addResourceBtn();" tooltiptext="&firerobot.window.resource-btn;"/>
+                                <img class="btn" id="fire-robot-addResourceButton" onclick="FireRobot.BrowserOverlay.addResourceBtn();" tooltiptext="&firerobot.window.resource-btn;"/>
                             </hbox>
                         </vbox>
                     </tabpanel>
                     <tabpanel flex="1">
                         <vbox flex="1">
-                            <richlistbox class="varBox" height="100" flex="1" id="varListBox" resizable="true"/>
+                            <richlistbox class="varBox" height="100" flex="1" id="fire-robot-varListBox" resizable="true"/>
                             <hbox align="right">
-                                <img class="btn" id="moveVarDownButton" onclick="FireRobot.BrowserOverlay.increaseVarIndexBtn();" tooltiptext="&firerobot.window.var-dwn-btn;"/>
-                                <img class="btn" id="moveVarUpButton" onclick="FireRobot.BrowserOverlay.decreaseVarIndexBtn();" tooltiptext="&firerobot.window.var-up-btn;"/>
-                                <img class="btn" id="removeVarButton" onclick="FireRobot.BrowserOverlay.removeVariableBtn();" tooltiptext="&firerobot.window.rem-var-btn;"/>
-                                <img class="btn" id="addVarButton" onclick="FireRobot.BrowserOverlay.addVariableBtn('&lt;new-var-name&gt;', '&lt;New Var Value&gt;');" tooltiptext="&firerobot.window.add-var-btn;"/>
+                                <img class="btn" id="fire-robot-moveVarDownButton" onclick="FireRobot.BrowserOverlay.increaseVarIndexBtn();" tooltiptext="&firerobot.window.var-dwn-btn;"/>
+                                <img class="btn" id="fire-robot-moveVarUpButton" onclick="FireRobot.BrowserOverlay.decreaseVarIndexBtn();" tooltiptext="&firerobot.window.var-up-btn;"/>
+                                <img class="btn" id="fire-robot-removeVarButton" onclick="FireRobot.BrowserOverlay.removeVariableBtn();" tooltiptext="&firerobot.window.rem-var-btn;"/>
+                                <img class="btn" id="fire-robot-addVarButton" onclick="FireRobot.BrowserOverlay.addVariableBtn('&lt;new-var-name&gt;', '&lt;New Var Value&gt;');" tooltiptext="&firerobot.window.add-var-btn;"/>
                             </hbox>
                         </vbox>
                     </tabpanel>
                     <tabpanel flex="1">
-                        <textbox class="testBox" id="testCaseTextArea" flex="1" multiline="true" type="unichar" value="FireRobot Test Case"/>
+                        <textbox class="testBox" id="fire-robot-testCaseTextArea" flex="1" multiline="true" type="unichar" value="FireRobot Test Case"/>
                     </tabpanel>
                     <tabpanel>
-                        <textbox class="testBox" id="keywordsTextArea" flex="1" multiline="true" type="unichar"/>
+                        <textbox class="testBox" id="fire-robot-keywordsTextArea" flex="1" multiline="true" type="unichar"/>
                     </tabpanel>
                 </tabpanels>
             </tabbox>
             <hbox>
-                <img class="btn" id="playButton" onclick="FireRobot.BrowserOverlay.runTestBtn(event);" tooltiptext="&firerobot.window.run-test-btn;"/>
-                <img class="btn" id="reportButton" onclick="FireRobot.BrowserOverlay.showReportBtn(event);" tooltiptext="&firerobot.window.view-rep-btn;"/>
+                <img class="btn" id="fire-robot-playButton" onclick="FireRobot.BrowserOverlay.runTestBtn(event);" tooltiptext="&firerobot.window.run-test-btn;"/>
+                <img class="btn" id="fire-robot-reportButton" onclick="FireRobot.BrowserOverlay.showReportBtn(event);" tooltiptext="&firerobot.window.view-rep-btn;"/>
                 <spacer flex="3"/>
-                <img class="btn" id="keyWordButton" onclick="FireRobot.BrowserOverlay.extractKeywordBtn(event);" tooltiptext="&firerobot.window.new-key-btn;"/>
+                <img class="btn" id="fire-robot-keyWordButton" onclick="FireRobot.BrowserOverlay.extractKeywordBtn(event);" tooltiptext="&firerobot.window.new-key-btn;"/>
                 <spacer flex="1"/>
-                <img class="btn" id="openButton" onclick="FireRobot.BrowserOverlay.openTestBtn(event);" tooltiptext="&firerobot.window.open-btn;"/>
-                <img class="btn" id="saveAsButton" onclick="FireRobot.BrowserOverlay.saveAsBtn(event);" tooltiptext="&firerobot.window.save-as-btn;"/>
-                <img class="btn" id="saveButton" onclick="FireRobot.BrowserOverlay.saveBtn(event);" tooltiptext="&firerobot.window.save-btn;"/>
+                <img class="btn" id="fire-robot-openButton" onclick="FireRobot.BrowserOverlay.openTestBtn(event);" tooltiptext="&firerobot.window.open-btn;"/>
+                <img class="btn" id="fire-robot-saveAsButton" onclick="FireRobot.BrowserOverlay.saveAsBtn(event);" tooltiptext="&firerobot.window.save-as-btn;"/>
+                <img class="btn" id="fire-robot-saveButton" onclick="FireRobot.BrowserOverlay.saveBtn(event);" tooltiptext="&firerobot.window.save-btn;"/>
             </hbox>
         </vbox>
     </vbox>

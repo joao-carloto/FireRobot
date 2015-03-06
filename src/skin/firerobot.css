@@ -12,12 +12,12 @@
     background-color:#f2f2f2;
 }
 
-.btn#selectButton {
+.btn#fire-robot-selectButton {
     margin-left:0.4rem;
     background-image:url(chrome://firerobot/skin/white-icons/select.png);
 }
 
-.btn#selectButton:hover {
+.btn#fire-robot-selectButton:hover {
     background-image:url(chrome://firerobot/skin/black-icons/select.png);
 }
 
@@ -32,28 +32,28 @@
     background-color:#f2f2f2;   
 }
 
-.btn#closeButton {
+.btn#fire-robot-closeButton {
     margin-right:0.4rem;
     background-image:url(chrome://firerobot/skin/white-icons/appbar.close.png);
 }
 
-.btn#closeButton:hover {
+.btn#fire-robot-closeButton:hover {
     background-image:url(chrome://firerobot/skin/black-icons/appbar.close.png);
 }
 
-.btn#prefButton {
+.btn#fire-robot-prefButton {
     background-image:url(chrome://firerobot/skin/white-icons/appbar.cog.png);
 }
 
-.btn#prefButton:hover {
+.btn#fire-robot-prefButton:hover {
     background-image:url(chrome://firerobot/skin/black-icons/appbar.cog.png);
 }
 
-.btn#helpButton {
+.btn#fire-robot-helpButton {
     background-image:url(chrome://firerobot/skin/white-icons/appbar.question.png);
 }
 
-.btn#helpButton:hover {
+.btn#fire-robot-helpButton:hover {
     background-image:url(chrome://firerobot/skin/black-icons/appbar.question.png);
 }
 
@@ -76,66 +76,66 @@
     background-image:url(chrome://firerobot/skin/black-icons/appbar.new.window.png);
 }
 
-.btn#addResourceButton {
+.btn#fire-robot-addResourceButton {
     margin-top:0.2rem;
     margin-bottom:0.2rem;
     margin-right:0.4rem;
     background-image:url(chrome://firerobot/skin/white-icons/appbar.add.png);
 }
 
-.btn#addResourceButton:hover {
+.btn#fire-robot-addResourceButton:hover {
     background-image:url(chrome://firerobot/skin/black-icons/appbar.add.png);
 }
 
-.btn#moveVarDownButton {
+.btn#fire-robot-moveVarDownButton {
     margin-top:0.2rem;
     margin-bottom:0.2rem;
     background-image:url(chrome://firerobot/skin/white-icons/appbar.chevron.down.png);
 }
 
-.btn#moveVarDownButton:hover {
+.btn#fire-robot-moveVarDownButton:hover {
     background-image:url(chrome://firerobot/skin/black-icons/appbar.chevron.down.png);
 }
 
-.btn#moveVarUpButton {
+.btn#fire-robot-moveVarUpButton {
     margin-top:0.2rem;
     margin-bottom:0.2rem;
     background-image:url(chrome://firerobot/skin/white-icons/appbar.chevron.up.png);
 }
 
-.btn#moveVarUpButton:hover {
+.btn#fire-robot-moveVarUpButton:hover {
     background-image:url(chrome://firerobot/skin/black-icons/appbar.chevron.up.png);
 }
 
-.btn#removeVarButton {
+.btn#fire-robot-removeVarButton {
     margin-top:0.2rem;
     margin-bottom:0.2rem;
     background-image:url(chrome://firerobot/skin/white-icons/appbar.minus.png);
 }
 
-.btn#removeVarButton:hover {
+.btn#fire-robot-removeVarButton:hover {
     background-image:url(chrome://firerobot/skin/black-icons/appbar.minus.png);
 }
 
-.btn#addVarButton {
+.btn#fire-robot-addVarButton {
     margin-top:0.2rem;
     margin-bottom:0.2rem;
     margin-right:0.4rem;
     background-image:url(chrome://firerobot/skin/white-icons/appbar.add.png);
 }
 
-.btn#addVarButton:hover {
+.btn#fire-robot-addVarButton:hover {
     background-image:url(chrome://firerobot/skin/black-icons/appbar.add.png);
 }
 
-.btn#playButton {
+.btn#fire-robot-playButton {
     margin-top:0.2rem;
     margin-bottom:0.2rem;
     margin-left:0.4rem;
     background-image:url(chrome://firerobot/skin/white-icons/appbar.control.play.png);
 }
 
-.btn#playButton:hover {
+.btn#fire-robot-playButton:hover {
     background-image:url(chrome://firerobot/skin/black-icons/appbar.control.play.png);
 }
 
@@ -151,95 +151,95 @@
     background-color:#f2f2f2;   
 }
 
-.btn#reportButton {
+.btn#fire-robot-reportButton {
     margin-top:0.2rem;
     margin-bottom:0.2rem;
     background-image:url(chrome://firerobot/skin/white-icons/appbar.list.png);
 }
 
-.btn#reportButton:hover {
+.btn#fire-robot-reportButton:hover {
     background-image:url(chrome://firerobot/skin/black-icons/appbar.list.png);
 }
 
-.btn#keyWordButton{
+.btn#fire-robot-keyWordButton{
     margin-top:0.2rem;
     margin-bottom:0.2rem;
     background-image:url(chrome://firerobot/skin/white-icons/appbar.key.png);
 }
 
-.btn#keyWordButton:hover {
+.btn#fire-robot-keyWordButton:hover {
     background-image:url(chrome://firerobot/skin/black-icons/appbar.key.png);
 }
 
-.btn#openButton {
+.btn#fire-robot-openButton {
     margin-top:0.2rem;
     margin-bottom:0.2rem;
     background-image:url(chrome://firerobot/skin/white-icons/appbar.folder.open.png);
 }
 
-.btn#openButton:hover {
+.btn#fire-robot-openButton:hover {
     background-image:url(chrome://firerobot/skin/black-icons/appbar.folder.open.png);
 }
 
-.btn#saveAsButton {
+.btn#fire-robot-saveAsButton {
     margin-top:0.2rem;
     margin-bottom:0.2rem;
     background-image:url(chrome://firerobot/skin/white-icons/appbar.save-as.png);
 }
 
-#saveAsButton:hover {
+#fire-robot-saveAsButton:hover {
     background-image:url(chrome://firerobot/skin/black-icons/appbar.save-as.png);
 }
 
-.btn#saveButton {
+.btn#fire-robot-saveButton {
     margin-top:0.2rem;
     margin-bottom:0.2rem;
     margin-right:0.4rem;
     background-image:url(chrome://firerobot/skin/white-icons/appbar.save.png);
 }
 
-.btn#saveButton:hover {
+.btn#fire-robot-saveButton:hover {
     background-image:url(chrome://firerobot/skin/black-icons/appbar.save.png);
 }
 
-.btn#enableLocatorButton {
+.btn#fire-robot-enableLocatorButton {
     background-image:url(chrome://firerobot/skin/white-icons/appbar.chevron.right.png);
 }
 
-.btn#enableLocatorButton:hover {
+.btn#fire-robot-enableLocatorButton:hover {
     background-image:url(chrome://firerobot/skin/black-icons/appbar.chevron.right.png);
 }
 
-.btn#disableLocatorButton {
+.btn#fire-robot-disableLocatorButton {
     background-image:url(chrome://firerobot/skin/white-icons/appbar.chevron.left.png);
 }
 
-.btn#disableLocatorButton:hover {
+.btn#fire-robot-disableLocatorButton:hover {
     background-image:url(chrome://firerobot/skin/black-icons/appbar.chevron.left.png);
 }
 
-.btn#upLocatorButton {
+.btn#fire-robot-upLocatorButton {
     background-image:url(chrome://firerobot/skin/white-icons/appbar.chevron.up.png);
 }
 
-.btn#upLocatorButton:hover {
+.btn#fire-robot-upLocatorButton:hover {
     background-image:url(chrome://firerobot/skin/black-icons/appbar.chevron.up.png);
 }
 
-.btn#downLocatorButton {
+.btn#fire-robot-downLocatorButton {
     background-image:url(chrome://firerobot/skin/white-icons/appbar.chevron.down.png);
 }
 
-.btn#downLocatorButton:hover {
+.btn#fire-robot-downLocatorButton:hover {
     background-image:url(chrome://firerobot/skin/black-icons/appbar.chevron.down.png);
 }
 
-.btn#selResButton {
+.btn#fire-robot-selResButton {
     background-image:url(chrome://firerobot/skin/white-icons/appbar.folder.open.png);
     margin-right:0.4rem;
 }
 
-.btn#selResButton:hover {
+.btn#fire-robot-selResButton:hover {
     background-image:url(chrome://firerobot/skin/black-icons/appbar.folder.open.png);
 }
 

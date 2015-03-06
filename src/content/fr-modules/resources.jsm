@@ -21,7 +21,7 @@
 			prefService.setCharPref("extensions.firerobot.key.res_file", resFile.path);
 
 			var frWindow = Application.storage.get("frWindow", undefined);
-			var settingsTextArea = frWindow.document.getElementById("settingsTextArea");
+			var settingsTextArea = frWindow.document.getElementById("fire-robot-settingsTextArea");
 			var settings = settingsTextArea.value;
 
 			var resLine = resFile.path;

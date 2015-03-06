@@ -3,6 +3,7 @@
 <?xml-stylesheet type="text/css" href="chrome://firerobot/skin/firerobot.css" ?>
 <!DOCTYPE overlay SYSTEM "chrome://firerobot/locale/fireRobot.dtd">
 <prefwindow 
+   id="fire-robot-pref-window" 
    title="Preferences"  
    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
    onload="FireRobot.Preferences.loadLocatorListBoxes();" 
@@ -10,30 +11,30 @@
     <script
       type="application/x-javascript" 
       src="chrome://firerobot/content/fireRobotPreferences.js" />
-    <stringbundleset id="string-bundle-set">
-        <stringbundle id="string-bundle" src="chrome://firerobot/locale/fireRobot.properties"/>
+    <stringbundleset id="fire-robot-string-bundle-set">
+        <stringbundle id="fire-robot-string-bundle" src="chrome://firerobot/locale/fireRobot.properties"/>
     </stringbundleset>
     <prefpane 
-      id="locator-preferences">
+      id="fire-robot-locator-preferences">
         <preferences>
             <preference 
-              id="pref-enabled-locators" 
+              id="fire-robot-pref-enabled-locators" 
               name="extensions.firerobot.enabled-locators" 
               type="string" />
             <preference 
-               id="pref-create-variables" 
+               id="fire-robot-pref-create-variables" 
                name="extensions.firerobot.variables.create" 
                type="bool"/>
             <preference 
-               id="pref-use-variables" 
+               id="fire-robot-pref-use-variables" 
                name="extensions.firerobot.variables.use" 
                type="bool"/>
             <preference 
-               id="pref-create-var-for-loc" 
+               id="fire-robot-pref-create-var-for-loc" 
                name="extensions.firerobot.variables.create-for-loc" 
                type="bool"/>
             <preference 
-               id="pref-use-var-for-loc" 
+               id="fire-robot-pref-use-var-for-loc" 
                name="extensions.firerobot.variables.use-for-loc" 
                type="bool"/>
         </preferences>
@@ -43,9 +44,9 @@
                 <vbox>
                     <label 
                      value="&firerobot.preferences.dis-loc;" 
-                     control="disabled-locators-list"/>
+                     control="fire-robot-disabled-locators-list"/>
                     <listbox 
-                     id="disabled-locators-list" 
+                     id="fire-robot-disabled-locators-list" 
                      class="testBox" 
                      seltype="single" 
                      rows="8"  
@@ -55,12 +56,12 @@
                 <vbox 
                   align="center">
                     <img 
-                     id="enableLocatorButton" 
+                     id="fire-robot-enableLocatorButton" 
                      class="btn" title="Enable Locator"
                      tooltiptext="&firerobot.preferences.enable-loc-btn;"  
                      onclick="FireRobot.Preferences.enableLocator();"/>
                     <img 
-                     id="disableLocatorButton" 
+                     id="fire-robot-disableLocatorButton" 
                      class="btn" 
                      tooltiptext="&firerobot.preferences.disable-loc-btn;" 
                      onclick="FireRobot.Preferences.disableLocator();"/>
@@ -68,9 +69,9 @@
                 <vbox>
                     <label 
                      value="&firerobot.preferences.enb-loc;" 
-                     control="disabled-locators-list"/>
+                     control="fire-robot-disabled-locators-list"/>
                     <listbox 
-                     id="enabled-locators-list" 
+                     id="fire-robot-enabled-locators-list" 
                      class="testBox" 
                      seltype="single" 
                      rows="8"  
@@ -80,12 +81,12 @@
                 <vbox 
                   align="center">
                     <img 
-                     id="upLocatorButton" 
+                     id="fire-robot-upLocatorButton" 
                      class="btn" 
                      tooltiptext="&firerobot.preferences.inc-loc-pri-btn;" 
                      onclick="FireRobot.Preferences.decreaseLocatorIndex();"/>
                     <img 
-                     id="downLocatorButton" 
+                     id="fire-robot-downLocatorButton" 
                      class="btn" 
                      tooltiptext="&firerobot.preferences.dec-loc-pri-btn;" 
                      onclick="FireRobot.Preferences.increaseLocatorIndex();"/>
@@ -95,25 +96,25 @@
                orient="horizontal" 
                class="groove" />
             <checkbox 
-               id="genVarCheckBox" 
+               id="fire-robot-genVarCheckBox" 
                checked="true" 
                label="&firerobot.preferences.create-var;" 
-               preference="pref-create-variables"/>
+               preference="fire-robot-pref-create-variables"/>
             <checkbox 
-               id="useVarCheckBox" 
+               id="fire-robot-useVarCheckBox" 
                checked="true" 
                label="&firerobot.preferences.use-var;" 
-               preference="pref-use-variables"/>
+               preference="fire-robot-pref-use-variables"/>
             <checkbox 
-               id="useVarForLocCheckBox" 
+               id="fire-robot-useVarForLocCheckBox" 
                checked="false" 
                label="&firerobot.preferences.create-var-for-loc;" 
-               preference="pref-create-var-for-loc"/>
+               preference="fire-robot-pref-create-var-for-loc"/>
             <checkbox 
-               id="useVarForLocCheckBox" 
+               id="fire-robot-useVarForLocCheckBox" 
                checked="false" 
                label="&firerobot.preferences.use-var-for-loc;" 
-               preference="pref-use-var-for-loc"/>
+               preference="fire-robot-pref-use-var-for-loc"/>
         </vbox>
     </prefpane>
 </prefwindow>

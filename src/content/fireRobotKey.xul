@@ -5,7 +5,7 @@
   SYSTEM 'chrome://firerobot/locale/fireRobot.dtd'>
 <prefwindow 
   class="frBase" 
-  id="keyword-window"
+  id="fire-robot-keyword-window"
   buttons="accept, cancel" 
   ondialogaccept="return FireRobot.Key.addKey();" 
   onload="FireRobot.Key.loadSelSteps(); FireRobot.Key.setButtons();"
@@ -14,19 +14,19 @@
   <script 
     src="chrome://firerobot/content/fireRobotKey.js" 
     type="application/x-javascript"/>
-  <stringbundleset id="string-bundle-set">
+  <stringbundleset id="fire-robot-string-bundle-set">
     <stringbundle 
-      id="string-bundle" 
+      id="fire-robot-string-bundle" 
       src="chrome://firerobot/locale/fireRobot.properties"/>
   </stringbundleset>
   <prefpane flex="1">
-    <preferences id="keyword-panel">
+    <preferences id="fire-robot-keyword-panel">
       <preference 
-        id="pref-key-replace" 
+        id="fire-robot-pref-key-replace" 
         name="extensions.firerobot.key.replace" 
         type="bool"/>
      <preference 
-        id="pref-key-target" 
+        id="fire-robot-pref-key-target" 
         name="extensions.firerobot.key.target" 
         type="string"/>
     </preferences>
@@ -34,7 +34,7 @@
       <spacer style="height: 0.4rem"/>
       <hbox align="center">
         <textbox
-          id="keyNameBox"
+          id="fire-robot-keyNameBox"
           class="testBox" 
           flex="1"
           placeholder="&firerobot.key.placeholder1;"/>
@@ -42,29 +42,29 @@
         <textbox 
          class="testBox" 
 		 flex="3" 
-		 id="keyVarBox"/>
+		 id="fire-robot-keyVarBox"/>
       </hbox>
       <textbox
-        id="keyStepsArea" 
+        id="fire-robot-keyStepsArea" 
         class="testBox"
         flex="1" 
         multiline="true" 
         rows="16" 
         type="unichar"/>
       <spacer style="height: 0.4rem"/>
-      <radiogroup id="key_target" preference="pref-key-target">
+      <radiogroup id="fire-robot-key_target" preference="fire-robot-pref-key-target">
         <radio value="self" label="&firerobot.key.target_self;"/>
         <radio value="res_file" label="&firerobot.key.target_file;"/>
       </radiogroup>
       <hbox align="center">
         <spacer style="width: 1.6rem"/>
         <textbox
-          id="resFileBox"
+          id="fire-robot-resFileBox"
           class="testBox" 
           flex="1"  
           placeholder="&firerobot.key.placeholder2;"/>
         <img
-          id="selResButton" 
+          id="fire-robot-selResButton" 
           class="btn" 
           onclick="FireRobot.Key.selectResForKey()" 
           tooltiptext="&firerobot.key.placeholder2;"/>
@@ -75,10 +75,10 @@
       </hbox>
       <spacer style="height: 0.4rem"/>
       <checkbox 
-        id="useVarCheckBox"
+        id="fire-robot-useVarCheckBox"
         checked="true"
         label="&firerobot.key.replace;" 
-        preference="pref-key-replace"/>
+        preference="fire-robot-pref-key-replace"/>
     </vbox>
   </prefpane>
 </prefwindow>

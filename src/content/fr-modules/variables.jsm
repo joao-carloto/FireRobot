@@ -20,7 +20,7 @@ Components.utils.import("chrome://firerobot/content/external-modules/xregexp.jsm
 //TODO improve this
 function createVarNameForInput(element) {
 	var prefix = "";
-	if(arguments.length > 1) {
+	if (arguments.length > 1) {
 		prefix = arguments[0];
 		element = arguments[1];
 	}
@@ -80,7 +80,7 @@ function createVarNameForInput(element) {
 
 function createVarNameFromText(element) {
 	var prefix = "";
-	if(arguments.length > 1) {
+	if (arguments.length > 1) {
 		prefix = arguments[0];
 		element = arguments[1];
 	}
@@ -100,8 +100,8 @@ function createVarNameFromText(element) {
 		if (selText !== "") {
 			varName = selText;
 		}
-	} else if (element.tagName == "IMG" && 
-		element.alt && 
+	} else if (element.tagName == "IMG" &&
+		element.alt &&
 		element.alt !== "") {
 		varName = element.alt;
 	} else if (!varName && element.textContent) {
@@ -125,7 +125,7 @@ function createVarNameFromText(element) {
 
 function indexVarName(varName) {
 	var frWindow = Application.storage.get("frWindow", undefined);
-	var rows = frWindow.document.getElementById("varListBox").childNodes;
+	var rows = frWindow.document.getElementById("fire-robot-varListBox").childNodes;
 	for (var i = 0; i < rows.length; i++) {
 		if (varNameExists(varName)) {
 			varName = varName.replace(/(-*\d*)$/, "");
@@ -141,7 +141,7 @@ function addVariable(name, value) {
 
 	frWindow = Application.storage.get("frWindow", undefined);
 
-	varListBox = frWindow.document.getElementById("varListBox");
+	varListBox = frWindow.document.getElementById("fire-robot-varListBox");
 
 	var row = frWindow.document.createElement('richlistitem');
 	row.setAttribute("class", "varBoxItem");
@@ -156,8 +156,9 @@ function addVariable(name, value) {
 	nameTextBox.setAttribute('value', name);
 	nameTextBox.setAttribute('flex', '1');
 	nameTextBox.setAttribute('class', 'testBox');
-	nameTextBox.setAttribute('onfocus', 'setFocusedVarName(event);');
-	nameTextBox.setAttribute('onchange', 'updateVarName(event);');
+	nameTextBox.addEventListener("focus", setFocusedVarName);
+	nameTextBox.addEventListener("change", updateVarName);
+
 	row.appendChild(nameTextBox);
 
 	var varEndLabel = frWindow.document.createElement('label');
@@ -177,7 +178,7 @@ function addVariable(name, value) {
 
 function removeVariable() {
 	var frWindow = Application.storage.get("frWindow", undefined);
-	var varListBox = frWindow.document.getElementById("varListBox");
+	var varListBox = frWindow.document.getElementById("fire-robot-varListBox");
 	var selectedItem = varListBox.selectedItem;
 
 	if (selectedItem) {
@@ -197,7 +198,7 @@ function removeVariable() {
 
 function increaseVarIndex() {
 	var frWindow = Application.storage.get("frWindow", undefined);
-	var varListBox = frWindow.document.getElementById("varListBox");
+	var varListBox = frWindow.document.getElementById("fire-robot-varListBox");
 	var selectedItem = varListBox.selectedItem;
 	var selectedIndex = varListBox.selectedIndex;
 	var itemCount = varListBox.itemCount;
@@ -217,7 +218,7 @@ function increaseVarIndex() {
 
 function decreaseVarIndex() {
 	var frWindow = Application.storage.get("frWindow", undefined);
-	var varListBox = frWindow.document.getElementById("varListBox");
+	var varListBox = frWindow.document.getElementById("fire-robot-varListBox");
 	var selectedItem = varListBox.selectedItem;
 	var selectedIndex = varListBox.selectedIndex;
 
@@ -231,7 +232,7 @@ function decreaseVarIndex() {
 
 function loadVariables(str) {
 	var frWindow = Application.storage.get("frWindow", undefined);
-	var varListBox = frWindow.document.getElementById("varListBox");
+	var varListBox = frWindow.document.getElementById("fire-robot-varListBox");
 	while (varListBox.firstChild) {
 		varListBox.removeChild(varListBox.firstChild);
 	}
@@ -247,7 +248,7 @@ function loadVariables(str) {
 
 function getVarNameFromValue(value) {
 	var frWindow = Application.storage.get("frWindow", undefined);
-	var rows = frWindow.document.getElementById("varListBox").childNodes;
+	var rows = frWindow.document.getElementById("fire-robot-varListBox").childNodes;
 	for (var i = 0; i < rows.length; i++) {
 		if (value == rows[i].childNodes[3].value) {
 			return rows[i].childNodes[1].value;
@@ -266,15 +267,15 @@ function updateVarName(event) {
 	var realOldVarName = "${" + focusedVarName + "}";
 	var realNewVarName = "${" + event.target.value + "}";
 	var frWindow = Application.storage.get("frWindow", undefined);
-	var tests = frWindow.document.getElementById("testCaseTextArea").value;
+	var tests = frWindow.document.getElementById("fire-robot-testCaseTextArea").value;
 	var newTests = tests.replace(realOldVarName, realNewVarName, "g");
 
-	frWindow.document.getElementById("testCaseTextArea").value = newTests;
+	frWindow.document.getElementById("fire-robot-testCaseTextArea").value = newTests;
 }
 
 function varNameExists(varName) {
 	var frWindow = Application.storage.get("frWindow", undefined);
-	var rows = frWindow.document.getElementById("varListBox").childNodes;
+	var rows = frWindow.document.getElementById("fire-robot-varListBox").childNodes;
 	for (var i = 0; i < rows.length; i++) {
 		if (varName.toLowerCase() == rows[i].childNodes[1].value.toLowerCase()) {
 			return true;

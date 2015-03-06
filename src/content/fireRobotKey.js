@@ -23,11 +23,11 @@ FireRobot.Key = {
 
 		resFilePath = prefService.getCharPref("extensions.firerobot.key.res_file");
 		if (resFilePath !== "") {
-			keyWindow.document.getElementById('resFileBox').value = resFilePath;
+			keyWindow.document.getElementById('fire-robot-resFileBox').value = resFilePath;
 		}
 
 		var frWindow = Application.storage.get("frWindow", undefined);
-		var testArea = frWindow.document.getElementById("testCaseTextArea");
+		var testArea = frWindow.document.getElementById("fire-robot-testCaseTextArea");
 
 		var steps = testArea.value;
 
@@ -37,7 +37,7 @@ FireRobot.Key = {
 		var selectedSteps = steps.substring(start, end).trim();
 		selectedSteps = "    " + selectedSteps;
 		
-		var stepsArea = keyWindow.document.getElementById("keyStepsArea");
+		var stepsArea = keyWindow.document.getElementById("fire-robot-keyStepsArea");
 		stepsArea.value = selectedSteps;
 
 		Application.storage.set("selectedSteps", selectedSteps);
@@ -71,7 +71,7 @@ FireRobot.Key = {
 			for (var i = 0; i < matchVar.length; i++) {
 				varString += matchVar[i] + "    ";
 			}
-			var keyVarBox = keyWindow.document.getElementById("keyVarBox");
+			var keyVarBox = keyWindow.document.getElementById("fire-robot-keyVarBox");
 			keyVarBox.value = varString;
 		}
 	},
@@ -99,7 +99,7 @@ FireRobot.Key = {
 
 			keyWindow = Application.storage.get("keyWindow", undefined);
 			if (keyWindow) {
-				keyWindow.document.getElementById('resFileBox').value = resFilePath;
+				keyWindow.document.getElementById('fire-robot-resFileBox').value = resFilePath;
 			}
 
 			var OSName = getOSName();
@@ -126,7 +126,7 @@ FireRobot.Key = {
 	addKeyToSelf: function() {
 
 		var keyWindow = Application.storage.get("keyWindow", undefined);
-		var keyNameBox = keyWindow.document.getElementById("keyNameBox");
+		var keyNameBox = keyWindow.document.getElementById("fire-robot-keyNameBox");
 		var name = keyNameBox.value;
 
 		if (!name) {
@@ -135,20 +135,20 @@ FireRobot.Key = {
 		}
 		var keyword = name;
 
-		var keyVarBox = keyWindow.document.getElementById("keyVarBox");
+		var keyVarBox = keyWindow.document.getElementById("fire-robot-keyVarBox");
 		var vars = keyVarBox.value;
 
 		if (vars) {
 			keyword += "   \t[Arguments]   \t" + vars;
 		}
 
-		var keyStepsArea = keyWindow.document.getElementById("keyStepsArea");
+		var keyStepsArea = keyWindow.document.getElementById("fire-robot-keyStepsArea");
 		var steps = keyStepsArea.value;
 
 		keyword += "\r\n" + steps;
 
 		var frWindow = Application.storage.get("frWindow", undefined);
-		var keywordsTextArea = frWindow.document.getElementById("keywordsTextArea");
+		var keywordsTextArea = frWindow.document.getElementById("fire-robot-keywordsTextArea");
 		var oldKeywords = keywordsTextArea.value;
 
 		if (oldKeywords !== "") {
@@ -160,7 +160,7 @@ FireRobot.Key = {
 
 		//Replace steps for new keyword, if option is enabled.
 		if (prefService.getBoolPref("extensions.firerobot.key.replace")) {
-			var testArea = frWindow.document.getElementById("testCaseTextArea");
+			var testArea = frWindow.document.getElementById("fire-robot-testCaseTextArea");
 			var testCase = testArea.value;
 			var keyStep = name;
 
@@ -177,7 +177,7 @@ FireRobot.Key = {
 	addKeyToFile: function() {
 
 		var keyWindow = Application.storage.get("keyWindow", undefined);
-		var resFileBox = keyWindow.document.getElementById("resFileBox");
+		var resFileBox = keyWindow.document.getElementById("fire-robot-resFileBox");
 		var filePath = resFileBox.value;
 
 		if (!filePath) {
@@ -197,7 +197,7 @@ FireRobot.Key = {
 
 		converter.init(outStream, "UTF-8", 0, 0);
 
-		var keyNameBox = keyWindow.document.getElementById("keyNameBox");
+		var keyNameBox = keyWindow.document.getElementById("fire-robot-keyNameBox");
 		var name = keyNameBox.value;
 
 		if (!name) {
@@ -206,14 +206,14 @@ FireRobot.Key = {
 		}
 		var keyword = "\r\n\r\n" + name;
 
-		var keyVarBox = keyWindow.document.getElementById("keyVarBox");
+		var keyVarBox = keyWindow.document.getElementById("fire-robot-keyVarBox");
 		var vars = keyVarBox.value;
 
 		if (vars) {
 			keyword += "   \t[Arguments]   \t" + vars;
 		}
 
-		var keyStepsArea = keyWindow.document.getElementById("keyStepsArea");
+		var keyStepsArea = keyWindow.document.getElementById("fire-robot-keyStepsArea");
 		var steps = keyStepsArea.value.replace(/(\r\n|\n|\r)/gm, "\r\n");
 
 		keyword += "\r\n" + steps;
@@ -227,7 +227,7 @@ FireRobot.Key = {
 
 		//Add resource file to settings, if not yet included
 		var frWindow = Application.storage.get("frWindow", undefined);
-		var settingsTextArea = frWindow.document.getElementById("settingsTextArea");
+		var settingsTextArea = frWindow.document.getElementById("fire-robot-settingsTextArea");
 		var settings = settingsTextArea.value;
 
 		var OSName = getOSName();
@@ -250,7 +250,7 @@ FireRobot.Key = {
 
 		//Replace steps for new keyword, if option is enabled.
 		if (prefService.getBoolPref("extensions.firerobot.key.replace")) {
-			var testArea = frWindow.document.getElementById("testCaseTextArea");
+			var testArea = frWindow.document.getElementById("fire-robot-testCaseTextArea");
 			var testCase = testArea.value;
 			var keyStep = name;
 

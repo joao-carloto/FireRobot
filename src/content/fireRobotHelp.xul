@@ -7,7 +7,7 @@
    xmlns:html="http://www.w3.org/1999/xhtml"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns:xlink="http://www.w3.org/1999/xlink" 
-   id="firerobot-help" 
+   id="fire-robot-help" 
    title="FireRobot Help" 
    orient="vertical" 
    height="765rem"
@@ -69,7 +69,7 @@
                 <html:u>Apache License 2.0</html:u>
             </html:a>.
             <html:div
-              id="apache-license-notice" 
+              id="fire-robot-apache-license-notice" 
               style="display:none">
               &firerobot.help.license.notice;
             </html:div>

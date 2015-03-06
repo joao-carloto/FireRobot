@@ -12,7 +12,7 @@ function toggleSelectMode() {
 	var frWindow = Application.storage.get("frWindow", undefined);
 	if (!frWindow) return;
 	var selectModeOn = Application.storage.get("selectModeOn", false);
-	var btn = frWindow.document.getElementById("selectButton");
+	var btn = frWindow.document.getElementById("fire-robot-selectButton");
 
 	if (selectModeOn) {
 		Application.storage.set("selectModeOn", false);
@@ -50,13 +50,13 @@ function clearSelections() {
 		}
 	}
 	selectedElements = [];
-	frWindow.document.getElementById("htmlTextArea").value = "";
+	frWindow.document.getElementById("fire-robot-htmlTextArea").value = "";
 	Application.storage.set("selectedElements", selectedElements);
 }
 
 function resetSelectContext() {
 	var frWindow = Application.storage.get("frWindow", undefined);
-	frWindow.document.getElementById("selectButton").setAttribute("class", "btn");
+	frWindow.document.getElementById("fire-robot-selectButton").setAttribute("class", "btn");
 	clearSelections();
 
 	var overElement = Application.storage.get("overElement", undefined);
@@ -110,6 +110,15 @@ function _addEventListners(doc) {
 	doc.body.style.border = "5px dashed lightBlue";
 
 	doc.addEventListener('click', _selectElement, true);
+
+	/***********************************************************************************
+	Note to Mozilla reviewers:
+	The next lines of code will produce the following message in the automatic validation process:
+	"Mouse events may cause performance issues."
+	Since this extension purpose is to build test scripts based on elements selected from the web page,
+	I belive this is the sole alternative.
+	I presume this is not too different from other popular extensions like Firebug where we select elements using the mouse.
+	***********************************************************************************/		
 	doc.addEventListener('mouseover', _overElement, true);
 	doc.addEventListener('mouseout', _outElement, true);
 	doc.addEventListener('mouseup', _blockMouseUpDown, true);
@@ -292,7 +301,7 @@ function _displayHTML() {
 		}
 	}
 	var frWindow = Application.storage.get("frWindow", undefined);
-	var htmlArea = frWindow.document.getElementById("htmlTextArea");
+	var htmlArea = frWindow.document.getElementById("fire-robot-htmlTextArea");
 	htmlArea.value = selectedElementsHTML;
 
 	var ti = frWindow.document.getAnonymousNodes(htmlArea)[0].

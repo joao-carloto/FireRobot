@@ -14,8 +14,8 @@ function createFloatWindow() {
 		"chrome://firerobot/content/fireRobotWindow.xul",
 		"firerobot", "chrome, resizable", null);
 	floatWindow.addEventListener('load', function() {
-		floatWindow.document.getElementById("closeButton").setAttribute("hidden", "true");
-		floatWindow.document.getElementById("windowModeButton").setAttribute("class",
+		floatWindow.document.getElementById("fire-robot-closeButton").setAttribute("hidden", "true");
+		floatWindow.document.getElementById("fire-robot-windowModeButton").setAttribute("class",
 			"btn sideBarButton");
 		floatWindow.addEventListener('close', function() {
 			_closeFRWindow();
@@ -72,9 +72,9 @@ function createSideBar() {
 
 	sideBar.addEventListener('load', function() {
 
-		sideBar.document.getElementById("closeButton").setAttribute("hidden", "false");
+		sideBar.document.getElementById("fire-robot-closeButton").setAttribute("hidden", "false");
 
-		sideBar.document.getElementById("windowModeButton").setAttribute("class",
+		sideBar.document.getElementById("fire-robot-windowModeButton").setAttribute("class",
 			"btn floatButton");
 	}, true);
 	return sideBar;
@@ -101,24 +101,24 @@ function removeSideBar() {
 }
 
 function copyWindowContent(oldWindow, newWindow) {
-	newWindow.document.getElementById("htmlTextArea").value = oldWindow.
-	document.getElementById("htmlTextArea").value;
-	newWindow.document.getElementById("settingsTextArea").value = oldWindow.
-	document.getElementById("settingsTextArea").value;
-	newWindow.document.getElementById("testCaseTextArea").value = oldWindow.
-	document.getElementById("testCaseTextArea").value;
-	newWindow.document.getElementById("keywordsTextArea").value = oldWindow.
-	document.getElementById("keywordsTextArea").value;
-	newWindow.document.getElementById("selectButton").setAttribute("class",
-		oldWindow.document.getElementById("selectButton").getAttribute("class"));
-	newWindow.document.getElementById("playButton").setAttribute("class",
-		oldWindow.document.getElementById("playButton").getAttribute("class"));
-	newWindow.document.getElementById("testTabBox").selectedIndex = oldWindow.
-	document.getElementById("testTabBox").selectedIndex;
+	newWindow.document.getElementById("fire-robot-htmlTextArea").value = oldWindow.
+	document.getElementById("fire-robot-htmlTextArea").value;
+	newWindow.document.getElementById("fire-robot-settingsTextArea").value = oldWindow.
+	document.getElementById("fire-robot-settingsTextArea").value;
+	newWindow.document.getElementById("fire-robot-testCaseTextArea").value = oldWindow.
+	document.getElementById("fire-robot-testCaseTextArea").value;
+	newWindow.document.getElementById("fire-robot-keywordsTextArea").value = oldWindow.
+	document.getElementById("fire-robot-keywordsTextArea").value;
+	newWindow.document.getElementById("fire-robot-selectButton").setAttribute("class",
+		oldWindow.document.getElementById("fire-robot-selectButton").getAttribute("class"));
+	newWindow.document.getElementById("fire-robot-playButton").setAttribute("class",
+		oldWindow.document.getElementById("fire-robot-playButton").getAttribute("class"));
+	newWindow.document.getElementById("fire-robot-testTabBox").selectedIndex = oldWindow.
+	document.getElementById("fire-robot-testTabBox").selectedIndex;
 
 	Application.storage.set("frWindow", newWindow);
 
-	var rows = oldWindow.document.getElementById("varListBox").childNodes;
+	var rows = oldWindow.document.getElementById("fire-robot-varListBox").childNodes;
 
 	for (var i = 0; i < rows.length; i++) {
 		addVariable(rows[i].childNodes[1].value, rows[i].childNodes[3].value);
