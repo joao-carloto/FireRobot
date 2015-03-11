@@ -3,7 +3,7 @@
 <?xml-stylesheet type="text/css" href="chrome://firerobot/skin/firerobot.css" ?>
 <!DOCTYPE overlay
   SYSTEM 'chrome://firerobot/locale/fireRobot.dtd'>
-<window class="frBase" fullscreenbutton="true" height="760rem" id="firerobot-window" orient="vertical" resizable="true" title="FireRobot" width="650rem" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<window class="frBase" fullscreenbutton="true" height="760rem" id="firerobot-window" orient="vertical" resizable="true" title="FireRobot" width="520rem" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <stringbundleset id="fire-robot-string-bundle-set">
         <stringbundle id="fire-robot-string-bundle" src="chrome://firerobot/locale/fireRobot.properties"/>
     </stringbundleset>
