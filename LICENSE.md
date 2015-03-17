@@ -8,4 +8,4 @@ See the License for the specific language governing permissions and limitations 
 
 Test suite execution in FireRobot is supported by two open-source libraries, also released under the Apache License 2.0:
 - robotframework
-- selenium2library-java
+- selenium2library
