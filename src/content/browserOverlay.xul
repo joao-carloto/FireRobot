@@ -165,7 +165,6 @@
                     <menuitem 
                     id="fire-robot-go-to" 
                     label="Go To" 
-                    hidden="true" 
                     oncommand="FireRobot.BrowserOverlay.addKeyword(this.id);"/>
                     <menuitem 
                     id="fire-robot-go-back" 
