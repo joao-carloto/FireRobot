@@ -1048,11 +1048,15 @@ function subprocess_win32(options) {
             return r;
         },
         wait: function() {
+// Note form João Carloto:
+//I won't be using the Wait function and I'm commenting this code so it won't  trigger a warning on the Mozilla automatic revision.
+
             // wait for async operations to complete
+            /*
             var thread = Cc['@mozilla.org/thread-manager;1'].getService(Ci.nsIThreadManager).currentThread;
             while (!done) thread.processNextEvent(true);
-
             return exitCode;
+            */
         }
     };
 }
@@ -1730,12 +1734,16 @@ function subprocess_unix(options) {
 
 
     return {
+// Note form João Carloto:
+//I won't be using the Wait function and I'm commenting this code so it won't  trigger a warning on the Mozilla automatic revision.
+        /*
         wait: function() {
             // wait for async operations to complete
             var thread = Cc['@mozilla.org/thread-manager;1'].getService(Ci.nsIThreadManager).currentThread;
-            while (! done) thread.processNextEvent(true);
+         //   while (! done) thread.processNextEvent(true);
             return exitCode;
         },
+        */
         kill: function(hardKill) {
             var rv = kill(pid, (hardKill ? 9: 15));
             cleanup(-1);

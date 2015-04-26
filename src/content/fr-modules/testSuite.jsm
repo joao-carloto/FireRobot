@@ -8,18 +8,9 @@
 
 	Components.utils.import("resource://gre/modules/FileUtils.jsm");
 	Components.utils.import("resource://gre/modules/devtools/Console.jsm");
+	Components.utils.import("resource://gre/modules/Timer.jsm");
 
-	/***********************************************************************************
-	Note to Mozilla reviewers:
-	The following imported module (subprocess.jsm) originates 3 different warning messages on the automatic validation processs
-	Since this is a module already used in other Mozilla Addons (e.g. Enigmail) I'm assuming it's safe to use.
-	In this extension, it's only scope of usage it's to verify if the Robot Framework is allready installed in the system,
-	and show a warning message if it's not.
-	For that it will run a "pybot -h" command and verify the output message.
-	In this case we don't want the CLI to be shown, so we are using the subprocess.jsm module and not the nsIProcess interface.
-	************************************************************************************/
 	Components.utils.import("chrome://firerobot/content/external-modules/subprocess.jsm");
-
 	Components.utils.import("chrome://firerobot/content/fr-modules/variables.jsm");
 	Components.utils.import("chrome://firerobot/content/fr-modules/utils.jsm");
 
@@ -134,52 +125,60 @@
 			},
 			mergeStderr: false
 		});
-		p.wait();
 
-		if (!Application.storage.get("rfIsInstalled", true)) return;
+		//This is a very inelegant solution, but since I'm not allowed by Mozilla to use p.wait it seems to be the simplest.
+		//This is just to avoid trying to run a test without the Robot Framework installed
+		//The warning popup would be shown anyway, but eventually on the bakground, due to the error messages regarding an unrrecognized command
+		setTimeout(run, 100);
 
-		var playButton = frWindow.document.getElementById("fire-robot-playButton");
-		playButton.setAttribute("class", "playOn");
-		Application.storage.set("testRunning", true);
+		function run() {
 
-		/***********************************************************************************
-		Note to Mozilla reviewers:
-		The next line of code will produce the following message in the automatic validation process:
-		"The use of nsIProcess is potentially dangerous and requires careful review by an administrative reviewer."
-		The purpose of this extension is to build test scripts by selecting web page elements,
-		and selecting specific keywords from the context menu.
-		These tests can then be run by making a call to the Robot Framework (that should be allready installed in your system),
-		by means of the "pybot" command. That is the sole usage scope for nsIProcess.
-		The Robot Framework has been extensivly used for thousands of software testers around the worlld,
-		so I belive this is a legitimate usage of the Mozilla nsIProcess interface.
-		For more info visit robotframework.org
-		************************************************************************************/
-		var process = Components.classes["@mozilla.org/process/util;1"]
-			.createInstance(Components.interfaces.nsIProcess);
+			if (!Application.storage.get("rfIsInstalled", true)) return;
 
-		process.init(shell);
+			var playButton = frWindow.document.getElementById("fire-robot-playButton");
+			playButton.setAttribute("class", "playOn");
+			Application.storage.set("testRunning", true);
 
-		Application.storage.set("testRunning", true);
+			/***********************************************************************************
+			Note to Mozilla reviewers:
+			The next line of code will produce the following message in the automatic validation process:
+			"The use of nsIProcess is potentially dangerous and requires careful review by an administrative reviewer."
+			The purpose of this extension is to build test scripts by selecting web page elements,
+			and selecting specific keywords from the context menu.
+			These tests can then be run by making a call to the Robot Framework (that should be allready installed in your system),
+			by means of the "pybot" command. That is the sole usage scope for nsIProcess.
+			The Robot Framework has been extensivly used for thousands of software testers around the worlld,
+			so I belive this is a legitimate usage of the Mozilla nsIProcess interface.
+			For more info visit robotframework.org
+			************************************************************************************/
+			var process = Components.classes["@mozilla.org/process/util;1"]
+				.createInstance(Components.interfaces.nsIProcess);
 
-		playButton.setAttribute("class", "playOn");
+			process.init(shell);
 
-		process.runAsync(args, args.length, function(subject, topic, data) {
-			Application.storage.set("testRunning", false);
+			Application.storage.set("testRunning", true);
 
-			//The window might have been closed or switched mode.
-			frWindow = Application.storage.get("frWindow", undefined);
-			if (frWindow) {
-				playButton = frWindow.document.getElementById("fire-robot-playButton");
-				playButton.setAttribute("class", "btn");
-			}
-			//nsIProcess doesn't seem to work as expected in Linux and OS X.
-			//It returns immediatelly and tries to open a report that does not yet exist.
-			//This induces the "No Report Found" popup
-			//TODO report at bugzilla?
-			if (OSName == "Windows") {
-				showReport();
-			}
-		});
+			playButton.setAttribute("class", "playOn");
+
+			process.runAsync(args, args.length, function(subject, topic, data) {
+				Application.storage.set("testRunning", false);
+
+				//The window might have been closed or switched mode.
+				frWindow = Application.storage.get("frWindow", undefined);
+				if (frWindow) {
+					playButton = frWindow.document.getElementById("fire-robot-playButton");
+					playButton.setAttribute("class", "btn");
+				}
+				//nsIProcess doesn't seem to work as expected in Linux and OS X.
+				//It returns immediatelly and tries to open a report that does not yet exist.
+				//This induces the "No Report Found" popup
+				//TODO report at bugzilla?
+				if (OSName == "Windows") {
+					showReport();
+				}
+			});
+		}
+
 	}
 
 	function showReport() {
