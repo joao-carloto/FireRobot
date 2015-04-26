@@ -127,11 +127,9 @@
 		});
 
 		//This is a very inelegant solution, but since I'm not allowed by Mozilla to use p.wait it seems to be the simplest.
-		//This is just to avoid trying to run a test without the Robot Framework installed
-		//The warning popup would be shown anyway, but eventually on the bakground, due to the error messages regarding an unrrecognized command
-		setTimeout(run, 100);
-
-		function run() {
+		//This is just to avoid trying to run a test without the Robot Framework installed.
+		//The warning popup would be shown anyway, but eventually on the bakground, due to the error messages regarding an unrecognized command.
+		setTimeout(function() {
 
 			if (!Application.storage.get("rfIsInstalled", true)) return;
 
@@ -177,7 +175,7 @@
 					showReport();
 				}
 			});
-		}
+		}, 100);
 
 	}
 
