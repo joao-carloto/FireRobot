@@ -1046,18 +1046,18 @@ function subprocess_win32(options) {
             var r = !!TerminateProcess(child.process, 255);
             cleanup(-1);
             return r;
-        },
+        }
+    // Note form João Carloto:
+    //I won't be using the Wait function and I'm commenting this code so it won't  trigger a warning on the Mozilla automatic revision.
+    /*        
+        ,
         wait: function() {
-// Note form João Carloto:
-//I won't be using the Wait function and I'm commenting this code so it won't  trigger a warning on the Mozilla automatic revision.
-
             // wait for async operations to complete
-            /*
             var thread = Cc['@mozilla.org/thread-manager;1'].getService(Ci.nsIThreadManager).currentThread;
             while (!done) thread.processNextEvent(true);
             return exitCode;
-            */
         }
+    */
     };
 }
 
@@ -1734,8 +1734,8 @@ function subprocess_unix(options) {
 
 
     return {
-// Note form João Carloto:
-//I won't be using the Wait function and I'm commenting this code so it won't  trigger a warning on the Mozilla automatic revision.
+        // Note form João Carloto:
+        //I won't be using the Wait function and I'm commenting this code so it won't  trigger a warning on the Mozilla automatic revision.
         /*
         wait: function() {
             // wait for async operations to complete
