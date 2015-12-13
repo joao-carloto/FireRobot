@@ -8,6 +8,20 @@ if (!FireRobot.Preferences) FireRobot.Preferences = {};
 
 FireRobot.Preferences = {
 
+	allLocPrefs: [
+			"id",
+			"name",
+			"href",
+			"link",
+			"alt",
+			"src",
+			"value",
+			"label",
+			"index",
+			"xpath",
+			"class_xpath"
+		],
+
 	enableLocator: function() {
 		var disabledLocList = document.getElementById("fire-robot-disabled-locators-list");
 		var selectedItem = disabledLocList.selectedItem;
@@ -75,13 +89,9 @@ FireRobot.Preferences = {
 		if (!selectedItem) {
 			warning("firerobot.warn.select-locator");
 		} else if (selectedIndex > 0) {
-
 			enabledLocList.removeItemAt(selectedIndex);
-
 			enabledLocList.insertBefore(selectedItem, enabledLocList.getItemAtIndex(selectedIndex - 1));
-
 			enabledLocList.selectItem(selectedItem);
-
 			this.updateLocators();
 		}
 	},
@@ -92,9 +102,7 @@ FireRobot.Preferences = {
 		var enabledLocList = document.getElementById("fire-robot-enabled-locators-list");
 
 		if (enabledLocList.itemCount > 0) {
-
 			enabledLocPreferences = enabledLocList.getItemAtIndex(0).value;
-
 			for (i = 1; i < enabledLocList.itemCount; i++) {
 				enabledLocPreferences += "," + enabledLocList.getItemAtIndex(i).
 				value;
@@ -109,8 +117,15 @@ FireRobot.Preferences = {
 
 		enabledLocPreferences = prefService.getCharPref("extensions.firerobot.enabled-locators");
 		enabledLocPreferences = enabledLocPreferences.split(",");
-		disabledLocPreferences = this.getDisabledLocPrefsFromEnabled(
-			enabledLocPreferences);
+
+		for (i = 0; i < enabledLocPreferences.length; i++) {
+			if (this.allLocPrefs.indexOf(enabledLocPreferences[i]) == -1) {
+				enabledLocPreferences = enabledLocPreferences.splice(i, 1);
+				i--;
+			}
+		}
+
+		disabledLocPreferences = this.getDisabledLocPrefsFromEnabled(enabledLocPreferences);
 
 		var enabledLocList = document.getElementById("fire-robot-enabled-locators-list");
 		var disabledLocList = document.getElementById("fire-robot-disabled-locators-list");
@@ -121,7 +136,11 @@ FireRobot.Preferences = {
 			for (i = 0; i < enabledLocPreferences.length; i++) {
 				if (enabledLocPreferences[i] == "xpath") {
 					appendedItem = enabledLocList.appendItem("text based xpath");
-				} else {
+				} 
+				else if (enabledLocPreferences[i] == "class_xpath") {
+					appendedItem = enabledLocList.appendItem("class based xpath");
+				} 
+				else {
 					appendedItem = enabledLocList.appendItem(enabledLocPreferences[i]);
 				}
 				appendedItem.value = enabledLocPreferences[i];
@@ -133,7 +152,11 @@ FireRobot.Preferences = {
 			for (i = 0; i < disabledLocPreferences.length; i++) {
 				if (disabledLocPreferences[i] == "xpath") {
 					appendedItem = disabledLocList.appendItem("text based xpath");
-				} else {
+				}
+				else if (disabledLocPreferences[i] == "class_xpath") {
+					appendedItem = disabledLocList.appendItem("class based xpath");
+				}
+				else {
 					appendedItem = disabledLocList.appendItem(disabledLocPreferences[i]);
 				}
 				appendedItem.value = disabledLocPreferences[i];
@@ -178,24 +201,11 @@ FireRobot.Preferences = {
 	},
 
 	getDisabledLocPrefsFromEnabled: function(enabledLocPreferences) {
-		var allLocPrefs = [
-			"id",
-			"name",
-			"href",
-			"link",
-			"alt",
-			"src",
-			"value",
-			"label",
-			"index",
-			"xpath"
-		];
-
 		var disabledLocPreferences = [];
 
-		for (var i = 0; i < allLocPrefs.length; i++) {
-			if (enabledLocPreferences.indexOf(allLocPrefs[i]) == -1) {
-				disabledLocPreferences.push(allLocPrefs[i]);
+		for (var i = 0; i < this.allLocPrefs.length; i++) {
+			if (enabledLocPreferences.indexOf(this.allLocPrefs[i]) == -1) {
+				disabledLocPreferences.push(this.allLocPrefs[i]);
 			}
 		}
 		return disabledLocPreferences;

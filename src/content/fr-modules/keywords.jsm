@@ -1,40 +1,44 @@
 var EXPORTED_SYMBOLS = [
-	"kwPageShouldContain",
-	"kwPageShouldNotContain",
-	"kwPageShouldContainSmart",
-	"kwPageShouldNotContainSmart",
-	"kwWaitUntilPageContains",
-	"kwWaitUntilPageContainsElement",
-	"kwWaitUntilElementIsVisible",
-	"kwElementTextShouldBe",
-	"kwElementShouldBeEnabled",
-	"kwElementShouldBeDisabled",
-	"kwElementShouldBeVisible",
-	"kwElementShouldNotBeVisible",
-	"kwClickSmart",
-	"kwOpenContext",
-	"kwPressKey",
-	"kwFocus",
-	"kwMouseDownSmart",
-	"kwMouseUp",
-	"kwMouseOver",
-	"kwMouseOut",
-	"kwSelectFrame",
-	"kwCurrentFrameContains",
-	"kwCurrentFrameShouldNotContain",
-	"kwFrameShouldContain",
-	"kwUnselectFrame",
-	"kwOpenBrowser",
-	"kwOpenBrowserFFProfDir",
-	"kwGoTo",
-	"kwGoBack",
-	"kwLocationShouldBe",
-	"kwReloadPage",
-	"kwCloseBrowser",
-	"kwCloseAllBrowsers",
-	"kwSetWindowSize",
-	"kwFillForm",
-	"kwCheckForm"
+"kwPageShouldContain",
+"kwPageShouldNotContain",
+"kwPageShouldContainSmart",
+"kwPageShouldNotContainSmart",
+"kwWaitUntilPageContains",
+"kwWaitUntilPageDoesNotContain",
+"kwWaitUntilPageContainsElement",
+"kwWaitUntilPageDoesNotContainElement",
+"kwWaitUntilElementIsVisible",
+"kwWaitUntilElementIsNotVisible",
+"kwWaitUntilElementIsEnabled",
+"kwElementTextShouldBe",
+"kwElementShouldBeEnabled",
+"kwElementShouldBeDisabled",
+"kwElementShouldBeVisible",
+"kwElementShouldNotBeVisible",
+"kwClickSmart",
+"kwOpenContext",
+"kwPressKey",
+"kwFocus",
+"kwMouseDownSmart",
+"kwMouseUp",
+"kwMouseOver",
+"kwMouseOut",
+"kwSelectFrame",
+"kwCurrentFrameContains",
+"kwCurrentFrameShouldNotContain",
+"kwFrameShouldContain",
+"kwUnselectFrame",
+"kwOpenBrowser",
+"kwOpenBrowserFFProfDir",
+"kwGoTo",
+"kwGoBack",
+"kwLocationShouldBe",
+"kwReloadPage",
+"kwCloseBrowser",
+"kwCloseAllBrowsers",
+"kwSetWindowSize",
+"kwFillForm",
+"kwCheckForm"
 ];
 
 Components.utils.import("chrome://firerobot/content/external-modules/xregexp.jsm");
@@ -133,7 +137,7 @@ function kwPageShouldNotContainSmart() {
 		} else if (el.tagName == "IMG") {
 			step += "Image";
 		} else if (el.tagName == "SELECT") {
-			step += "Page Should Not Contain List";
+			step += "List";
 		} else {
 			step += "Element";
 		}
@@ -203,13 +207,19 @@ function kwPressKey() {
 	}
 }
 
-
-
 function _checkDownKey(e) {
+	var doc;
+	var key;
+	var selectedElements = Application.storage.get("selectedElements", undefined);
+	if (!selectedElements || selectedElements.length === 0) {
+		doc.removeEventListener("keydown", _checkDownKey);
+		doc.removeEventListener("keypress", _checkPressedKey);
+		warning("firerobot.warn.no-el-select");
+		return;
+	} else {
+		doc = selectedElements[0].ownerDocument;
+	}
 	if (e.which) {
-		var keynum;
-		var doc;
-		var key;
 		if (e.which < 33 || e.which == 127) {
 			e.stopImmediatePropagation();
 			e.stopPropagation();
@@ -219,29 +229,29 @@ function _checkDownKey(e) {
 			doc.removeEventListener("keydown", _checkDownKey);
 			return;
 		}
-		var selectedElements = Application.storage.get("selectedElements", undefined);
-		if (!selectedElements || selectedElements.length === 0) {
-			warning("firerobot.warn.no-el-select");
-			return;
-		} else {
-			var doc = selectedElements[0].ownerDocument;
-			for (var i = 0; i < selectedElements.length; i++) {
-				var el = selectedElements[i];
-				_addStepToTest("Press Key   \t" + getLocatorForGenericElement(el) + "   \t" + key);
-			}
+		for (var i = 0; i < selectedElements.length; i++) {
+			var el = selectedElements[i];
+			_addStepToTest("Press Key   \t" + getLocatorForGenericElement(el) + "   \t" + key);
 		}
+
 	}
 	doc.removeEventListener("keydown", _checkDownKey);
 	doc.removeEventListener("keypress", _checkPressedKey);
 }
 
-
-
 function _checkPressedKey(e) {
+	var doc;
+	var key;
+	var selectedElements = Application.storage.get("selectedElements", undefined);
+	if (!selectedElements || selectedElements.length === 0) {
+		doc.removeEventListener("keydown", _checkDownKey);
+		doc.removeEventListener("keypress", _checkPressedKey);
+		warning("firerobot.warn.no-el-select");
+		return;
+	} else {
+		doc = selectedElements[0].ownerDocument;
+	}
 	if (e.which) {
-		var keynum;
-		var doc;
-		var key;
 		var keyLetter = String.fromCharCode(e.charCode);
 		var printable = XRegExp('[^\x00-\x1F\x7F]');
 		var isPrintable = printable.test(keyLetter);
@@ -251,24 +261,15 @@ function _checkPressedKey(e) {
 			doc.removeEventListener("keypress", _checkPressedKey);
 			return;
 		}
-		var selectedElements = Application.storage.get("selectedElements", undefined);
-		if (!selectedElements || selectedElements.length === 0) {
-			warning("firerobot.warn.no-el-select");
-			return;
-		} else {
-			var doc = selectedElements[0].ownerDocument;
-			for (var i = 0; i < selectedElements.length; i++) {
-				var el = selectedElements[i];
-				_addStepToTest("Press Key   \t" + getLocatorForGenericElement(el) + "   \t" + key);
-			}
+		for (var i = 0; i < selectedElements.length; i++) {
+			var el = selectedElements[i];
+			_addStepToTest("Press Key   \t" + getLocatorForGenericElement(el) + "   \t" + key);
 		}
 	}
 	doc.removeEventListener("keydown", _checkDownKey);
 	doc.removeEventListener("keypress", _checkPressedKey);
 }
 
-//TODO not working in Firefox 35
-/*
 function kwFocus() {
 	var selectedElements = Application.storage.get("selectedElements", undefined);
 	if (!selectedElements || selectedElements.length === 0) {
@@ -280,7 +281,6 @@ function kwFocus() {
 		_addStepToTest("Focus   \t" + getLocatorForGenericElement(el));
 	}
 }
-*/
 
 function kwMouseDownSmart() {
 	var selectedElements = Application.storage.get("selectedElements", undefined);
@@ -354,6 +354,10 @@ function kwWaitUntilPageContains() {
 	_addTextVerifications("Wait Until Page Contains");
 }
 
+function kwWaitUntilPageDoesNotContain() {
+	_addTextVerifications("Wait Until Page Does Not Contain");
+}
+
 function kwWaitUntilPageContainsElement() {
 	var selectedElements = Application.storage.get("selectedElements", undefined);
 	if (!selectedElements || selectedElements.length === 0) {
@@ -366,6 +370,18 @@ function kwWaitUntilPageContainsElement() {
 	}
 }
 
+function kwWaitUntilPageDoesNotContainElement() {
+	var selectedElements = Application.storage.get("selectedElements", undefined);
+	if (!selectedElements || selectedElements.length === 0) {
+		warning("firerobot.warn.no-el-select");
+		return;
+	}
+	for (var i = 0; i < selectedElements.length; i++) {
+		var el = selectedElements[i];
+		_addStepToTest("Wait Until Page Does Not Contain Element   \t" + getLocatorForGenericElement(el));
+	}
+}
+
 function kwWaitUntilElementIsVisible() {
 	var selectedElements = Application.storage.get("selectedElements", undefined);
 	if (!selectedElements || selectedElements.length === 0) {
@@ -375,6 +391,30 @@ function kwWaitUntilElementIsVisible() {
 	for (var i = 0; i < selectedElements.length; i++) {
 		var el = selectedElements[i];
 		_addStepToTest("Wait Until Element Is Visible   \t" + getLocatorForGenericElement(el));
+	}
+}
+
+function kwWaitUntilElementIsNotVisible() {
+	var selectedElements = Application.storage.get("selectedElements", undefined);
+	if (!selectedElements || selectedElements.length === 0) {
+		warning("firerobot.warn.no-el-select");
+		return;
+	}
+	for (var i = 0; i < selectedElements.length; i++) {
+		var el = selectedElements[i];
+		_addStepToTest("Wait Until Element Is Not Visible   \t" + getLocatorForGenericElement(el));
+	}
+}
+
+function kwWaitUntilElementIsEnabled() {
+	var selectedElements = Application.storage.get("selectedElements", undefined);
+	if (!selectedElements || selectedElements.length === 0) {
+		warning("firerobot.warn.no-el-select");
+		return;
+	}
+	for (var i = 0; i < selectedElements.length; i++) {
+		var el = selectedElements[i];
+		_addStepToTest("Wait Until Element Is Enabled   \t" + getLocatorForGenericElement(el));
 	}
 }
 
@@ -504,7 +544,7 @@ function kwSelectFrame() {
 
 		var elContainingDocument = selectedElements[i].ownerDocument;
 		var elContainingWindow = elContainingDocument.defaultView ||
-			elContainingDocument.parentWindow;
+		elContainingDocument.parentWindow;
 
 		if (elContainingWindow.frameElement) {
 			if (selectedFrame && elContainingWindow.frameElement != selectedFrame) {
@@ -713,10 +753,10 @@ function kwFillForm() {
 			selElement.tagName == "SELECT" ||
 			selElement.tagName == "TEXTAREA" ||
 			selElement.getAttribute("contenteditable") == "true"
-		) {
+			) {
 			_fillFormElement(selElement);
-			formElementsInSelection++;
-		}
+		formElementsInSelection++;
+	}
 		//If not, look for form elements inside selection
 		else {
 			if (selElement.tagName == "FRAME" || selElement.tagName == "IFRAME") {
@@ -757,8 +797,8 @@ function kwCheckForm() {
 		if (selElement.tagName == "INPUT" || selElement.tagName == "SELECT" ||
 			selElement.tagName == "TEXTAREA") {
 			_checkFormElement(selElement);
-			formElementsInSelection++;
-		}
+		formElementsInSelection++;
+	}
 		//If not, look for form elements inside selection
 		else {
 			if (selElement.tagName == "FRAME" || selElement.tagName == "IFRAME") {
@@ -802,141 +842,141 @@ function _fillFormElement(element) {
 		!_isReadOnly(element) &&
 		!_isDisabled(element)) {
 		if ((element.type == "text" ||
-				element.type == "email" ||
-				element.type == "tel" ||
-				element.type == "url" ||
-				element.type == "search" ||
-				element.type == "color" ||
-				element.type == "number" ||
-				element.type == "range" ||
-				element.type == "date" ||
-				element.type === undefined) &&
+			element.type == "email" ||
+			element.type == "tel" ||
+			element.type == "url" ||
+			element.type == "search" ||
+			element.type == "color" ||
+			element.type == "number" ||
+			element.type == "range" ||
+			element.type == "date" ||
+			element.type === undefined) &&
 			element.value) {
 			testStep = "Input Text   \t" +
-				locator +
-				"   \t";
-			boxText = element.value;
-			boxText = escapeRobot(boxText);
-			boxText = escapeSpace(boxText);
-			if (useVar || createVar) {
-				varName = getVarNameFromValue(boxText);
-			}
-			if (createVar && !varName) {
-				varName = createVarNameForInput(element);
-				addVariable(varName, boxText);
-			}
-			if (useVar && varName) {
-				_addStepToTest(testStep + "${" + varName + "}");
-			} else {
-				_addStepToTest(testStep + boxText);
-			}
-		} else if (element.type == "checkbox" && element.checked) {
-			_addStepToTest("Select Checkbox   \t" + locator);
+		locator +
+		"   \t";
+		boxText = element.value;
+		boxText = escapeRobot(boxText);
+		boxText = escapeSpace(boxText);
+		if (useVar || createVar) {
+			varName = getVarNameFromValue(boxText);
 		}
+		if (createVar && !varName) {
+			varName = createVarNameForInput(element);
+			addVariable(varName, boxText);
+		}
+		if (useVar && varName) {
+			_addStepToTest(testStep + "${" + varName + "}");
+		} else {
+			_addStepToTest(testStep + boxText);
+		}
+	} else if (element.type == "checkbox" && element.checked) {
+		_addStepToTest("Select Checkbox   \t" + locator);
+	}
 		//TODO would this be useful?
 		/*
 			else if (element.type == "checkbox" && !element.checked) {
 			_addStepToTest("Unselect Checkbox  \t" + getLocator(element));
 			}
-		*/
-		else if (element.type == "radio" && element.checked) {
-			_addStepToTest("Select Radio Button   \t" +
-				element.name +
-				"   \t" +
-				element.value);
-		} else if (element.type == "password" && element.value) {
-			testStep = "Input Password   \t" +
+			*/
+			else if (element.type == "radio" && element.checked) {
+				_addStepToTest("Select Radio Button   \t" +
+					element.name +
+					"   \t" +
+					element.value);
+			} else if (element.type == "password" && element.value) {
+				testStep = "Input Password   \t" +
 				locator +
 				"   \t";
-			var passText = element.value;
-			passText = escapeRobot(passText);
-			passText = escapeSpace(passText);
-			if (useVar || createVar) {
-				varName = getVarNameFromValue(passText);
-			}
-			if (createVar && !varName) {
-				varName = createVarNameForInput(element);
-				addVariable(varName, passText);
-			}
-			if (useVar && varName) {
-				_addStepToTest(testStep + "${" + varName + "}");
-			} else {
-				_addStepToTest(testStep + passText);
-			}
-		}
-	} else if (element.tagName == "TEXTAREA" &&
-		element.value &&
-		!_isReadOnly(element) &&
-		!_isDisabled(element)) {
-		testStep = "Input Text   \t" +
-			locator +
-			"   \t";
-		var areaText = element.value;
-		areaText = escapeRobot(areaText);
-		areaText = areaText.replace(/(\r\n|\n|\r)/gm, "\\n");
-		areaText = escapeSpace(areaText);
-
-		if (useVar || createVar) {
-			varName = getVarNameFromValue(areaText);
-		}
-		if (createVar && !varName) {
-			varName = createVarNameForInput(element);
-			addVariable(varName, areaText);
-		}
-		if (useVar && varName) {
-			_addStepToTest(testStep + "${" + varName + "}");
-		} else {
-			_addStepToTest(testStep + areaText);
-		}
-	} else if (element.tagName == "SELECT" &&
-		!_isDisabled(element)) {
-		var elContainingDocument = element.ownerDocument;
-		var xPathResult = elContainingDocument.evaluate(".//option",
-			element,
-			null,
-			0,
-			null);
-		var matchedNode = xPathResult.iterateNext();
-		while (matchedNode) {
-			if (matchedNode.selected) {
-				var locType = getLocatorType(matchedNode);
-				var matcheNodeLoc;
-
-				if (locType == "value") {
-					testStep = "Select From List By Value   \t" +
-						locator +
-						"   \t";
-					matcheNodeLoc = matchedNode.getAttribute("value");
-				} else if (locType == "label") {
-					testStep = "Select From List By Label   \t" +
-						locator +
-						"   \t";
-					matcheNodeLoc = matchedNode.label;
-				} else if (locType == "index") {
-					testStep = "Select From List By Index   \t" +
-						locator +
-						"   \t";
-					matcheNodeLoc = matchedNode.index;
-				} else if (matchedNode.label && matchedNode.label !== "") {
-					testStep = "Select From List By Label   \t" +
-						locator +
-						"   \t";
-					matcheNodeLoc = matchedNode.label;
-				}
-
+				var passText = element.value;
+				passText = escapeRobot(passText);
+				passText = escapeSpace(passText);
 				if (useVar || createVar) {
-					varName = getVarNameFromValue(matcheNodeLoc);
+					varName = getVarNameFromValue(passText);
 				}
 				if (createVar && !varName) {
 					varName = createVarNameForInput(element);
-					addVariable(varName, matcheNodeLoc);
+					addVariable(varName, passText);
 				}
 				if (useVar && varName) {
 					_addStepToTest(testStep + "${" + varName + "}");
 				} else {
-					_addStepToTest(testStep + matcheNodeLoc);
+					_addStepToTest(testStep + passText);
 				}
 			}
+		} else if (element.tagName == "TEXTAREA" &&
+			element.value &&
+			!_isReadOnly(element) &&
+			!_isDisabled(element)) {
+			testStep = "Input Text   \t" +
+			locator +
+			"   \t";
+			var areaText = element.value;
+			areaText = escapeRobot(areaText);
+			areaText = areaText.replace(/(\r\n|\n|\r)/gm, "\\n");
+			areaText = escapeSpace(areaText);
+
+			if (useVar || createVar) {
+				varName = getVarNameFromValue(areaText);
+			}
+			if (createVar && !varName) {
+				varName = createVarNameForInput(element);
+				addVariable(varName, areaText);
+			}
+			if (useVar && varName) {
+				_addStepToTest(testStep + "${" + varName + "}");
+			} else {
+				_addStepToTest(testStep + areaText);
+			}
+		} else if (element.tagName == "SELECT" &&
+			!_isDisabled(element)) {
+			var elContainingDocument = element.ownerDocument;
+			var xPathResult = elContainingDocument.evaluate(".//option",
+				element,
+				null,
+				0,
+				null);
+			var matchedNode = xPathResult.iterateNext();
+			while (matchedNode) {
+				if (matchedNode.selected) {
+					var locType = getLocatorType(matchedNode);
+					var matcheNodeLoc;
+
+					if (locType == "value") {
+						testStep = "Select From List By Value   \t" +
+						locator +
+						"   \t";
+						matcheNodeLoc = matchedNode.getAttribute("value");
+					} else if (locType == "label") {
+						testStep = "Select From List By Label   \t" +
+						locator +
+						"   \t";
+						matcheNodeLoc = matchedNode.label;
+					} else if (locType == "index") {
+						testStep = "Select From List By Index   \t" +
+						locator +
+						"   \t";
+						matcheNodeLoc = matchedNode.index;
+					} else if (matchedNode.label && matchedNode.label !== "") {
+						testStep = "Select From List By Label   \t" +
+						locator +
+						"   \t";
+						matcheNodeLoc = matchedNode.label;
+					}
+
+					if (useVar || createVar) {
+						varName = getVarNameFromValue(matcheNodeLoc);
+					}
+					if (createVar && !varName) {
+						varName = createVarNameForInput(element);
+						addVariable(varName, matcheNodeLoc);
+					}
+					if (useVar && varName) {
+						_addStepToTest(testStep + "${" + varName + "}");
+					} else {
+						_addStepToTest(testStep + matcheNodeLoc);
+					}
+				}
 			//TODO would this be useful?
 			/*
 			else {
@@ -950,10 +990,9 @@ function _fillFormElement(element) {
 	//For custom input boxes
 	else if (element.getAttribute("contenteditable") == "true" && element.innerHTML !== "") {
 		testStep = "Input Text   \t" +
-			locator +
-			"   \t";
-		var cleanElement = getCleanClone(element);
-		boxText = cleanElement.innerHTML;
+		locator +
+		"   \t";
+		boxText = element.innerHTML;
 		boxText = escapeRobot(boxText).
 		replace(/<br>|<br\/>|<p[^>]*>/gmi, "\\n").
 		replace(/<[^>]*>/gmi, "").
@@ -986,40 +1025,40 @@ function _checkFormElement(element) {
 
 	if (element.tagName == "INPUT") {
 		if ((element.type == "text" ||
-				element.type == "email" ||
-				element.type == "tel" ||
-				element.type == "url" ||
-				element.type == "search" ||
-				element.type == "color" ||
-				element.type == "number" ||
-				element.type == "range" ||
-				element.type == "date" ||
-				element.type === undefined) &&
+			element.type == "email" ||
+			element.type == "tel" ||
+			element.type == "url" ||
+			element.type == "search" ||
+			element.type == "color" ||
+			element.type == "number" ||
+			element.type == "range" ||
+			element.type == "date" ||
+			element.type === undefined) &&
 			element.value) {
 			testStep = "Textfield Value Should Be   \t" +
-				locator +
-				"   \t";
-			boxText = element.value;
-			boxText = escapeRobot(boxText);
-			boxText = escapeSpace(boxText);
-			if (useVar || createVar) {
-				varName = getVarNameFromValue(boxText);
-			}
-			if (createVar && !varName) {
-				varName = createVarNameForInput(element);
-				addVariable(varName, boxText);
-			}
-			if (useVar && varName) {
-				_addStepToTest(testStep + "${" + varName + "}");
-			} else {
-				_addStepToTest(testStep + boxText);
-			}
-		} else if (element.type == "checkbox" && element.checked) {
-			_addStepToTest("Checkbox Should Be Selected   \t" +
-				locator);
-		} else if (element.type == "checkbox" && !element.checked) {
-			_addStepToTest("Checkbox Should Not Be Selected   \t" +
-				locator);
+		locator +
+		"   \t";
+		boxText = element.value;
+		boxText = escapeRobot(boxText);
+		boxText = escapeSpace(boxText);
+		if (useVar || createVar) {
+			varName = getVarNameFromValue(boxText);
+		}
+		if (createVar && !varName) {
+			varName = createVarNameForInput(element);
+			addVariable(varName, boxText);
+		}
+		if (useVar && varName) {
+			_addStepToTest(testStep + "${" + varName + "}");
+		} else {
+			_addStepToTest(testStep + boxText);
+		}
+	} else if (element.type == "checkbox" && element.checked) {
+		_addStepToTest("Checkbox Should Be Selected   \t" +
+			locator);
+	} else if (element.type == "checkbox" && !element.checked) {
+		_addStepToTest("Checkbox Should Not Be Selected   \t" +
+			locator);
 			//TODO Use the "radio button should no be selected" keyword?
 		} else if (element.type == "radio" && element.checked) {
 			_addStepToTest("Radio Button Should Be Set To   \t" +
@@ -1029,8 +1068,8 @@ function _checkFormElement(element) {
 		}
 	} else if (element.tagName == "TEXTAREA" && element.value) {
 		testStep = "Textarea Value Should Be   \t" +
-			locator +
-			"   \t";
+		locator +
+		"   \t";
 		var areaText = element.value;
 		areaText = escapeRobot(areaText);
 		areaText = areaText.replace(/(\r\n|\n|\r)/gm, "\\n");
@@ -1060,8 +1099,8 @@ function _checkFormElement(element) {
 			if (matchedNode.selected) {
 				var locType = getLocatorType(matchedNode);
 				testStep = "List Selection Should Be   \t" +
-					locator +
-					"   \t";
+				locator +
+				"   \t";
 				var matcheNodeLoc;
 				if (locType == "value") {
 					matcheNodeLoc = matchedNode.getAttribute("value");
@@ -1072,24 +1111,24 @@ function _checkFormElement(element) {
 				else if (matchedNode.getAttribute("value") &&
 					matchedNode.getAttribute("value") !== "") {
 					matcheNodeLoc = matchedNode.getAttribute("value");
-				}
-
-				if (useVar || createVar) {
-					varName = getVarNameFromValue(matcheNodeLoc);
-				}
-				if (createVar && !varName) {
-					varName = createVarNameForInput(element);
-					addVariable(varName, matcheNodeLoc);
-				}
-				if (useVar && varName) {
-					_addStepToTest(testStep + "${" + varName + "}");
-				} else {
-					_addStepToTest(testStep + matcheNodeLoc);
-				}
 			}
-			matchedNode = xPathResult.iterateNext();
+
+			if (useVar || createVar) {
+				varName = getVarNameFromValue(matcheNodeLoc);
+			}
+			if (createVar && !varName) {
+				varName = createVarNameForInput(element);
+				addVariable(varName, matcheNodeLoc);
+			}
+			if (useVar && varName) {
+				_addStepToTest(testStep + "${" + varName + "}");
+			} else {
+				_addStepToTest(testStep + matcheNodeLoc);
+			}
 		}
+		matchedNode = xPathResult.iterateNext();
 	}
+}
 }
 
 function _addTextVerifications(keyword) {

@@ -78,13 +78,15 @@ function getLocator(element) {
 			} else if (selLocType == "link" && getNodeValue(element) !== "") {
 				loc = getNodeValue(element);
 			} else if (selLocType == "xpath") {
-				loc = "xpath=" + (element.xpath || getElementXPath(element));
+				loc = "xpath=" + (element.xpath || getTextBasedXPath(element));
+			} else if (selLocType == "class_xpath" && element.getAttribute("class")) {
+				loc = "xpath=" + getClassBasedXPath(element);
 			}
 		}
 		if (loc) break;
 	}
 	if (!loc) {
-		loc = "xpath=" + (element.xpath || getElementXPath(element));
+		loc = "xpath=" + (element.xpath || getTextBasedXPath(element));
 	}
 
 	loc = escapeRobot(loc);
@@ -173,7 +175,9 @@ function getLocatorType(element) {
 				return "link";
 			} else if (selLocType == "xpath") {
 				return "xpath";
-			}
+			} else if (selLocType == "class_xpath" && element.getAttribute("class")) {
+				return "class_xpath";
+			} 
 		}
 	}
 	return "xpath";
@@ -194,14 +198,16 @@ function getLocatorForGenericElement(element) {
 				loc = element.id;
 			} else if (selLocType == "name" && element.name) {
 				loc = element.name;
-			} else if (selLocType == "xpath") {
-				loc = "xpath=" + (element.xpath || getElementXPath(element));
+			}  else if (selLocType == "xpath") {
+				loc = "xpath=" + (element.xpath || getTextBasedXPath(element));
+			} else if (selLocType == "class_xpath" && element.getAttribute("class")) {
+				loc = "xpath=" + getClassBasedXPath(element);			
 			}
 		}
 		if (loc) break;
 	}
 	if (!loc) {
-		loc = "xpath=" + (element.xpath || getElementXPath(element));
+		loc = "xpath=" + (element.xpath || getTextBasedXPath(element));
 	}
 
 	loc = escapeRobot(loc);
@@ -232,34 +238,39 @@ var _linkLocators = [
 	"name",
 	"href",
 	"link",
-	"xpath"
+	"xpath",
+	"class_xpath"
 ];
 
 var _btnLocators = [
 	"id",
 	"name",
 	"value",
-	"xpath"
+	"xpath",
+	"class_xpath"
 ];
 
 var _radioBtnLocators = [
 	"id",
 	"name",
 	"value",
-	"xpath"
+	"xpath",
+	"class_xpath"
 ];
 
 var _checkBoxLocators = [
 	"id",
 	"name",
 	"value",
-	"xpath"
+	"xpath",
+	"class_xpath"
 ];
 
 var _listLocators = [
 	"id",
 	"name",
-	"xpath"
+	"xpath",
+	"class_xpath"
 ];
 
 var _optionLocators = [
@@ -271,26 +282,30 @@ var _optionLocators = [
 var _textFieldLocators = [
 	"id",
 	"name",
-	"xpath"
+	"xpath",
+	"class_xpath"
 ];
 
 var _imageLocators = [
 	"id",
 	"src",
 	"alt",
-	"xpath"
+	"xpath",
+	"class_xpath"
 ];
 
 var _frameLocators = [
 	"id",
 	"name",
-	"xpath"
+	"xpath",
+	"class_xpath"
 ];
 
 var _elementLocators = [
 	"id",
 	"name",
-	"xpath"
+	"xpath",
+	"class_xpath"
 ];
 
 function _getLocPrefs() {

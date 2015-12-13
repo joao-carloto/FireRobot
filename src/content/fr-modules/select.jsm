@@ -7,7 +7,6 @@ var EXPORTED_SYMBOLS = [
 Components.utils.import("chrome://firerobot/content/fr-modules/utils.jsm");
 Components.utils.import("chrome://firerobot/content/fr-modules/locators.jsm");
 
-
 function toggleSelectMode() {
 	var frWindow = Application.storage.get("frWindow", undefined);
 	if (!frWindow) return;
@@ -117,7 +116,7 @@ function _addEventListners(doc) {
 	"Mouse events may cause performance issues."
 	Since this extension purpose is to build test scripts based on elements selected from the web page,
 	I belive this is the sole alternative.
-	I presume this is not too different from other popular extensions like Firebug where we select elements using the mouse.
+	I presume this is not too different from other popular extensions like Firebug, where we select elements using the mouse.
 	***********************************************************************************/		
 	doc.addEventListener('mouseover', _overElement, true);
 	doc.addEventListener('mouseout', _outElement, true);
@@ -212,7 +211,7 @@ function _selectElement(e) {
 		}
 		if (!el.isSelected) {
 			//TODO el.xpath not preserved when element inside frame. Make more efficient.
-			if(el.xpath === undefined) el.xpath =  getElementXPath(el);
+			if(el.xpath === undefined) el.xpath =  getTextBasedXPath(el);
 			var containers = [];
 			var containerIndexes = [];
 			_getElementContainers(el, containers, containerIndexes);
@@ -235,7 +234,7 @@ function _selectElement(e) {
 function _getElementContainers(element, elementContainers,
 	elementContainerIndexes) {
 	var elContainingDocument = element.ownerDocument;
-	var xpath = element.xpath || getElementXPath(element);
+	var xpath = element.xpath || getTextBasedXPath(element);
 	var xPathResult = elContainingDocument.evaluate("count(" +
 		xpath +
 		"/preceding::*)",

@@ -5,6 +5,7 @@ var EXPORTED_SYMBOLS = [
 	"removeVariable",
 	"increaseVarIndex",
 	"decreaseVarIndex",
+	"onlyScalarVariables",
 	"loadVariables",
 	"getVarNameFromValue",
 	"indexVarName",
@@ -230,20 +231,39 @@ function decreaseVarIndex() {
 	}
 }
 
+function onlyScalarVariables(str) { 
+	var lines = str.split(/\r?\n/);
+	for (var i = 0; i < lines.length; i++) {
+		//Scalar variables
+		if (lines[i].match(/\${.*}/)) {
+			//Do nothing
+		} 
+		//Empty lines
+		else if (lines[i].match(/^\s*$/)) {
+			//Do nothing
+		} else {
+			return false;
+		}
+	}
+	return true;
+}
+
 function loadVariables(str) {
 	var frWindow = Application.storage.get("frWindow", undefined);
 	var varListBox = frWindow.document.getElementById("fire-robot-varListBox");
+	//Remove all variables
 	while (varListBox.firstChild) {
 		varListBox.removeChild(varListBox.firstChild);
 	}
 	var lines = str.split(/\r?\n/);
 	for (var i = 0; i < lines.length; i++) {
+		//Scalar variables
 		if (lines[i].match(/\${.*}/)) {
 			var name = lines[i].match(/\${[^}]*}/)[0].replace(/^\${/, "").replace(/}$/, "");
 			var value = lines[i].replace(/\s*\${[^}]*}=*\s{2,}/, "");
 			this.addVariable(name, value);
 		}
-	}
+	} 
 }
 
 function getVarNameFromValue(value) {

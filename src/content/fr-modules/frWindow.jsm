@@ -43,12 +43,13 @@ function createSideBar() {
 
 	var frSplitter = document.createElement('splitter');
 	frSplitter.setAttribute("orient", "horizontal");
-	frSplitter.innerHTML = "<grippy/>";
 	frSplitter.setAttribute("collapse", "after");
+	var grippy = document.createElement('grippy');
+	frSplitter.appendChild(grippy);
 	Application.storage.set("frSplitter", frSplitter);
 
 	var frBox = document.createElement('vbox');
-	frBox.setAttribute("width", "520rem");
+	frBox.setAttribute("width", "530rem");
 	Application.storage.set("frBox", frBox);
 
 	var frBrowser = document.createElement('browser');
@@ -56,7 +57,6 @@ function createSideBar() {
 	frBrowser.setAttribute("src",
 		"chrome://firerobot/content/fireRobotWindow.xul");
 	frBrowser.setAttribute("disablehistory", "true");
-	//frBrowser.setAttribute("collapsed", "true");
 	frBrowser.setAttribute("persist", "height,width");
 	Application.storage.set("frBrowser", frBrowser);
 

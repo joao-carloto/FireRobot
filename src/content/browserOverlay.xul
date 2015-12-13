@@ -38,12 +38,11 @@
             label="Press Key &lt;next key you press&gt;" 
             hidden="true" 
             oncommand="FireRobot.BrowserOverlay.addKeyword(this.id);"/>
-        <!--There seems to be a bug here see https://groups.google.com/forum/#!msg/robotframework-users/eNg03fQ-Mwg/JqmCDLUcfWkJ-->
-        <!--menuitem 
+        <menuitem 
             id="fire-robot-focus"
             label="Focus" 
             hidden="true" 
-            oncommand="FireRobot.BrowserOverlay.addKeyword(this.id);"/-->
+            oncommand="FireRobot.BrowserOverlay.addKeyword(this.id);"/>
         <menuseparator 
             id="fire-robot-separator-2" 
             hidden="true"/>
@@ -104,12 +103,28 @@
                     label="Wait Until Page Contains" 
                     oncommand="FireRobot.BrowserOverlay.addKeyword(this.id);"/>
                 <menuitem 
+                    id="fire-robot-wait-until-page-does-not-contain" 
+                    label="Wait Until Page Does Not Contain"
+                    oncommand="FireRobot.BrowserOverlay.addKeyword(this.id);"/>
+                <menuitem 
                     id="fire-robot-wait-until-page-contains-element" 
                     label="Wait Until Page Contains Element" 
                     oncommand="FireRobot.BrowserOverlay.addKeyword(this.id);"/>
                 <menuitem 
+                    id="fire-robot-wait-until-page-does-not-contain-element" 
+                    label="Wait Until Page Does Not Contain Element" 
+                    oncommand="FireRobot.BrowserOverlay.addKeyword(this.id);"/>
+                <menuitem 
                     id="fire-robot-wait-until-element-is-visible" 
                     label="Wait Until Element Is Visible" 
+                    oncommand="FireRobot.BrowserOverlay.addKeyword(this.id);"/>
+                <menuitem 
+                    id="fire-robot-wait-until-element-is-not-visible" 
+                    label="Wait Until Element Is Not Visible" 
+                    oncommand="FireRobot.BrowserOverlay.addKeyword(this.id);"/>
+                <menuitem 
+                    id="fire-robot-wait-until-element-is-enabled" 
+                    label="Wait Until Element Is Enabled" 
                     oncommand="FireRobot.BrowserOverlay.addKeyword(this.id);"/>
             </menupopup>
         </menu>

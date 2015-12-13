@@ -18,6 +18,7 @@ FireRobot.BrowserOverlay = {
 
 		//Avoids opening several instances
 		if (typeof(frWindow) != 'undefined' && !frWindow.closed) {
+			warning("firerobot.warn.instance-open");
 			return;
 		}
 		var windowModePreference = prefService.getCharPref(
@@ -109,11 +110,23 @@ FireRobot.BrowserOverlay = {
 			case "fire-robot-wait-until-page-contains":
 				kwWaitUntilPageContains();
 				break;
+			case "fire-robot-wait-until-page-does-not-contain":
+				kwWaitUntilPageDoesNotContain();
+				break;
 			case "fire-robot-wait-until-page-contains-element":
 				kwWaitUntilPageContainsElement();
 				break;
+			case "fire-robot-wait-until-page-does-not-contain-element":
+				kwWaitUntilPageDoesNotContainElement();
+				break;
 			case "fire-robot-wait-until-element-is-visible":
 				kwWaitUntilElementIsVisible();
+				break;
+			case "fire-robot-wait-until-element-is-not-visible":
+				kwWaitUntilElementIsNotVisible();
+				break;
+			case "fire-robot-wait-until-element-is-enabled":
+				kwWaitUntilElementIsEnabled();
 				break;
 			case "fire-robot-element-should-be-enabled":
 				kwElementShouldBeEnabled();
@@ -301,5 +314,4 @@ FireRobot.BrowserOverlay = {
 		
 		Application.storage.set("keyWindow", keyWindow);
 	}
-
 };

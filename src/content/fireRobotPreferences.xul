@@ -49,9 +49,9 @@
                      id="fire-robot-disabled-locators-list" 
                      class="testBox" 
                      seltype="single" 
-                     rows="8"  
+                     rows="9"  
                      width="150rem" 
-                     height="180rem"/>
+                     height="190rem"/>
                 </vbox>
                 <vbox 
                   align="center">
@@ -74,9 +74,9 @@
                      id="fire-robot-enabled-locators-list" 
                      class="testBox" 
                      seltype="single" 
-                     rows="8"  
+                     rows="9"  
                      width="150rem" 
-                     height="180rem"></listbox>
+                     height="190rem"></listbox>
                 </vbox>
                 <vbox 
                   align="center">
