@@ -21,11 +21,7 @@ Although this tool has some features in common with record and play tools, it's 
 
 HOW TO INSTALL FIREROBOT?
 
-- Go to the releases page (https://github.com/joao-carloto/FireRobot/releases).
-- Get the firerobot.xpi file.
-- Drag it over a window of your Firefox browser.
-- Confirm the installation (you will have trust me on this being safe).
-- Restart the browser.
+- Get the reviewed and signed installer at https://addons.mozilla.org/en-US/firefox/addon/firerobot/
 - You may start the extension at the Developer menu.
 - For more convenience drag the FireRobot icon from the "Customize" menu onto the browser toolbar.
 
