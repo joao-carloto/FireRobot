@@ -1,6 +1,11 @@
 FireRobot
 =========
 
+WARNING! FireRobot might get disabled if you run the Robot Framework tests right form the browser. Basically there’s and incompatibility between the extension’s architecture and the Firefox signing system. Once Robot Framework test reports are written inside the extension’s folder, the signature will no longer be recognized and the extension will be disabled.
+The workaround, for now, will be to NOT run the tests form the browser or to keep reinstalling the extension.
+Will work on a solution for this, once I have the time.
+More info: https://github.com/joao-carloto/FireRobot/issues/88
+
 WHAT IS FIREROBOT?
 
 FireRobot is a Firefox extension that allows you to create Robot Framework/Selenium tests, in a more efficient way. 
