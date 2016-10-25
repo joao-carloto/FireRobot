@@ -1,7 +1,7 @@
 FireRobot
 =========
 
-<strong>WARNING!</strong> This extension will not work from Firefox 47 onward. This is due to the deprecation and removal of the FUEL library. Current alternatives to this library would not support the full range of functionality that this extension currently provides.
+<strong>WARNING!</strong> This extension will not work from Firefox 47 onward. This is due to the deprecation and removal of the FUEL library. Alternatives to this library would not support the full range of functionality that this extension provides.
 <br/>
 Also, the extension current implementation makes it incompatible with the Firefox signing system. Basically, once you run a test from the extension, a file is written into the extension folder and the signature becomes invalid.
 <br/>
