@@ -1,9 +1,9 @@
 FireRobot
 =========
 
-WARNING! This extension will not work from Firefox 47 onwards. This is due to the depreceation and removal of the FUEL library. Current alternatives to this library would not support the full range of functinallity that this extension corrently provides.
+<strong>WARNING!</strong> This extension will not work from Firefox 47 onward. This is due to the deprecation and removal of the FUEL library. Current alternatives to this library would not support the full range of functionality that this extension currently provides.
 <br/>
-Also, the extension current implementation makes it incompatible with the Firefox signing system. Basicly, once you run a test from the extension, a file is written into the extension folder and the signature becomes invalid.
+Also, the extension current implementation makes it incompatible with the Firefox signing system. Basically, once you run a test from the extension, a file is written into the extension folder and the signature becomes invalid.
 <br/>
 If you still want to use this extension I advise to downgrade to Firefox 45 or lower and disable signature verification by going to about:config and setting xpinstall.signatures.required to false. Details can be found here: https://wiki.mozilla.org/Add-ons/Extension_Signing. Beware that this change will impact the verification of all installed extensions.
 
