@@ -1,10 +1,11 @@
 FireRobot
 =========
 
-WARNING! FireRobot might get disabled if you run the Robot Framework tests right form the browser. <br/>Basically there’s and incompatibility between the extension’s architecture and the Firefox signing system. Once Robot Framework test reports are written inside the extension’s folder, the signature will no longer be recognized and the extension will be disabled.<br/>
-The workaround, for now, will be to NOT run the tests form the browser or to keep reinstalling the extension.<br/>
-Will work on a solution for this, once I have the time.<br/>
-More info: https://github.com/joao-carloto/FireRobot/issues/88
+WARNING! This extension will not work from Firefox 47 onwards. This is due to the depreceation and removal of the FUEL library. Current alternatives to this library would not support the full range of functinallity that this extension corrently provides.
+<br/>
+Also, the extension current implementation makes it incompatible with the Firefox signing system. Basicly, once you run a test from the extension, a file is written into the extension folder and the signature becomes invalid.
+<br/>
+If you still want to use this extension I advise to downgrade to Firefox 45 or lower and disable signature verification by going to about:config and setting xpinstall.signatures.required to false. Details can be found here: https://wiki.mozilla.org/Add-ons/Extension_Signing. Beware that this change will impact the verification of all installed extensions.
 
 WHAT IS FIREROBOT?
 
